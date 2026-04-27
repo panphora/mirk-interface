@@ -1,10 +1,11 @@
 # HISTORY
 
-A concise, chronological log of every meaningful decision on this project. **Decision + reasoning, one bullet each, kept tight.** Purpose: a portable "lessons learned" so we can apply this thinking to a future UI kit without re-discovering it.
+A chronological, **append-only** log of every meaningful decision on this project. **Decision + reasoning, one bullet each, kept tight.** Purpose: a portable "lessons learned" so we can apply this thinking to a future UI kit without re-discovering it.
 
 Conventions:
-- Add a one-liner here whenever a decision is locked in `README.md` or a new ADR lands in `decisions/`.
-- Keep entries terse — full reasoning lives in the corresponding ADR; this file is the distilled index.
+- Add a one-liner here whenever a decision is locked. If a prior decision is reversed, add a *new* entry — never edit or delete the old one.
+- The current accepted state lives in `DECISIONS.md`; this file is the audit trail of how we got there.
+- Keep entries terse — the *why* is what matters.
 - Group by date the decision was made.
 
 ---
@@ -27,3 +28,4 @@ Conventions:
 ## 2026-04-27
 
 - **Single-select dropdown: native `<select>` with `appearance: base-select`, progressive enhancement.** We want robust cross-browser support today (the OS popup is the universal fallback everywhere); where modern engines support `base-select` we get a fully-styled dropdown matching the rest of mirk for free, no JS required.
+- **Decision tracking restructured.** `decisions/` folder (per-file ADRs, never renumbered, superseded files left in place) replaced by a single top-level `DECISIONS.md` (living doc, current state only, edited freely) plus a new top-level `UNDECIDED.md` for active brainstorming. `HISTORY.md` becomes the append-only audit trail — *this* file is what guarantees we never lose the *why*. Reason: we don't need two parallel records of every decision; one current-state file + one immutable log is enough, with fewer small files to navigate.

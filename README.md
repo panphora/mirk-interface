@@ -5,9 +5,10 @@ A form-focused UI kit (**mirk**) built from scratch by studying the best ideas i
 ## Getting started — read in this order
 
 1. **`README.md`** (you are here) — what mirk is, the locked rules, repo layout.
-2. **`HISTORY.md`** — concise one-liner log of every decision and *why* it was made. Read this to understand the reasoning behind the rules below.
+2. **`HISTORY.md`** — append-only log of every decision and *why* it was made. The audit trail; never overwritten. Read this to understand the reasoning behind the rules below.
 3. **`PLAN.md`** — current task state: what's done, what's next, open questions, deferred items.
-4. **`decisions/`** — verbose ADRs. Skim only when working in a specific component's area; don't read end-to-end.
+4. **`UNDECIDED.md`** — items currently being brainstormed. Resolved items move out into `DECISIONS.md` + `HISTORY.md`.
+5. **`DECISIONS.md`** — current accepted decisions per component/topic. Living doc; edited freely as choices evolve. Format and template at the top of the file.
 
 ## Reference systems
 
@@ -66,29 +67,28 @@ Cols 1 and 2 (Primer, Carbon) render real React components from `@primer/react` 
 
 ## Decision log — non-negotiable
 
-Every meaningful choice we make about a component gets its own file in `decisions/`. **This is the most important discipline in the project.**
+Every meaningful decision is captured in two places:
+
+- **`DECISIONS.md`** — current accepted decision for each component/topic. Edited freely as decisions evolve. Format, rules, and template live at the top of that file.
+- **`HISTORY.md`** — append-only log of every decision and *why*, chronological. **Nothing is ever removed or rewritten.** Even when a decision in `DECISIONS.md` changes, the original `HISTORY.md` entry stays put and a new entry is added. This is the audit trail.
 
 Why so strict:
 
-- We need to be able to **unwind** a decision cleanly later if it turns out to be wrong.
 - We need to remember **why** we did something months from now so we don't accidentally re-litigate or undo it for the wrong reasons.
 - We need a paper trail of "we considered X and rejected it because Y" so we don't keep rediscovering the same dead ends.
+- We need to see **how** a decision evolved if we changed our minds.
 
-Format and conventions are in `decisions/README.md`. The template is `decisions/TEMPLATE.md`. Each file is numbered (`0001-...`, `0002-...`) and never renumbered — superseded decisions stay on disk and link forward.
-
-Alongside the verbose ADRs, **`HISTORY.md`** is a concise one-liner log of every decision (project-level + component-level), chronological. It's the distilled "lessons-learned" index meant to be portable to a future UI-kit project. Add an entry there whenever a decision is locked.
+Items still being brainstormed live in **`UNDECIDED.md`**. When resolved, they're added to `DECISIONS.md`, logged in `HISTORY.md`, and removed from `UNDECIDED.md`.
 
 ## Repo layout
 
 ```
 mirk-ui-kit/
 ├── README.md               # this file — affirmed project rules
+├── HISTORY.md              # append-only log of every decision + why (portable lessons-learned)
 ├── PLAN.md                 # task tracker (not done / done)
-├── HISTORY.md              # concise one-line log of every decision (portable lessons-learned)
-├── decisions/              # one ADR-style file per decision
-│   ├── README.md           # decision-log format and rules
-│   ├── TEMPLATE.md         # copy this to start a new decision
-│   └── NNNN-*.md           # accruing decisions
+├── UNDECIDED.md            # items currently being brainstormed
+├── DECISIONS.md            # current accepted decisions per component/topic (living doc)
 ├── refs/                   # read-only upstream sources
 │   ├── primer/             # cloned: primer/react
 │   └── carbon/             # cloned: carbon-design-system/carbon
