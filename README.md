@@ -57,9 +57,11 @@ Practical consequences:
 - **No web components.** Same reason — we want copy-paste HTML, not custom-element registrations the user has to wire up.
 - **No build step required to use a mirk component.** A user pastes the HTML into any project, includes Tailwind, and it works. A `<script>` tag is included alongside only when a plugin is unavoidable, with a clear CDN reference.
 
-### Showcase app
+### Pages
 
-Cols 1 and 2 (Primer, Carbon) render real React components from `@primer/react` and `@carbon/react`, so the showcase app is itself a React app. Col 3 (mirk) renders the actual HTML snippet — likely via `dangerouslySetInnerHTML` from a `.html` source file — so what you see in the showcase is byte-identical to what users copy-paste.
+mirk components all live in a single **`index.html`** at the repo root, with the Tailwind v4 CDN included. There aren't many of them and they fit comfortably in one file together.
+
+A separate **`compare.html`** at the root is the side-by-side development view — mirk components rendered next to their Primer (`@primer/react`) and Carbon (`@carbon/react`) counterparts so we can judge each one against best-in-class peers as we build. The Primer and Carbon libraries are loaded via an in-browser ESM CDN (e.g. `esm.sh`) so the comparison page stays buildless, matching the rest of mirk. *(Exact loader mechanism TBD — record in `DECISIONS.md` when locked.)*
 
 ### Rich text engine
 
@@ -80,6 +82,13 @@ Why so strict:
 
 Items still being brainstormed live in **`UNDECIDED.md`**. When resolved, they're added to `DECISIONS.md`, logged in `HISTORY.md`, and removed from `UNDECIDED.md`.
 
+## Experiments and artifacts
+
+Two folders track exploratory work:
+
+- **`experiments/`** — active UI experiments. Sketches, alternate takes, things we're trying before committing to a direction.
+- **`artifacts/`** — graduated experiments. When an experiment is worth keeping around so other files can reference it (a pattern, a study, a reference render), it moves here. Artifacts aren't necessarily final — they're just things we want to be able to point at.
+
 ## Repo layout
 
 ```
@@ -89,8 +98,11 @@ mirk-ui-kit/
 ├── PLAN.md                 # task tracker (not done / done)
 ├── UNDECIDED.md            # items currently being brainstormed
 ├── DECISIONS.md            # current accepted decisions per component/topic (living doc)
-├── refs/                   # read-only upstream sources
-│   ├── primer/             # cloned: primer/react
-│   └── carbon/             # cloned: carbon-design-system/carbon
-└── (mirk source + showcase app — added during setup)
+├── index.html              # all mirk components, Tailwind v4 via CDN
+├── compare.html            # side-by-side: mirk vs Primer vs Carbon
+├── experiments/            # active UI experiments
+├── artifacts/              # graduated experiments, kept for reference
+└── refs/                   # read-only upstream sources
+    ├── primer/             # cloned: primer/react
+    └── carbon/             # cloned: carbon-design-system/carbon
 ```
