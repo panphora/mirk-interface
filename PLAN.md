@@ -11,6 +11,7 @@ _(empty — all setup tasks done)_
 
 For each item: read Primer source, read Carbon source, add a `## NNNN — <component>` section to `DECISIONS.md` (with cited SHAs from `refs/SOURCES.md`), build the mirk version as plain HTML/CSS (+ a styled third-party plugin only where native isn't an option), verify `outerHTML` round-trips state, add to `index.html` (and `compare.html` once it exists), verify dark + light look correct.
 
+- [ ] 00 — Button (variants: primary, default/secondary, tertiary/outline, ghost/invisible, danger, link)
 - [ ] 01 — Single-line text input
 - [ ] 02 — Textarea
 - [ ] 03 — Number / integer (min/max/step)

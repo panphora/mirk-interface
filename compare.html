@@ -29,6 +29,7 @@
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/date-picker.min.js"></script>
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/time-picker.min.js"></script>
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/file-uploader.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/button.min.js"></script>
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/layer.min.js"></script>
 
   <!--
@@ -58,6 +59,7 @@
     cds-time-picker-select-item:not(:defined),
     cds-file-uploader:not(:defined),
     cds-file-uploader-button:not(:defined),
+    cds-button:not(:defined),
     cds-layer:not(:defined) {
       visibility: hidden;
     }
@@ -83,6 +85,35 @@
       Primer cells are React roots mounted by the <script type="module"> at the bottom.
       Carbon cells are web components inside .cds-theme-zone-* wrappers.
     -->
+
+    <!-- 00 — Button -->
+    <section id="00-button" class="space-y-2">
+      <h2 class="text-sm font-medium text-gray-500 px-2">00 — Button</h2>
+      <div class="grid grid-cols-3 border border-gray-200 rounded-md overflow-hidden divide-x divide-y divide-gray-200">
+        <div class="bg-white p-6"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="bg-white p-6"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-00-light"></div></div>
+        <div class="cds-theme-zone-white p-6"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <div class="flex flex-wrap gap-2">
+            <cds-button kind="primary">Primary</cds-button>
+            <cds-button kind="secondary">Secondary</cds-button>
+            <cds-button kind="tertiary">Tertiary</cds-button>
+            <cds-button kind="ghost">Ghost</cds-button>
+            <cds-button kind="danger">Danger</cds-button>
+          </div>
+        </div>
+        <div class="dark bg-gray-950 p-6"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-[#0d1117] p-6"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-00-dark"></div></div>
+        <div class="cds-theme-zone-g100 p-6"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <div class="flex flex-wrap gap-2">
+            <cds-button kind="primary">Primary</cds-button>
+            <cds-button kind="secondary">Secondary</cds-button>
+            <cds-button kind="tertiary">Tertiary</cds-button>
+            <cds-button kind="ghost">Ghost</cds-button>
+            <cds-button kind="danger">Danger</cds-button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- 01 — Single-line text input -->
     <section id="01-text-input" class="space-y-2">
@@ -437,6 +468,7 @@
     import {
       ThemeProvider,
       BaseStyles,
+      Button,
       TextInput,
       Textarea,
       Checkbox,
@@ -468,6 +500,13 @@
 
     // Each entry: [id-prefix, factory that returns a fresh JSX tree per mount]
     const components = [
+      ['primer-00', () => e('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px' } },
+        e(Button, { variant: 'primary' }, 'Primary'),
+        e(Button, null, 'Default'),
+        e(Button, { variant: 'invisible' }, 'Invisible'),
+        e(Button, { variant: 'danger' }, 'Danger'),
+        e(Button, { variant: 'link' }, 'Link'),
+      )],
       ['primer-01', () => e(TextInput, { 'aria-label': 'Email', placeholder: 'hello@example.com' })],
       ['primer-02', () => e(Textarea, { 'aria-label': 'Bio', placeholder: 'Tell us about yourself', rows: 3 })],
       ['primer-03', () => e(TextInput, { type: 'number', 'aria-label': 'Quantity', defaultValue: 5, min: 0, max: 100 })],
