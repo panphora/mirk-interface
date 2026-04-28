@@ -1,0 +1,18 @@
+{
+  "name": "mirk-ui-kit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Vite dev server is used solely for compare.html (so it can resolve Primer's React + CSS-module imports). index.html and every mirk snippet remain fully buildless — open them in any static server.",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@primer/react": "^38.21.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

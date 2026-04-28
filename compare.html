@@ -29,9 +29,9 @@
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/file-uploader.min.js"></script>
 
   <!--
-    Primer React: loader unresolved. See UNDECIDED.md "Loader for Primer in compare.html".
-    Both esm.sh (CSS-module redirects break Chrome's module loader) and the UMD bundle
-    (styled-components dep mismatch) fail. Primer cells render as placeholders for now.
+    Primer React is bundled at request time by Vite (`npm run dev`). The
+    bare-specifier imports below resolve via node_modules thanks to Vite's
+    dependency pre-bundler, which also handles Primer's CSS-module imports.
   -->
 
   <style>
@@ -67,7 +67,7 @@
   <header class="border-b border-gray-200 px-6 py-4">
     <h1 class="text-base font-semibold">mirk · compare</h1>
     <p class="text-sm text-gray-600">Each component shown across mirk · Primer · Carbon, light + dark side-by-side. Wide on purpose — scroll horizontally if needed.</p>
-    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-2 inline-block">⚠ Primer cells are empty pending a working buildless loader. See <code>UNDECIDED.md</code>. Carbon and mirk panels render normally. <strong>Serve via <code>http://</code>, not <code>file://</code></strong> — Chrome blocks ESM imports from <code>file://</code> origins.</p>
+    <p class="text-xs text-gray-500 mt-1">Run <code>npm run dev</code> to serve this page (Vite resolves Primer's React + CSS-module imports). <code>index.html</code> stays buildless.</p>
   </header>
 
   <main class="px-4 py-6 space-y-10">
@@ -410,14 +410,75 @@
     </section>
   </main>
 
-  <!--
-    Primer mounting script removed — see UNDECIDED.md for the loader investigation.
-    The original draft tried `<script type="module">` with an import map pointing at
-    esm.sh/@primer/react. It failed because Primer ships CSS modules that esm.sh
-    serves via 301 → text/css responses, which Chrome's module loader rejects.
-    The UMD fallback (jsdelivr browser.umd.js) also fails (styled-components dep
-    mismatch). Cells in this file's HTML are kept so they fill in cleanly once a
-    working loader is decided.
-  -->
+  <script type="module">
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
+    import {
+      ThemeProvider,
+      BaseStyles,
+      TextInput,
+      Textarea,
+      Checkbox,
+      CheckboxGroup,
+      Radio,
+      RadioGroup,
+      ToggleSwitch,
+      SegmentedControl,
+      Select,
+      FormControl,
+    } from '@primer/react';
+
+    const e = React.createElement;
+
+    function mount(id, mode, jsx) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      try {
+        createRoot(el).render(
+          e(ThemeProvider, { colorMode: mode },
+            e(BaseStyles, null, jsx)
+          )
+        );
+      } catch (err) {
+        el.innerHTML = `<div style="color:#cf222e;font:11px ui-monospace">${err.message}</div>`;
+        console.error(`primer mount failed for ${id}:`, err);
+      }
+    }
+
+    // Each entry: [id-prefix, factory that returns a fresh JSX tree per mount]
+    const components = [
+      ['primer-01', () => e(TextInput, { 'aria-label': 'Email', placeholder: 'hello@example.com' })],
+      ['primer-02', () => e(Textarea, { 'aria-label': 'Bio', placeholder: 'Tell us about yourself', rows: 3 })],
+      ['primer-03', () => e(TextInput, { type: 'number', 'aria-label': 'Quantity', defaultValue: 5, min: 0, max: 100 })],
+      ['primer-04', () => e(CheckboxGroup, null,
+        e(CheckboxGroup.Label, null, 'Notifications'),
+        e(FormControl, null, e(Checkbox, { defaultChecked: false }), e(FormControl.Label, null, 'Email me')),
+        e(FormControl, null, e(Checkbox, { defaultChecked: false }), e(FormControl.Label, null, 'SMS')),
+        e(FormControl, null, e(Checkbox, { defaultChecked: true }), e(FormControl.Label, null, 'Push')),
+      )],
+      ['primer-05', () => e(RadioGroup, { name: `plan-p-${Math.random().toString(36).slice(2, 7)}` },
+        e(RadioGroup.Label, null, 'Plan'),
+        e(FormControl, null, e(Radio, { value: 'free' }), e(FormControl.Label, null, 'Free')),
+        e(FormControl, null, e(Radio, { value: 'pro' }), e(FormControl.Label, null, 'Pro')),
+        e(FormControl, null, e(Radio, { value: 'team' }), e(FormControl.Label, null, 'Team')),
+      )],
+      ['primer-06', () => e(ToggleSwitch, { 'aria-label': 'Notifications' })],
+      ['primer-07', () => e(SegmentedControl, { 'aria-label': 'View' },
+        e(SegmentedControl.Button, { defaultSelected: true }, 'All'),
+        e(SegmentedControl.Button, null, 'Active'),
+        e(SegmentedControl.Button, null, 'Archived'),
+      )],
+      ['primer-08', () => e(Select, { 'aria-label': 'Country' },
+        e(Select.Option, { value: 'us' }, 'United States'),
+        e(Select.Option, { value: 'uk' }, 'United Kingdom'),
+        e(Select.Option, { value: 'de' }, 'Germany'),
+      )],
+    ];
+
+    for (const [prefix, factory] of components) {
+      mount(`${prefix}-light`, 'day', factory());
+      mount(`${prefix}-dark`, 'night', factory());
+    }
+  </script>
 </body>
 </html>

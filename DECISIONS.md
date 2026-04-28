@@ -16,6 +16,7 @@ Current accepted choices for mirk components and project infrastructure. This fi
 | ---- | ----- |
 | 0001 | [Theming foundations: Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side](#0001--theming-foundations-tailwind-v4-cdn-class-based-dark-mode-both-themes-shown-side-by-side) |
 | 0002 | [Focus ring: 1px outline, 2px offset, `:focus-visible` only](#0002--focus-ring-1px-outline-2px-offset-focus-visible-only) |
+| 0003 | [`compare.html` loader: Vite dev server for Primer; Carbon stays on its CDN](#0003--comparehtml-loader-vite-dev-server-for-primer-carbon-stays-on-its-cdn) |
 
 ## Template
 
@@ -129,3 +130,39 @@ Every interactive element in mirk needs a visible focus indicator. We want a sin
 ### Alternatives considered
 - **Box-shadow ring (`focus:ring-2`).** Rejected: clipping risk, and shadows look fuzzier than outlines at the same width.
 - **Inset rings.** Rejected: visually crowds the element's content area; bad for small inputs.
+
+---
+
+## 0003 — `compare.html` loader: Vite dev server for Primer; Carbon stays on its CDN
+
+- **Date:** 2026-04-27
+
+### Context
+`compare.html` renders mirk · Primer · Carbon side-by-side, light + dark, so we can judge each mirk component against best-in-class peers as we build. Carbon ships first-class web components on a public CDN — those work buildless. Primer ships React + CSS modules; getting them to load buildless in a browser failed across three independent paths.
+
+### Decision (mirk)
+- **`compare.html` requires a Vite dev server.** Run `npm run dev` to view it; Vite resolves the bare-specifier imports for `react`, `react-dom`, and `@primer/react` and pre-bundles Primer's CSS modules.
+- **Carbon stays on `1.www.s81c.com` CDN scripts** inside `compare.html` — no need to install or import; works either via the dev server or any static server.
+- **Scope is `compare.html` only.** `index.html` and the eventual mirk components stay 100% buildless (open in any browser, paste anywhere). Vite is a development convenience for *one* tool page, not part of mirk's authoring or distribution.
+- **Stack:** Vite 6, React 18.3, `@primer/react` 38.x. `package.json` is at the repo root; `node_modules/` is gitignored.
+
+### Why this over the alternatives
+- **Buildless attempts failed.** `esm.sh` 301-redirects Primer's `*.module.css.mjs` files to `text/css` URLs that Chrome's module loader rejects. The UMD bundle throws inside `styled-components` (peer-version mismatch). `lodash` and `lit` import fine via the same path, so the issue is specific to Primer.
+- **`@primer/css` would be lossy.** Primer's classic CSS package is the legacy GitHub.com style, not the modern Primer React design — it'd be a visual approximation, not a real reference.
+- **Iframing Primer's Storybook leaks Storybook chrome** into the comparison, and inter-frame styling is fragile.
+- **Vite gets us the real Primer**, costs us a one-line dev command, and keeps everything else buildless.
+
+### Tradeoffs
+- `compare.html` no longer "just opens in a browser" — you need `npm run dev`. Acceptable because it's an internal dev tool, not something we ship.
+- Adds a `package.json` and `node_modules/` to the repo. Both are gitignored / small commitments and don't affect mirk consumers.
+- If Primer drops support for React 18, we'll need to bump.
+
+### Alternatives considered
+- **A. Pure buildless via `esm.sh`.** Rejected — CSS-module redirects break Chrome's module loader. See `HISTORY.md` 2026-04-27 for the full investigation.
+- **B. UMD bundle (`browser.umd.js` + React UMD + styled-components UMD).** Rejected — runtime error in styled-components, likely a peer-version mismatch in Primer's bundle.
+- **C. `@primer/css` (legacy CSS-only).** Rejected — visually different from modern Primer React; not a fair comparison.
+- **D. Iframe Primer Storybook stories.** Rejected — Storybook chrome contaminates the comparison; inter-frame coordination is fragile.
+- **E. Pre-build a vendor bundle (`vendor/primer.bundle.js`) and serve `compare.html` via any static server.** Considered. Cleaner in some ways (the page itself stays static), but you still need a build step somewhere; might as well make it the dev server since live reload is useful. Revisit if we want to ship `compare.html` as a hosted demo.
+
+### Open questions
+- Do we eventually want a `vite build` config that produces a single hostable `dist/compare.html` for sharing? Not needed today.

@@ -5,8 +5,7 @@ Task tracker. Project rules and scope live in `README.md`. Decision reasoning li
 ## Not done
 
 ### Setup
-- [ ] Stand up `index.html` skeleton — Tailwind v4 CDN, dark `@custom-variant`, layout for side-by-side light/dark per component
-- [ ] Stand up `compare.html` — three-column layout (mirk | Primer | Carbon), each rendered in light AND dark side-by-side. *Loader for Primer/Carbon: see `UNDECIDED.md`.*
+_(empty — all setup tasks done)_
 
 ### Components — build order (simple → complex)
 
@@ -53,3 +52,5 @@ For each item: read Primer source, read Carbon source, add a `## NNNN — <compo
 - [x] `DECISIONS.md` 0002 — Focus ring convention (1px outline, 2px offset, `:focus-visible` only) (2026-04-27)
 - [x] Clone Primer + Carbon (shallow) into `refs/`; SHAs recorded in `refs/SOURCES.md` (2026-04-27)
 - [x] Single-select dropdown approach picked: native `<select>` with `appearance: base-select` (2026-04-27, see `HISTORY.md`)
+- [x] `index.html` skeleton — Tailwind v4 CDN, dark `@custom-variant`, side-by-side light/dark layout (2026-04-27)
+- [x] `compare.html` standing up — Carbon (12 components, both themes via WC CDN); Primer (8 components, both themes via Vite-resolved imports). `DECISIONS.md` 0003 (2026-04-27)

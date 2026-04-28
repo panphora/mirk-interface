@@ -59,9 +59,9 @@ Practical consequences:
 
 ### Pages
 
-mirk components all live in a single **`index.html`** at the repo root, with the Tailwind v4 CDN included. There aren't many of them and they fit comfortably in one file together.
+mirk components all live in a single **`index.html`** at the repo root, with the Tailwind v4 CDN included. There aren't many of them and they fit comfortably in one file together. `index.html` is fully buildless — open it from `file://` or any static server.
 
-A separate **`compare.html`** at the root is the side-by-side development view — mirk components rendered next to their Primer (`@primer/react`) and Carbon (`@carbon/react`) counterparts so we can judge each one against best-in-class peers as we build. The Primer and Carbon libraries are loaded via an in-browser ESM CDN (e.g. `esm.sh`) so the comparison page stays buildless, matching the rest of mirk. *(Exact loader mechanism TBD — record in `DECISIONS.md` when locked.)*
+A separate **`compare.html`** at the root is the side-by-side development view — mirk components rendered next to their Primer (`@primer/react`) and Carbon (`@carbon/web-components`) counterparts so we can judge each one against best-in-class peers as we build. **`compare.html` is the one exception to the buildless rule:** it's served by a tiny Vite dev server (`npm run dev`) so Vite can resolve Primer's React + CSS-module imports. Carbon stays on its own CDN scripts inside the same page. See `DECISIONS.md` 0003 for why and what we tried first.
 
 ### Rich text engine
 
@@ -98,8 +98,10 @@ mirk-ui-kit/
 ├── PLAN.md                 # task tracker (not done / done)
 ├── UNDECIDED.md            # items currently being brainstormed
 ├── DECISIONS.md            # current accepted decisions per component/topic (living doc)
-├── index.html              # all mirk components, Tailwind v4 via CDN
-├── compare.html            # side-by-side: mirk vs Primer vs Carbon
+├── index.html              # all mirk components, Tailwind v4 via CDN — buildless
+├── compare.html            # side-by-side: mirk vs Primer vs Carbon — needs `npm run dev`
+├── package.json            # Vite + React + @primer/react — only for compare.html
+├── vite.config.js          # minimal Vite config (opens compare.html)
 ├── experiments/            # active UI experiments
 ├── artifacts/              # graduated experiments, kept for reference
 └── refs/                   # read-only upstream sources
