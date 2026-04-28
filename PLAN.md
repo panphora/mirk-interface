@@ -1,20 +1,16 @@
 # PLAN
 
-Task tracker. Project rules and scope live in `README.md`. Component reasoning lives in `decisions/`.
+Task tracker. Project rules and scope live in `README.md`. Decision reasoning lives in `DECISIONS.md` and `HISTORY.md`.
 
 ## Not done
 
 ### Setup
-- [ ] Choose showcase app build tool (likely Vite + React) and record in `decisions/0001-showcase-stack.md` — affirmed constraints: React for cols 1+2, raw HTML render in col 3, Tailwind available in col 3 only (or scoped) so it doesn't bleed into Primer/Carbon
-- [ ] Decide how mirk snippets are stored and rendered: each component lives as `mirk/<component>/index.html` (+ optional `index.css`). Plugin-backed components also include the plugin's own `<script src="…">` reference inside the snippet. Showcase imports the raw HTML string. Record in `decisions/0002-mirk-snippet-format.md`
-- [ ] Theming: confirm Tailwind class-based dark mode (`darkMode: 'class'`) on a root toggle; record in `decisions/0003-theming.md`
-- [ ] Scaffold showcase app with 3-column layout (Primer | Carbon | mirk) and dark/light toggle that drives all three columns
-- [ ] Install `@primer/react` and `@carbon/react` as showcase dependencies
-- [ ] Create `refs/` and clone Primer + Carbon (shallow); record commit SHAs in `refs/SOURCES.md`
+- [ ] Stand up `index.html` skeleton — Tailwind v4 CDN, dark `@custom-variant`, layout for side-by-side light/dark per component
+- [ ] Stand up `compare.html` — three-column layout (mirk | Primer | Carbon), each rendered in light AND dark side-by-side. *Loader for Primer/Carbon: see `UNDECIDED.md`.*
 
 ### Components — build order (simple → complex)
 
-For each item: read Primer source, read Carbon source, write `decisions/NNNN-<component>.md`, build mirk version as plain HTML/CSS (+ a styled third-party plugin only where native isn't an option), verify `outerHTML` round-trips state, add to 3-col showcase, verify dark + light.
+For each item: read Primer source, read Carbon source, add a `## NNNN — <component>` section to `DECISIONS.md` (with cited SHAs from `refs/SOURCES.md`), build the mirk version as plain HTML/CSS (+ a styled third-party plugin only where native isn't an option), verify `outerHTML` round-trips state, add to `index.html` (and `compare.html` once it exists), verify dark + light look correct.
 
 - [ ] 01 — Single-line text input
 - [ ] 02 — Textarea
@@ -23,7 +19,7 @@ For each item: read Primer source, read Carbon source, write `decisions/NNNN-<co
 - [ ] 05 — Radio + radio group
 - [ ] 06 — Toggle / boolean (styled `<input type="checkbox">`)
 - [ ] 07 — Button group / segmented control (styled radios, CSS-only)
-- [ ] 08 — Select / dropdown (single) — see "Open questions" below
+- [ ] 08 — Select / dropdown (single) — approach already locked in `HISTORY.md` 2026-04-27
 - [ ] 09 — Range / slider
 - [ ] 10 — Date
 - [ ] 11 — Time
@@ -42,14 +38,18 @@ For each item: read Primer source, read Carbon source, write `decisions/NNNN-<co
 ### Cross-cutting (revisit after a few components are built)
 - [ ] Form composition primitives — label, hint text, error text, required marker (all CSS-only patterns)
 - [ ] Validation: lean on native HTML constraints + `:user-invalid` styling
-- [ ] Focus-ring + a11y conventions doc
-- [ ] Token reference doc (color, spacing, typography, motion, radii, elevation)
+- [ ] A11y conventions doc (focus ring is locked in `DECISIONS.md` 0002; remaining items: keyboard, ARIA, screen reader)
+- [ ] Token reference doc (color, spacing, typography, motion, radii, elevation) — populated as the palette is harvested
 
 ### Open questions (decide when we get to that component)
-- **Select / dropdown styling**: native `appearance: none` + OS popup (works everywhere) vs `appearance: base-select` (full styling of open dropdown, Chromium-only as of early 2026 — would be progressive enhancement). Decide in `decisions/NN-select-styling.md`.
-- **Image input**: pure HTML can offer `<input type="file" accept="image/*">` only — preview-after-pick requires JS. Options: ship without preview, or treat preview as a tiny inline-script exception. Decide in `decisions/NN-image-input.md`.
-- **Markdown**: textarea-only (no preview/syntax highlighting) vs reuse overtype.dev (which is itself a markdown editor) for both Markdown and Rich text components.
+- **Image input**: pure HTML can offer `<input type="file" accept="image/*">` only — preview-after-pick requires JS. Options: ship without preview, or treat preview as a tiny inline-script exception. Decide when building component 15.
+- **Markdown**: textarea-only (no preview/syntax highlighting) vs reuse overtype.dev (which is itself a markdown editor) for both Markdown and Rich text components. Decide when building component 16.
 
 ## Done
 
-_(empty)_
+- [x] Decision tracking restructured: top-level `DECISIONS.md` + `UNDECIDED.md`, `HISTORY.md` is append-only audit trail (2026-04-27)
+- [x] `README.md` documents `experiments/`, `artifacts/`, `index.html`, `compare.html` (2026-04-27)
+- [x] `DECISIONS.md` 0001 — Theming foundations (Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side) (2026-04-27)
+- [x] `DECISIONS.md` 0002 — Focus ring convention (1px outline, 2px offset, `:focus-visible` only) (2026-04-27)
+- [x] Clone Primer + Carbon (shallow) into `refs/`; SHAs recorded in `refs/SOURCES.md` (2026-04-27)
+- [x] Single-select dropdown approach picked: native `<select>` with `appearance: base-select` (2026-04-27, see `HISTORY.md`)

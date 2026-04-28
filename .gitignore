@@ -1,0 +1,5 @@
+.DS_Store
+
+# Reference clones — not committed; each developer clones locally per refs/SOURCES.md
+refs/primer/
+refs/carbon/

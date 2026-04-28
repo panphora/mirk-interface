@@ -14,7 +14,8 @@ Current accepted choices for mirk components and project infrastructure. This fi
 
 | #    | Title |
 | ---- | ----- |
-| _none yet_ | |
+| 0001 | [Theming foundations: Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side](#0001--theming-foundations-tailwind-v4-cdn-class-based-dark-mode-both-themes-shown-side-by-side) |
+| 0002 | [Focus ring: 1px outline, 2px offset, `:focus-visible` only](#0002--focus-ring-1px-outline-2px-offset-focus-visible-only) |
 
 ## Template
 
@@ -72,4 +73,59 @@ Things to revisit. Link to a follow-up `PLAN.md` item if appropriate.
 
 ## Decisions
 
-_(none yet)_
+## 0001 — Theming foundations: Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side
+
+- **Date:** 2026-04-27
+
+### Context
+Every mirk component must work in light and dark from day one. mirk is buildless, and the dev pages (`index.html`, `compare.html`) need to make parity issues impossible to miss while we're working on a component.
+
+### Decision (mirk)
+- **Tailwind:** v4 via the `@tailwindcss/browser` ESM build at `https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4`. No build step.
+- **Dark mode:** class-based, configured with `@custom-variant dark (&:where(.dark, .dark *))` inside a `<style type="text/tailwindcss">` block. Adding `class="dark"` to any wrapper switches everything inside it to dark.
+- **Theme display in `index.html` and `compare.html`:** every component is rendered **twice, side-by-side** — once in a light wrapper, once in a wrapper with `class="dark"`. There is no toggle. Showing both at once means a regression in either mode is immediately visible.
+- **Eventual end-user/demo behavior:** `prefers-color-scheme` is a *future* concern, deferred until we publish the demos. For now, mirk's own dev pages stay class-based.
+- **Color tokens:** stock Tailwind v4 defaults for now. Harvest a palette once 3–4 components reveal what we actually use.
+
+### Why this over the alternatives
+- **Class-based over `prefers-color-scheme` (for the dev pages):** we have to drive both states from one page so we can compare them directly. A toggle works but is a tax — you forget to flip it, dark regressions go unnoticed for a sprint.
+- **Both-themes-shown over toggled:** zero cognitive overhead during development. Eyes naturally check both renders.
+- **CDN over a build step:** the project's whole premise is buildless copy-paste. mirk's own pages should embody it.
+- **Stock colors over a palette:** picking colors before they're earned tends to overspecify; harvest is cheaper than reshuffle.
+
+### Tradeoffs
+- The dev pages render every component twice (bigger DOM, but we're not optimizing dev pages).
+- Demo pages don't yet honor `prefers-color-scheme` — fine for a dev tool, would matter when hosted.
+
+### Alternatives considered
+- **Single render + manual toggle.** Rejected: parity bugs become invisible until someone flips it. The whole point of dark+light first-class is catching those at write-time.
+- **Two separate files (`index.light.html`, `index.dark.html`).** Rejected: doubles file count, defeats side-by-side.
+- **`prefers-color-scheme` only, no class.** Rejected: can't display both states simultaneously.
+
+---
+
+## 0002 — Focus ring: 1px outline, 2px offset, `:focus-visible` only
+
+- **Date:** 2026-04-27
+
+### Context
+Every interactive element in mirk needs a visible focus indicator. We want a single convention so all components feel cohesive.
+
+### Decision (mirk)
+- `:focus-visible` shows a **1px outline** with a **2px offset** away from the element border. (3px is acceptable when an element's own border already crowds the ring; treat 2px as default.)
+- Outline color is themeable. Until the palette is harvested, use Tailwind's default focus blue.
+- Tailwind utility form: `focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2`, with `focus-visible:outline-<color>` per element/theme.
+- Native `:focus` (without `:focus-visible`) is *not* styled — keyboard users get the ring, mouse clicks don't trigger it.
+
+### Why this over the alternatives
+- **1px is intentional.** Heavier rings (2–3px) feel chunky against a small form-control vocabulary. Visibility comes from the offset and the contrast color, not the thickness.
+- **2px offset** keeps the ring clear of the element's own border so it reads as a separate layer instead of stacking onto it.
+- **`:focus-visible` over `:focus`** — only ring when the user is navigating via keyboard. Mouse clicks shouldn't outline.
+- **`outline` over `box-shadow`** — outlines aren't clipped by `overflow: hidden` parents; box-shadows are.
+
+### Tradeoffs
+- 1px is on the thin side for users with low-vision needs. We're betting on color contrast carrying the load. Revisit if accessibility testing flags it.
+
+### Alternatives considered
+- **Box-shadow ring (`focus:ring-2`).** Rejected: clipping risk, and shadows look fuzzier than outlines at the same width.
+- **Inset rings.** Rejected: visually crowds the element's content area; bad for small inputs.
