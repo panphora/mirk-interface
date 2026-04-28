@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mirk · compare</title>
+
+  <!-- Tailwind v4 for the page chrome (mirk panels use it; Primer + Carbon bring their own) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+  </style>
+
+  <!-- Carbon WC theme zone classes (.cds-theme-zone-white / .cds-theme-zone-g100) -->
+  <link rel="stylesheet" href="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/themes.css">
+
+  <!-- Carbon WC per-component bundles (each is self-registering, ESM) -->
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/text-input.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/textarea.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/number-input.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/checkbox.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/radio-button.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/toggle.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/content-switcher.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/select.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/slider.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/date-picker.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/time-picker.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/version/v2.53.0/file-uploader.min.js"></script>
+
+  <!--
+    Primer React: loader unresolved. See UNDECIDED.md "Loader for Primer in compare.html".
+    Both esm.sh (CSS-module redirects break Chrome's module loader) and the UMD bundle
+    (styled-components dep mismatch) fail. Primer cells render as placeholders for now.
+  -->
+
+  <style>
+    /* Hide undefined custom elements until they upgrade (no FOUC) */
+    cds-text-input:not(:defined),
+    cds-textarea:not(:defined),
+    cds-number-input:not(:defined),
+    cds-checkbox:not(:defined),
+    cds-radio-button:not(:defined),
+    cds-radio-button-group:not(:defined),
+    cds-toggle:not(:defined),
+    cds-content-switcher:not(:defined),
+    cds-content-switcher-item:not(:defined),
+    cds-select:not(:defined),
+    cds-select-item:not(:defined),
+    cds-slider:not(:defined),
+    cds-date-picker:not(:defined),
+    cds-date-picker-input:not(:defined),
+    cds-time-picker:not(:defined),
+    cds-time-picker-select:not(:defined),
+    cds-time-picker-select-item:not(:defined),
+    cds-file-uploader:not(:defined),
+    cds-file-uploader-button:not(:defined) {
+      visibility: hidden;
+    }
+
+    /* Carbon theme zones don't paint a background by default; give the cells one. */
+    .cds-theme-zone-white { background: var(--cds-background, #ffffff); }
+    .cds-theme-zone-g100  { background: var(--cds-background, #161616); }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+  <header class="border-b border-gray-200 px-6 py-4">
+    <h1 class="text-base font-semibold">mirk · compare</h1>
+    <p class="text-sm text-gray-600">Each component shown across mirk · Primer · Carbon, light + dark side-by-side. Wide on purpose — scroll horizontally if needed.</p>
+    <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1 mt-2 inline-block">⚠ Primer cells are empty pending a working buildless loader. See <code>UNDECIDED.md</code>. Carbon and mirk panels render normally. <strong>Serve via <code>http://</code>, not <code>file://</code></strong> — Chrome blocks ESM imports from <code>file://</code> origins.</p>
+  </header>
+
+  <main class="px-4 py-6 space-y-10">
+    <!--
+      Layout per component: 6 panels in one row, grouped visually as 3 library-pairs.
+        mirk-light | mirk-dark || Primer-light | Primer-dark || Carbon-light | Carbon-dark
+      mirk panels start as "not built" placeholders and fill in as we ship.
+      Primer panels are React roots mounted by the <script type="module"> at the bottom.
+      Carbon panels are web components inside .cds-theme-zone-* wrappers.
+    -->
+
+    <!-- 01 — Single-line text input -->
+    <section id="01-text-input" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">01 — Single-line text input</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div>
+          <div class="text-xs text-gray-400 italic">— not built —</div>
+        </div>
+        <div class="dark bg-gray-950 p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div>
+          <div class="text-xs text-gray-600 italic">— not built —</div>
+        </div>
+        <div class="bg-white p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div>
+          <div id="primer-01-light"></div>
+        </div>
+        <div class="bg-[#0d1117] p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div>
+          <div id="primer-01-dark"></div>
+        </div>
+        <div class="cds-theme-zone-white p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-text-input label="Email" placeholder="hello@example.com"></cds-text-input>
+        </div>
+        <div class="cds-theme-zone-g100 p-4">
+          <div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-text-input label="Email" placeholder="hello@example.com"></cds-text-input>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — Textarea -->
+    <section id="02-textarea" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">02 — Textarea</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-02-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-02-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><cds-textarea label="Bio" placeholder="Tell us about yourself" rows="3"></cds-textarea></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><cds-textarea label="Bio" placeholder="Tell us about yourself" rows="3"></cds-textarea></div>
+      </div>
+    </section>
+
+    <!-- 03 — Number / integer -->
+    <section id="03-number" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">03 — Number / integer</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-03-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-03-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><cds-number-input label="Quantity" min="0" max="100" step="1" value="5"></cds-number-input></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><cds-number-input label="Quantity" min="0" max="100" step="1" value="5"></cds-number-input></div>
+      </div>
+    </section>
+
+    <!-- 04 — Checkbox -->
+    <section id="04-checkbox" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">04 — Checkbox + checkbox group</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-04-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-04-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <div class="flex flex-col gap-2">
+            <cds-checkbox label-text="Email me"></cds-checkbox>
+            <cds-checkbox label-text="SMS"></cds-checkbox>
+            <cds-checkbox label-text="Push" checked></cds-checkbox>
+          </div>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <div class="flex flex-col gap-2">
+            <cds-checkbox label-text="Email me"></cds-checkbox>
+            <cds-checkbox label-text="SMS"></cds-checkbox>
+            <cds-checkbox label-text="Push" checked></cds-checkbox>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 — Radio -->
+    <section id="05-radio" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">05 — Radio + radio group</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-05-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-05-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-radio-button-group legend-text="Plan" name="plan-c-l">
+            <cds-radio-button label-text="Free" value="free"></cds-radio-button>
+            <cds-radio-button label-text="Pro" value="pro"></cds-radio-button>
+            <cds-radio-button label-text="Team" value="team"></cds-radio-button>
+          </cds-radio-button-group>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-radio-button-group legend-text="Plan" name="plan-c-d">
+            <cds-radio-button label-text="Free" value="free"></cds-radio-button>
+            <cds-radio-button label-text="Pro" value="pro"></cds-radio-button>
+            <cds-radio-button label-text="Team" value="team"></cds-radio-button>
+          </cds-radio-button-group>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 — Toggle -->
+    <section id="06-toggle" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">06 — Toggle / boolean</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-06-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-06-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><cds-toggle label-text="Notifications" id="toggle-c-l"></cds-toggle></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><cds-toggle label-text="Notifications" id="toggle-c-d"></cds-toggle></div>
+      </div>
+    </section>
+
+    <!-- 07 — Segmented control -->
+    <section id="07-segmented" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">07 — Button group / segmented control</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-07-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-07-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-content-switcher value="all">
+            <cds-content-switcher-item value="all">All</cds-content-switcher-item>
+            <cds-content-switcher-item value="active">Active</cds-content-switcher-item>
+            <cds-content-switcher-item value="archived">Archived</cds-content-switcher-item>
+          </cds-content-switcher>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-content-switcher value="all">
+            <cds-content-switcher-item value="all">All</cds-content-switcher-item>
+            <cds-content-switcher-item value="active">Active</cds-content-switcher-item>
+            <cds-content-switcher-item value="archived">Archived</cds-content-switcher-item>
+          </cds-content-switcher>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 — Select -->
+    <section id="08-select" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">08 — Select / dropdown (single)</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div id="primer-08-light"></div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div id="primer-08-dark"></div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-select label-text="Country">
+            <cds-select-item value="us">United States</cds-select-item>
+            <cds-select-item value="uk">United Kingdom</cds-select-item>
+            <cds-select-item value="de">Germany</cds-select-item>
+          </cds-select>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-select label-text="Country">
+            <cds-select-item value="us">United States</cds-select-item>
+            <cds-select-item value="uk">United Kingdom</cds-select-item>
+            <cds-select-item value="de">Germany</cds-select-item>
+          </cds-select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 — Range / slider -->
+    <section id="09-slider" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">09 — Range / slider</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><cds-slider label-text="Volume" min="0" max="100" value="50" step="1"></cds-slider></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><cds-slider label-text="Volume" min="0" max="100" value="50" step="1"></cds-slider></div>
+      </div>
+    </section>
+
+    <!-- 10 — Date -->
+    <section id="10-date" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">10 — Date</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-date-picker><cds-date-picker-input kind="single" label-text="Date" placeholder="mm/dd/yyyy"></cds-date-picker-input></cds-date-picker>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-date-picker><cds-date-picker-input kind="single" label-text="Date" placeholder="mm/dd/yyyy"></cds-date-picker-input></cds-date-picker>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 — Time -->
+    <section id="11-time" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">11 — Time</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-time-picker label-text="Time" placeholder="hh:mm">
+            <cds-time-picker-select><cds-time-picker-select-item value="am">AM</cds-time-picker-select-item><cds-time-picker-select-item value="pm">PM</cds-time-picker-select-item></cds-time-picker-select>
+          </cds-time-picker>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-time-picker label-text="Time" placeholder="hh:mm">
+            <cds-time-picker-select><cds-time-picker-select-item value="am">AM</cds-time-picker-select-item><cds-time-picker-select-item value="pm">PM</cds-time-picker-select-item></cds-time-picker-select>
+          </cds-time-picker>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 — Datetime -->
+    <section id="12-datetime" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">12 — Datetime</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><div class="text-xs text-gray-500 italic">— no single Carbon component (combine date + time pickers) —</div></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><div class="text-xs text-gray-500 italic">— no single Carbon component (combine date + time pickers) —</div></div>
+      </div>
+    </section>
+
+    <!-- 13 — Date range -->
+    <section id="13-date-range" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">13 — Date range</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-date-picker date-picker-type="range">
+            <cds-date-picker-input kind="from" label-text="Start" placeholder="mm/dd/yyyy"></cds-date-picker-input>
+            <cds-date-picker-input kind="to" label-text="End" placeholder="mm/dd/yyyy"></cds-date-picker-input>
+          </cds-date-picker>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-date-picker date-picker-type="range">
+            <cds-date-picker-input kind="from" label-text="Start" placeholder="mm/dd/yyyy"></cds-date-picker-input>
+            <cds-date-picker-input kind="to" label-text="End" placeholder="mm/dd/yyyy"></cds-date-picker-input>
+          </cds-date-picker>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 — File picker -->
+    <section id="14-file" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">14 — File picker</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div>
+          <cds-file-uploader label-title="Upload" label-description="Max 500kb">
+            <cds-file-uploader-button>Add file</cds-file-uploader-button>
+          </cds-file-uploader>
+        </div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div>
+          <cds-file-uploader label-title="Upload" label-description="Max 500kb">
+            <cds-file-uploader-button>Add file</cds-file-uploader-button>
+          </cds-file-uploader>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15 — Image input -->
+    <section id="15-image" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">15 — Image input</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+      </div>
+    </section>
+
+    <!-- 16 — Markdown -->
+    <section id="16-markdown" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">16 — Markdown</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— Primer has MarkdownEditor (not yet wired here) —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— Primer has MarkdownEditor (not yet wired here) —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+      </div>
+    </section>
+
+    <!-- 17 — Rich text -->
+    <section id="17-rich-text" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">17 — Rich text / WYSIWYG</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+      </div>
+    </section>
+
+    <!-- 18 — Code editor -->
+    <section id="18-code" class="space-y-2 min-w-[1500px]">
+      <h2 class="text-sm font-medium text-gray-500 px-2">18 — Code editor</h2>
+      <div class="grid grid-cols-6 border border-gray-200 rounded-md overflow-hidden divide-x divide-gray-200">
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">mirk · light</div><div class="text-xs text-gray-400 italic">— not built —</div></div>
+        <div class="dark bg-gray-950 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">mirk · dark</div><div class="text-xs text-gray-600 italic">— not built —</div></div>
+        <div class="bg-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Primer · light</div><div class="text-xs text-gray-400 italic">— no Primer equivalent —</div></div>
+        <div class="bg-[#0d1117] p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Primer · dark</div><div class="text-xs text-gray-600 italic">— no Primer equivalent —</div></div>
+        <div class="cds-theme-zone-white p-4"><div class="text-[10px] uppercase tracking-wider text-gray-400 mb-3">Carbon · light</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent (cds-code-snippet is read-only) —</div></div>
+        <div class="cds-theme-zone-g100 p-4"><div class="text-[10px] uppercase tracking-wider text-gray-500 mb-3">Carbon · dark</div><div class="text-xs text-gray-500 italic">— no Carbon equivalent —</div></div>
+      </div>
+    </section>
+  </main>
+
+  <!--
+    Primer mounting script removed — see UNDECIDED.md for the loader investigation.
+    The original draft tried `<script type="module">` with an import map pointing at
+    esm.sh/@primer/react. It failed because Primer ships CSS modules that esm.sh
+    serves via 301 → text/css responses, which Chrome's module loader rejects.
+    The UMD fallback (jsdelivr browser.umd.js) also fails (styled-components dep
+    mismatch). Cells in this file's HTML are kept so they fill in cleanly once a
+    working loader is decided.
+  -->
+</body>
+</html>
