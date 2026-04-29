@@ -9,7 +9,10 @@ The clones themselves are gitignored (they're large monorepos). This file is the
 ```sh
 git clone --depth=1 https://github.com/primer/react.git refs/primer
 git clone --depth=1 https://github.com/carbon-design-system/carbon.git refs/carbon
+rm -rf refs/primer/.git refs/carbon/.git
 ```
+
+The `.git` directories are removed after cloning so mirk-ui-kit doesn't contain nested repos. We treat `refs/` as a frozen snapshot — any "refresh" is a re-clone, not a fetch.
 
 ## Pinned commits
 
@@ -22,4 +25,4 @@ When you cite Primer or Carbon source in a `DECISIONS.md` entry, include the SHA
 
 ## Refreshing
 
-If a decision warrants reading a newer version, re-clone (or `git -C refs/<name> fetch && git -C refs/<name> reset --hard origin/main`), then update the table above. Old SHAs cited in `DECISIONS.md` / `HISTORY.md` remain valid pointers thanks to GitHub's commit-permanence.
+If a decision warrants reading a newer version, delete the existing folder and re-run the clone block above (the `rm -rf .git` step is required each time), then update the table above. Old SHAs cited in `DECISIONS.md` / `HISTORY.md` remain valid pointers thanks to GitHub's commit-permanence.

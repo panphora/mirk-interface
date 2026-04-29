@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>experiments — buttons & dropdowns</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('../fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Departure Mono', ui-monospace, "Menlo", monospace; }
+  /* Tailwind v4 preflight sets <pre>/<code>/<kbd>/<samp> to ui-monospace — override so they inherit Departure Mono. */
+  pre, code, kbd, samp { font-family: inherit; }
+
+  .panel-dark {
+    background: #0B0C13;
+    color: #F6F7F9;
+    --canvas: #0B0C13;
+    --bg: #1D1F2F;
+    --fg: #F6F7F9;
+    --accent: #232639;
+    --destructive: #ff5566;
+    --focus-offset: 3px;
+    --focus-color: #5A607F;
+    --bevel-bg: #1D1F2F;
+    --bevel-fg: #F6F7F9;
+    --bevel-tl: #474C65;
+    --bevel-br: #131725;
+    --bevel-hover-bg: #232639;
+    --pill-inner-top: #232639;
+  }
+  .panel-light {
+    background: #F7F2EA;
+    color: #15120e;
+    --canvas: #F7F2EA;
+    --bg: #F7F2EA;
+    --fg: #15120e;
+    --accent: #efefe5;
+    --destructive: #d4183d;
+    --focus-offset: 2px;
+    --focus-color: #BBA288;
+    --bevel-bg: #e9d3bd;
+    --bevel-fg: #15120e;
+    --bevel-tl: #f3ddc7;
+    --bevel-br: #c2ad95;
+    --bevel-hover-bg: #dfc9b3;
+    --pill-inner-top: #efdac7;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid grid-cols-2 min-h-screen">
+
+  <!-- =============================================================
+       LEFT — DARK CANVAS
+       ============================================================= -->
+  <section class="panel-dark p-10 space-y-14">
+
+    <p class="text-[20px] leading-relaxed max-w-2xl">The quick brown fox jumps over the lazy dog. Form components should feel inevitable — once you've found the right shape, you stop noticing them.</p>
+
+    <!-- ─────────────── BUTTON • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
+      <button class="group text-center cursor-pointer border-[3px] border-t-[#474C65] border-r-[#131725] border-b-[#131725] border-l-[#474C65] bg-[#1D1F2F] hover:bg-[#232639] active:border-b-[#474C65] active:border-l-[#131725] active:border-t-[#131725] active:border-r-[#474C65] text-[18px] leading-normal p-[4px_17px_7px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+        <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
+      </button>
+    </div>
+
+    <!-- ─────────────── BUTTON • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Round</h2>
+      <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:scale-95 text-[18px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+    </div>
+
+    <!-- ─────────────── DROPDOWN • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Dropdown • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Country</label>
+        <div class="relative">
+          <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-12 pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+            <option value="">Select a country</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="mx">Mexico</option>
+            <option value="uk">United Kingdom</option>
+            <option value="de">Germany</option>
+            <option value="jp">Japan</option>
+          </select>
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DROPDOWN • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Dropdown • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Country</label>
+        <div class="relative">
+          <div class="p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[7px] pr-12 pb-[9px] pl-6 text-[18px] leading-normal rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+              <option value="">Select a country</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="mx">Mexico</option>
+              <option value="uk">United Kingdom</option>
+              <option value="de">Germany</option>
+              <option value="jp">Japan</option>
+            </select>
+          </div>
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── GLYPH SPECIMENS — what Departure Mono ships ─────────────── -->
+    <div class="space-y-7">
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">ASCII symbols · 32</h2>
+        <pre class="text-[24px] tracking-[0.45em] leading-[1.7] m-0">!"#$%&amp;'()*+,-./
+:;&lt;=&gt;?@[\]^_`{|}~</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Arrows · 15</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">←↑→↓↕↖↗↘↙↰↱↲↳↴↵</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Geometric shapes · 14</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">■□▪▫▲△▷►▼▽◁◄◊◌</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Box drawing · 128</h2>
+        <pre class="text-[22px] tracking-[0.45em] leading-[1.7] m-0">─━│┃┄┅┆┇┈┉┊┋┌┍┎┏
+┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟
+┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯
+┰┱┲┳┴┵┶┷┸┹┺┻┼┽┾┿
+╀╁╂╃╄╅╆╇╈╉╊╋╌╍╎╏
+═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟
+╠╡╢╣╤╥╦╧╨╩╪╫╬╭╮╯
+╰╱╲╳╴╵╶╷╸╹╺╻╼╽╾╿</pre>
+      </div>
+    </div>
+
+    <!-- ─────────────── APP-ICON CANDIDATES — common symbols useful as UI icons ─────────────── -->
+    <div class="space-y-7">
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Stars & shapes · 8</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">★☆✦✧♠♣♥♦</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Music · 4</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">♩♪♫♬</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Bullets, dots & marks · 12</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">•∙·…†‡¶§©®™№</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Math · 13</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">∞√∆∑∏∂∫±≠≈≤≥−</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Currency & keys · 13</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">$€£¥¢₿₽₹₺₣₩⌘⌥</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Quote ornaments · 10</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">«»‹›❬❭❮❯❰❱</pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =============================================================
+       RIGHT — LIGHT CANVAS
+       ============================================================= -->
+  <section class="panel-light p-10 space-y-14">
+
+    <p class="text-[20px] leading-relaxed max-w-2xl">The quick brown fox jumps over the lazy dog. Form components should feel inevitable — once you've found the right shape, you stop noticing them.</p>
+
+    <!-- ─────────────── BUTTON • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
+      <button class="group text-center cursor-pointer text-[#15120e] border-[3px] border-t-[#f3ddc7] border-r-[#c2ad95] border-b-[#c2ad95] border-l-[#f3ddc7] bg-[#e9d3bd] hover:bg-[#dfc9b3] active:border-b-[#f3ddc7] active:border-l-[#c2ad95] active:border-t-[#c2ad95] active:border-r-[#f3ddc7] text-[18px] leading-normal p-[4px_17px_7px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+        <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
+      </button>
+    </div>
+
+    <!-- ─────────────── BUTTON • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Round</h2>
+      <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:scale-95 text-[18px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+    </div>
+
+    <!-- ─────────────── DROPDOWN • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Dropdown • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Country</label>
+        <div class="relative">
+          <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-12 pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+            <option value="">Select a country</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="mx">Mexico</option>
+            <option value="uk">United Kingdom</option>
+            <option value="de">Germany</option>
+            <option value="jp">Japan</option>
+          </select>
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DROPDOWN • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Dropdown • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Country</label>
+        <div class="relative">
+          <div class="p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[7px] pr-12 pb-[9px] pl-6 text-[18px] leading-normal rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+              <option value="">Select a country</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="mx">Mexico</option>
+              <option value="uk">United Kingdom</option>
+              <option value="de">Germany</option>
+              <option value="jp">Japan</option>
+            </select>
+          </div>
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── GLYPH SPECIMENS — what Departure Mono ships ─────────────── -->
+    <div class="space-y-7">
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">ASCII symbols · 32</h2>
+        <pre class="text-[24px] tracking-[0.45em] leading-[1.7] m-0">!"#$%&amp;'()*+,-./
+:;&lt;=&gt;?@[\]^_`{|}~</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Arrows · 15</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">←↑→↓↕↖↗↘↙↰↱↲↳↴↵</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Geometric shapes · 14</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">■□▪▫▲△▷►▼▽◁◄◊◌</pre>
+      </div>
+
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Box drawing · 128</h2>
+        <pre class="text-[22px] tracking-[0.45em] leading-[1.7] m-0">─━│┃┄┅┆┇┈┉┊┋┌┍┎┏
+┐┑┒┓└┕┖┗┘┙┚┛├┝┞┟
+┠┡┢┣┤┥┦┧┨┩┪┫┬┭┮┯
+┰┱┲┳┴┵┶┷┸┹┺┻┼┽┾┿
+╀╁╂╃╄╅╆╇╈╉╊╋╌╍╎╏
+═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟
+╠╡╢╣╤╥╦╧╨╩╪╫╬╭╮╯
+╰╱╲╳╴╵╶╷╸╹╺╻╼╽╾╿</pre>
+      </div>
+    </div>
+
+    <!-- ─────────────── APP-ICON CANDIDATES — common symbols useful as UI icons ─────────────── -->
+    <div class="space-y-7">
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Stars & shapes · 8</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">★☆✦✧♠♣♥♦</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Music · 4</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">♩♪♫♬</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Bullets, dots & marks · 12</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">•∙·…†‡¶§©®™№</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Math · 13</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">∞√∆∑∏∂∫±≠≈≤≥−</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Currency & keys · 13</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">$€£¥¢₿₽₹₺₣₩⌘⌥</pre>
+      </div>
+      <div>
+        <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-3">Quote ornaments · 10</h2>
+        <pre class="text-[28px] tracking-[0.45em] leading-[1.7] m-0">«»‹›❬❭❮❯❰❱</pre>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+</body>
+</html>

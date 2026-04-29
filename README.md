@@ -10,6 +10,10 @@ A form-focused UI kit (**mirk**) built from scratch by studying the best ideas i
 4. **`UNDECIDED.md`** — items currently being brainstormed. Resolved items move out into `DECISIONS.md` + `HISTORY.md`.
 5. **`DECISIONS.md`** — current accepted decisions per component/topic. Living doc; edited freely as choices evolve. Format and template at the top of the file.
 
+## Writing style
+
+Every md file in this repo: **concise, information-dense**. Bullets over paragraphs. Only the *why* that isn't derivable from code. Lead with the rule, then one line of context. See `DECISIONS.md` 0006.
+
 ## Reference systems
 
 | Column | System  | Source                                          |
