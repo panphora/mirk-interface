@@ -2,12 +2,16 @@
 
 Current accepted choices for mirk components and project infrastructure. This file reflects *what is true now* — entries are edited freely as decisions evolve. The full audit trail (every decision and *why*, never overwritten) lives in `HISTORY.md`. Items still being brainstormed live in `UNDECIDED.md`.
 
+## Scope — what belongs here
+
+Decisions capture **major UX choices**: what a component is, how it behaves, what makes it different from Primer/Carbon. Not individual CSS values (sizes, paddings, hex codes, exact border widths) — those iterate freely in `experiments/experiments.html` and live in the code itself. If a value is just a knob you'd tune by eye, it doesn't belong here.
+
 ## Rules
 
 1. **One section per decision.** Heading: `## NNNN — <component or topic>: <short title>`. If a topic has multiple distinct decisions (API shape, a11y, styling), give each its own section.
 2. **Numbering is for reference, not permanence.** Sections are numbered in the order they were first added so they're easy to cite, but entries can be edited or rewritten when a decision changes. `HISTORY.md` preserves what changed and why.
 3. **Cite sources.** When referencing Primer or Carbon, include the path within `refs/` and the commit SHA.
-4. **Write the decision before you build it.** The decision is the contract; the code follows it.
+4. **Build first, then decide.** Prototype in `experiments/experiments.html`, iterate visually with both panels, then record the major UX choice here once it's clear what's worth keeping. Don't pre-commit to specifics that could change under your hands.
 5. **Keep entries short but complete.** One screen if possible. Signal, not ceremony.
 
 ## Index
@@ -21,6 +25,7 @@ Current accepted choices for mirk components and project infrastructure. This fi
 | 0005 | [Color values: no pure white, no pure black](#0005--color-values-no-pure-white-no-pure-black) |
 | 0006 | [Documentation: concise, information-dense](#0006--documentation-concise-information-dense) |
 | 0007 | [Form controls: shared line-height (1.5)](#0007--form-controls-shared-line-height-15) |
+| 0008 | [`text-box-trim`: deferred until cross-browser](#0008--text-box-trim-deferred-until-cross-browser) |
 
 ## Template
 
@@ -272,3 +277,20 @@ Controls run 4–5px taller than typical compact UI kits. Fine — mirk's font i
 ### Apply
 - `leading-normal` is explicit on every snippet. Don't lean on inherit — keeps snippets self-contained when pasted into a host with different defaults.
 - Multi-line components (rich text, code editor, long markdown) may want a looser value (`leading-relaxed` 1.625) for paragraph readability — decide when building those.
+
+---
+
+## 0008 — `text-box-trim`: deferred until cross-browser
+
+- **Date:** 2026-04-28
+
+### Decision
+Don't use `text-box-trim: trim-both` + `text-box-edge: cap alphabetic` in mirk. Revisit ~1 year after Firefox ships (Chrome ≥133, Safari ≥17.4 only as of late 2025; Firefox unshipped).
+
+### Why
+- Adopting now means every snippet ships a property that does nothing in Firefox — silent visual drift between browsers, exactly the parity bug `0001` (both-themes-shown) exists to prevent.
+- Tuned `py-` + `leading-normal` (per `0007`) gives the same vertical-centering result today and is portable everywhere.
+- Once Firefox ships, every component will need re-tuning anyway (the property changes the box model). Doing it once on a stable baseline is cheaper than retrofitting twice.
+
+### Revisit trigger
+Firefox stable shipping `text-box-trim` + a ~1 year buffer for it to settle in install-base versions.

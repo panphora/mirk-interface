@@ -8,7 +8,7 @@ A form-focused UI kit (**mirk**) built from scratch by studying the best ideas i
 2. **`HISTORY.md`** — append-only log of every decision and *why* it was made. The audit trail; never overwritten. Read this to understand the reasoning behind the rules below.
 3. **`PLAN.md`** — current task state: what's done, what's next, open questions, deferred items.
 4. **`UNDECIDED.md`** — items currently being brainstormed. Resolved items move out into `DECISIONS.md` + `HISTORY.md`.
-5. **`DECISIONS.md`** — current accepted decisions per component/topic. Living doc; edited freely as choices evolve. Format and template at the top of the file.
+5. **`DECISIONS.md`** — current accepted decisions per component/topic. Living doc; edited freely as choices evolve. **Only major UX choices** belong here (what a component is, how it behaves) — not individual CSS values, which iterate in `experiments/experiments.html` and live in the code. Format, rules, and scope at the top of the file.
 
 ## Writing style
 
@@ -27,7 +27,7 @@ The showcase app renders all three side-by-side in a **3-column layout** so each
 ## Approach
 
 - Build each component **from scratch, one at a time**.
-- For each component: read Primer's source, read Carbon's source, decide on mirk's approach, write it down (see "Decision log" below), then implement.
+- For each component: read Primer's source, read Carbon's source, prototype in **`experiments/experiments.html`** (the current working file — light + dark panels side-by-side with the locked palette), iterate until the shape is right, then record the **major UX choice** in `DECISIONS.md` (only what's worth keeping — not individual CSS values) and graduate the locked version into `index.html`.
 - Both **light and dark mode** are first-class — every component must work in both from day one.
 - Reference repos live in `refs/` and are **read-only** — never edit them.
 
@@ -90,7 +90,8 @@ Items still being brainstormed live in **`UNDECIDED.md`**. When resolved, they'r
 
 Two folders track exploratory work:
 
-- **`experiments/`** — active UI experiments. Sketches, alternate takes, things we're trying before committing to a direction.
+- **`experiments/experiments.html`** — **the current working file.** New components are prototyped here first (light + dark panels side-by-side with the locked palette and CSS vars) before graduating into `index.html`.
+- **`experiments/`** — other active UI experiments. Sketches, alternate takes, things we're trying before committing to a direction.
 - **`artifacts/`** — graduated experiments. When an experiment is worth keeping around so other files can reference it (a pattern, a study, a reference render), it moves here. Artifacts aren't necessarily final — they're just things we want to be able to point at.
 
 ## Repo layout

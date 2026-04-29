@@ -33,6 +33,7 @@
     --bevel-br: #131725;
     --bevel-hover-bg: #232639;
     --pill-inner-top: #232639;
+    --input-border: var(--bevel-tl);
   }
   .panel-light {
     background: #F7F2EA;
@@ -50,6 +51,7 @@
     --bevel-br: #c2ad95;
     --bevel-hover-bg: #dfc9b3;
     --pill-inner-top: #efdac7;
+    --input-border: var(--focus-color);
   }
 </style>
 </head>
@@ -63,6 +65,24 @@
   <section class="panel-dark p-10 space-y-14">
 
     <p class="text-[20px] leading-relaxed max-w-2xl">The quick brown fox jumps over the lazy dog. Form components should feel inevitable — once you've found the right shape, you stop noticing them.</p>
+
+    <!-- ─────────────── TEXT INPUT • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Text Input • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Email</label>
+        <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:opacity-50 border-[3px] border-solid border-[var(--input-border)] pt-[4px] pr-[17px] pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+      </div>
+    </div>
+
+    <!-- ─────────────── TEXT INPUT • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Text Input • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Email</label>
+        <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:opacity-50 border-[3px] border-solid border-[var(--input-border)] pt-[4px] pr-[17px] pb-[7px] pl-[17px] text-[18px] leading-normal rounded-[3px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+      </div>
+    </div>
 
     <!-- ─────────────── BUTTON • RECT ─────────────── -->
     <div>
@@ -187,6 +207,24 @@
   <section class="panel-light p-10 space-y-14">
 
     <p class="text-[20px] leading-relaxed max-w-2xl">The quick brown fox jumps over the lazy dog. Form components should feel inevitable — once you've found the right shape, you stop noticing them.</p>
+
+    <!-- ─────────────── TEXT INPUT • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Text Input • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Email</label>
+        <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:opacity-50 border-[3px] border-solid border-[var(--input-border)] pt-[4px] pr-[17px] pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+      </div>
+    </div>
+
+    <!-- ─────────────── TEXT INPUT • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Text Input • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Email</label>
+        <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:opacity-50 border-[3px] border-solid border-[var(--input-border)] pt-[4px] pr-[17px] pb-[7px] pl-[17px] text-[18px] leading-normal rounded-[3px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+      </div>
+    </div>
 
     <!-- ─────────────── BUTTON • RECT ─────────────── -->
     <div>

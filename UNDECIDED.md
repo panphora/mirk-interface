@@ -20,4 +20,4 @@ One `## <topic>` heading per item, with bullets for:
 
 ---
 
-- **`text-box-trim: trim-both` + `text-box-edge: cap alphabetic`** — defer until Firefox ships (Chrome ≥133, Safari ≥17.4 only as of late 2025). Tuned `py-` + `leading-tight` is good enough meanwhile, and would need re-tuning anyway when we adopt.
+_(no items currently being brainstormed)_
