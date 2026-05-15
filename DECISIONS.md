@@ -11,7 +11,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 1. **One section per decision.** Heading: `## NNNN — <component or topic>: <short title>`. If a topic has multiple distinct decisions (API shape, a11y, styling), give each its own section.
 2. **Numbering is for reference, not permanence.** Sections are numbered in the order they were first added so they're easy to cite, but entries can be edited or rewritten when a decision changes. `HISTORY.md` preserves what changed and why.
 3. **Cite sources.** When referencing Primer or Carbon, include the path within `refs/` and the commit SHA.
-4. **Build first, then decide.** Prototype in `experiments/experiments.html`, iterate visually with both panels, then record the major UX choice here once it's clear what's worth keeping. Don't pre-commit to specifics that could change under your hands.
+4. **Either order — build first or decide first.** Some choices are clearer after prototyping in `experiments/experiments.html` (visual feel, asymmetric tuning); others need a contract before code (a11y model, semantics, API shape). Pick whichever fits the work.
 5. **Keep entries short but complete.** One screen if possible. Signal, not ceremony.
 
 ## Index
@@ -26,6 +26,9 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0006 | [Documentation: concise, information-dense](#0006--documentation-concise-information-dense) |
 | 0007 | [Form controls: shared line-height (1.5)](#0007--form-controls-shared-line-height-15) |
 | 0008 | [`text-box-trim`: deferred until cross-browser](#0008--text-box-trim-deferred-until-cross-browser) |
+| 0009 | [Text input: solid uniform border, rect and rounded variants](#0009--text-input-solid-uniform-border-rect-and-rounded-variants) |
+| 0010 | [Per-panel CSS vars when bevel semantics don't translate](#0010--per-panel-css-vars-when-bevel-semantics-dont-translate) |
+| 0011 | [Placeholder color: explicit hex, never opacity](#0011--placeholder-color-explicit-hex-never-opacity) |
 
 ## Template
 
@@ -294,3 +297,66 @@ Don't use `text-box-trim: trim-both` + `text-box-edge: cap alphabetic` in mirk. 
 
 ### Revisit trigger
 Firefox stable shipping `text-box-trim` + a ~1 year buffer for it to settle in install-base versions.
+
+---
+
+## 0009 — Text input: solid uniform border, rect and rounded variants
+
+- **Date:** 2026-04-29
+
+### Decision
+Text inputs use a **solid uniform border** on all four sides. Two visual variants share identical internals — only the corner radius differs:
+- **Rect** — `rounded-none`
+- **Rounded** — `rounded-[5px]` (just enough to soften corners; far less than the round button/dropdown's pill shape)
+
+Markup is native `<input type="text">`. Border color is the per-panel `--input-border` (see `0010`).
+
+### Why
+- **Container vs. pressable.** Bevels (different colors per side) telegraph "press me" — that's buttons. A text input *contains* content; a flat uniform frame reads "this holds something". Visual semantics matching real semantics.
+- **Two variants is the natural axis.** Sharp/industrial vs. softened. Two covers the range without proliferating per-context styles.
+- **Native `<input type="text">`.** Round-trips via `outerHTML` per the locked rule; gets a11y, keyboard handling, and form participation for free.
+
+### Tradeoff
+Lose the bevel depth cue. Carried instead by `--input-border` vs. `--bevel-bg` contrast and the typography density of input contents.
+
+### Source comparison
+- **Primer** — `refs/primer/packages/react/src/internal/components/TextInputWrapper.module.css` @ `619175c00dece144573fe5afbe4cd51e524a6c3d`. Uniform 1px border, ~6px radius, inset shadow. Took the uniform border; dropped the inset shadow (would compete with the bevel buttons next door).
+- **Carbon** — `refs/carbon/packages/styles/scss/components/text-input/_text-input.scss` @ `6898a87e8c7ca8e76fb05cb7ecde63391e5ca90a`. Underline-only (`border-block-end: 1px solid`). Rejected: we want a frame, not a hint.
+
+---
+
+## 0010 — Per-panel CSS vars when bevel semantics don't translate
+
+- **Date:** 2026-04-29
+
+### Decision
+When light and dark panels need values that move in **opposite directions** along the same axis (e.g., a border that should be darker-than-bg in light *and* lighter-than-bg in dark), introduce a **dedicated per-panel CSS var** rather than reusing an existing bevel var.
+
+In use: `--input-border`, `--placeholder-color`. Each is defined once in `.panel-dark` and once in `.panel-light` with the value appropriate to that panel.
+
+### Why
+- `--bevel-tl` / `--bevel-br` have **parallel** semantics across panels (tl = highlight side, br = shadow side). Asymmetric needs don't fit either var.
+- Reusing an existing var with mismatched semantics **aliases** unrelated colors (e.g., focus-color also being the placeholder color). Tuning one site silently changes the other.
+- Keeping component HTML **identical** across panels (the dropdown pattern) requires the var resolve per-panel — which requires defining it per-panel.
+
+### Apply
+- Name vars semantically — what they *are* (`--input-border`), not what they currently alias.
+- Setting a per-panel var to `var(--bevel-tl)` (or similar) is fine when the existing value happens to fit; switch to a literal hex when it doesn't.
+
+---
+
+## 0011 — Placeholder color: explicit hex, never opacity
+
+- **Date:** 2026-04-29
+
+### Decision
+Placeholder text uses an **explicit color value** — never `opacity` to dim the input's fg.
+
+### Why
+An explicit hex is a color we **chose**. Opacity isn't a color — it dims whatever underlies the placeholder, so the rendered result shifts the moment the input sits on a different background. A "color" defined via opacity *fails* as an explicit choice — it stops being the value we wanted the moment the underlying surface changes.
+
+Browser-default `::placeholder` colors also vary, so `placeholder:opacity-N` modifies an unpredictable starting point — compounding the problem.
+
+### Apply
+- `placeholder:text-[…]` set to a real hex (or a per-panel var per `0010`).
+- Don't reach for `placeholder:opacity-N`.

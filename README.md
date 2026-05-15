@@ -27,7 +27,7 @@ The showcase app renders all three side-by-side in a **3-column layout** so each
 ## Approach
 
 - Build each component **from scratch, one at a time**.
-- For each component: read Primer's source, read Carbon's source, prototype in **`experiments/experiments.html`** (the current working file — light + dark panels side-by-side with the locked palette), iterate until the shape is right, then record the **major UX choice** in `DECISIONS.md` (only what's worth keeping — not individual CSS values) and graduate the locked version into `index.html`.
+- For each component: read Primer's source, read Carbon's source, then either prototype in **`experiments/experiments.html`** (the current working file — light + dark panels side-by-side with the locked palette) and decide as it settles, OR write the decision first when the contract should land before code. Record only **major UX choices** in `DECISIONS.md` (not individual CSS values), and graduate the locked version into `index.html`.
 - Both **light and dark mode** are first-class — every component must work in both from day one.
 - Reference repos live in `refs/` and are **read-only** — never edit them.
 
