@@ -29,6 +29,19 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0009 | [Text input: solid uniform border, rect and rounded variants](#0009--text-input-solid-uniform-border-rect-and-rounded-variants) |
 | 0010 | [Per-panel CSS vars when bevel semantics don't translate](#0010--per-panel-css-vars-when-bevel-semantics-dont-translate) |
 | 0011 | [Placeholder color: explicit hex, never opacity](#0011--placeholder-color-explicit-hex-never-opacity) |
+| 0012 | [Stateful indicators: flat off, pressed-in bevel selected](#0012--stateful-indicators-flat-off-pressed-in-bevel-selected) |
+| 0013 | [Rect vs round axis: per-component mapping](#0013--rect-vs-round-axis-per-component-mapping) |
+| 0014 | [DIY JavaScript: scoped exceptions](#0014--diy-javascript-scoped-exceptions) |
+| 0015 | [Textarea: container pattern, vertical resize only](#0015--textarea-container-pattern-vertical-resize-only) |
+| 0016 | [Radio: square-radio exception for the rect variant](#0016--radio-square-radio-exception-for-the-rect-variant) |
+| 0017 | [Toggle: flat track plus always-beveled thumb](#0017--toggle-flat-track-plus-always-beveled-thumb) |
+| 0018 | [Segmented control: grouped radios, shared internal borders](#0018--segmented-control-grouped-radios-shared-internal-borders) |
+| 0019 | [Slider: bevel thumb plus bevel filled portion, JS visual bridge](#0019--slider-bevel-thumb-plus-bevel-filled-portion-js-visual-bridge) |
+| 0020 | [Date / time / datetime: hide UA chrome, overlay glyph](#0020--date--time--datetime-hide-ua-chrome-overlay-glyph) |
+| 0021 | [Date range: two date inputs plus JS cross-validation](#0021--date-range-two-date-inputs-plus-js-cross-validation) |
+| 0022 | [File picker: hidden input plus label-as-button plus JS filename](#0022--file-picker-hidden-input-plus-label-as-button-plus-js-filename) |
+| 0023 | [Image input: file picker plus FileReader preview](#0023--image-input-file-picker-plus-filereader-preview) |
+| 0024 | [Tags: input plus DOM chips plus JS add/remove](#0024--tags-input-plus-dom-chips-plus-js-addremove) |
 
 ## Template
 
@@ -360,3 +373,268 @@ Browser-default `::placeholder` colors also vary, so `placeholder:opacity-N` mod
 ### Apply
 - `placeholder:text-[…]` set to a real hex (or a per-panel var per `0010`).
 - Don't reach for `placeholder:opacity-N`.
+
+---
+
+## 0012 — Stateful indicators: flat off, pressed-in bevel selected
+
+- **Date:** 2026-05-14
+
+### Decision
+Indicators that visualize their own selection state read as flat in the off state and pressed-in (depressed bevel) in the selected state.
+
+- **Off:** 1px `--input-border` outline on `--bevel-bg`, the text-input container vocabulary from `0009`.
+- **Selected:** pressed-in bevel (top and left = shadow `--bevel-br`, right and bottom = highlight `--bevel-tl`) plus a `from-bevel-br to-bevel-tl` gradient fill. Implemented with `inset` box-shadow so the indicator does not change size on selection.
+- **Round variant:** the round-button gradient frame substitutes for the four-side bevel, same metaphor in the round vocabulary.
+
+**Applies to:** checkbox, radio, segmented control segment.
+
+**Does not apply to:** toggle thumb and slider thumb. Those are handles, always beveled regardless of state. State for toggle is track color plus thumb position. State for slider is filled-portion width plus thumb position.
+
+### Why
+Off=flat reuses the container vocabulary, so an unselected indicator reads as an empty slot. Selected=pressed-in reuses the rect button's active state, so a selected indicator reads as "I pressed this and it stayed in." Both are already in the kit, no new visual language required.
+
+### Tradeoff
+A selected checkbox looks similar to a depressed rect button at a glance. Acceptable: surrounding context (label position, group layout, size) disambiguates.
+
+### Source comparison
+Primer and Carbon both use a solid-fill background plus a contrasting check glyph for selected, no bevel. We deviate to telegraph "pressable" via the visual vocabulary already used elsewhere in mirk.
+
+---
+
+## 0013 — Rect vs round axis: per-component mapping
+
+- **Date:** 2026-05-14
+
+### Decision
+Every component ships in two variants on a sharp-vs-softened axis. What "round" means is component-specific.
+
+| Component | Rect | Round / Rounded |
+|---|---|---|
+| Textarea | `rounded-none` | `rounded-[5px]` |
+| Number | rect frame, sharp ▲▼ mini-buttons | rounded 5px frame, same internal buttons |
+| Checkbox | sharp-cornered square indicator | 5px-cornered square indicator |
+| Radio | square indicator with square fill (see `0016`) | circular indicator with circular fill |
+| Toggle | rectangular track plus rectangular thumb | pill track plus circular thumb |
+| Segmented | sharp end caps, sharp internal seams | pill end caps (16px outer), sharp internal seams |
+| Slider | rectangular thumb on rectangular track | circular thumb on pill track |
+| Date / Time / Datetime / Date range | `rounded-none` frame | `rounded-[5px]` frame |
+| File picker | rect bevel button + rect filename frame | round-pill button + rect filename frame |
+| Image input | sharp preview frame + rect button | 5px-corner preview frame + round-pill button |
+| Tags | sharp chips on a sharp wrapper | pill chips on a 5px-cornered wrapper |
+
+### Naming
+"Round" means fully-pill. "Rounded" means softened-but-still-square (5px). Each component picks the label that matches its shape. Consistent axis, different vocabulary per component.
+
+---
+
+## 0014 — DIY JavaScript: scoped exceptions
+
+- **Date:** 2026-05-14
+
+### Decision
+The README's "No DIY JavaScript" rule stays as the default. We open a named-exception list for components where native HTML cannot reach a respectable result with CSS alone.
+
+**Components allowed inline JS, only for the listed job:**
+
+- **Number** — increment/decrement on custom bevel buttons. Calls `input.stepUp()` / `input.stepDown()`.
+- **Slider** — mirror `<input type="range">` `.value` into a CSS custom property on the wrapper so the visual divs can size themselves.
+- **Date range** — sync `min` and `max` between the two `<input type="date">` inputs so the end stays after the start.
+- **File picker** — display the selected filename next to the button via `input.files[0].name` on `change`.
+- **Image input** — render a thumbnail preview via `FileReader.readAsDataURL` on `change`.
+- **Tags** — add a chip on Enter or comma, remove on Backspace or close-button click.
+
+**Still banned:**
+- Hand-rolled implementations of natively-available primitives (text input, select, checkbox, radio, textarea behavior).
+- Web components, custom elements.
+- Component init libraries the consumer must instantiate.
+
+**Required properties of allowed JS:**
+- `document.documentElement.outerHTML` round-trips the visible state. Chips are real DOM. CSS custom props live in inline `style`. Native input values are handled by the platform's save layer.
+- Inline at the bottom of the snippet, no external file, no consumer init step.
+- Idempotent, attaches via `data-*` selectors, safe to include twice.
+- Tiny. If a component needs more than roughly 20 lines, the design is wrong.
+
+### Why a named list, not a general allowance
+A general "JS is fine when needed" rule is the slow path to a JS UI kit. Each name on the list is forced by a concrete native limitation: no CSS hook for the file `value`, no thumb-position CSS read for range, no native combined date range, no `::after` on replaced elements for icons. Future additions clear the same bar.
+
+### Updates flowing from this
+- `README.md` "Locked technical choices" keeps the no-DIY-JS default and links to this decision for exceptions.
+- `HISTORY.md` 2026-04-26's "Tags and multi-select: deferred" entry stays untouched per the audit-trail rule. A new 2026-05-14 entry records the reversal for tags. Multi-select stays deferred.
+
+---
+
+## 0015 — Textarea: container pattern, vertical resize only
+
+- **Date:** 2026-05-14
+
+### Decision
+`<textarea>` reuses every text-input choice from `0009`: 1px `--input-border`, `--bevel-bg` fill, `--placeholder-color` placeholder, `rounded-none` / `rounded-[5px]` variants, same padding rhythm, same focus-visible outline. The only addition: `resize: vertical`.
+
+### Why vertical only
+Disabling resize is overbearing on long content. Horizontal resize breaks surrounding layout. Vertical is the sane default and matches what nearly every UI kit does.
+
+---
+
+## 0016 — Radio: square-radio exception for the rect variant
+
+- **Date:** 2026-05-14
+
+### Decision
+Convention is "radios are round." We make a single exception: the rect variant of radio is a **square indicator with a square inner fill**, not a circle.
+
+### Why
+The kit's organizing axis is rect vs round. A radio that ignored the axis to stay round-only would be a hole in the system. A square radio reads as "single-choice tile" and is visually distinct from a checkbox (square with ✓) and from the round radio (circle with a dot). The `0012` selection metaphor translates without modification.
+
+### Visual differentiation between selected states
+- Checkbox (rect or rounded): pressed-in bevel + `✓` glyph.
+- Radio (rect): pressed-in bevel + small filled square.
+- Radio (round): pressed-in gradient frame + small filled circle.
+
+The user shouldn't have to think to tell them apart at a glance.
+
+---
+
+## 0017 — Toggle: flat track plus always-beveled thumb
+
+- **Date:** 2026-05-14
+
+### Decision
+The toggle is a **track** (container) plus a **thumb** (handle).
+
+- **Track:** flat container, 1px `--input-border`, bg `--bevel-bg` when off, bg `--accent` when on.
+- **Thumb:** mini bevel. Rect variant uses a four-side bevel. Round variant uses the round-button gradient frame on a circle. Always beveled, regardless of state.
+- **State:** native `<input type="checkbox">` with `role="switch"`, visually hidden via `sr-only`. Thumb position driven by `translateX` on `group-has-[:checked]:`.
+
+### Why thumb stays beveled in both states
+A handle that flattens when off stops reading as a handle. The `0012` "off=flat" rule applies to indicators that ARE the state visualizer (checkbox indicator, radio dot, selected segment). The toggle's state visualizer is track-color plus thumb-position, not the thumb's own surface.
+
+---
+
+## 0018 — Segmented control: grouped radios, shared internal borders
+
+- **Date:** 2026-05-14
+
+### Decision
+Segmented controls are visually-styled `<input type="radio">` groups with sibling-selector CSS. No JS.
+
+- Each segment is a `<label>` wrapping a visually-hidden `<input type="radio">` plus a styled `<span>`.
+- Segments live in a horizontal flex container with `-ml-[1px]` on every segment after the first, so adjacent borders collapse to a single hairline.
+- Unselected segment: flat (`0012` off).
+- Selected segment: pressed-in bevel (`0012` selected).
+- Rect: every segment sharp-cornered.
+- Round: first gets `rounded-l-[16px]`, last gets `rounded-r-[16px]`, middles stay sharp.
+- Border width is constant (3px) across both states. Only colors swap on selection, so segments don't shift size when clicked.
+
+---
+
+## 0019 — Slider: bevel thumb plus bevel filled portion, JS visual bridge
+
+- **Date:** 2026-05-14
+
+### Decision
+Native `<input type="range">` is unstylable enough across browsers that mirk's bevel aesthetic can't be reached with CSS alone. We render the visual layer in CSS divs and let the native input drive state.
+
+**Construction:**
+- Wrapper `<div data-slider style="--value: 60%">` houses:
+  - the native `<input type="range">` overlaid `opacity: 0` with `z-10` to capture pointer, drag, and keyboard;
+  - a track div (container styling, `--bevel-bg` fill, 1px `--input-border`);
+  - a filled div sized to `width: var(--value)` with the round-button gradient (`from-bevel-br to-bevel-tl`);
+  - a thumb div positioned at `left: var(--value)` with `-translate-x-1/2`.
+- Rect variant: thumb is a mini four-side bevel.
+- Round variant: thumb is a circle with gradient frame plus inner pill (mini round button); track has `rounded-full`.
+
+**JS (per `0014`):** wire `input` event on the range to mirror `.value` into `--value` on the wrapper.
+
+### A11y
+Native range handles arrow keys, value announcement, form submission. The `<input>` captures interaction at `opacity: 0`. The visual divs are decorative.
+
+---
+
+## 0020 — Date / time / datetime: hide UA chrome, overlay glyph
+
+- **Date:** 2026-05-14
+
+### Decision
+Native UA chrome on `<input type="date">`, `time`, and `datetime-local` varies wildly across browsers. We suppress it and overlay a Departure Mono glyph on the right edge, same pattern the dropdown uses for its `›` chevron.
+
+- `::-webkit-calendar-picker-indicator { opacity: 0 }` positioned absolutely over the input so click-anywhere still opens the native picker.
+- `::-webkit-inner-spin-button { appearance: none }` and `::-webkit-clear-button { appearance: none }` to suppress Webkit's spinner and clear chrome.
+- Glyph overlay is `pointer-events-none` on the right edge, sized close to the dropdown chevron.
+
+### Glyphs (initial choices, tunable in experiments)
+- Date: `□`.
+- Time: `◌`.
+- Datetime: `□`.
+
+### Result
+Closed-state visual matches text-input and dropdown across all browsers. Native picker still opens, native keyboard input still works.
+
+---
+
+## 0021 — Date range: two date inputs plus JS cross-validation
+
+- **Date:** 2026-05-14
+
+### Decision
+"From" and "to" are two ordinary date inputs (per `0020`) separated by a `→` glyph. Minimal JS (per `0014`) keeps the constraint:
+- `start.change` sets `end.min = start.value`.
+- `end.change` sets `start.max = end.value`.
+
+A single combined-popup picker would buy a marginally nicer UX at the cost of a calendar-rendering library. Not worth the bytes.
+
+---
+
+## 0022 — File picker: hidden input plus label-as-button plus JS filename
+
+- **Date:** 2026-05-14
+
+### Decision
+- A `<label>` styled exactly like a bevel button (rect or round) wraps a visually-hidden `<input type="file">`. Click the button, OS picker opens.
+- An adjacent `<div data-filename>` (container styling, flat frame) shows "No file chosen" until a file is picked, then the filename. JS (per `0014`) handles the swap.
+- The hidden input is `sr-only`, not `display: none`, so it stays focusable. The label's focus-visible outline uses `has-[:focus-visible]` per the `0002` wrapped-controls rule.
+
+### Variants
+Rect: rect bevel button plus rect filename frame.
+Round: round-pill button plus still-rect filename frame. The filename slot is a container regardless of which button pairs with it; container vocabulary stays consistent.
+
+---
+
+## 0023 — Image input: file picker plus FileReader preview
+
+- **Date:** 2026-05-14
+
+### Decision
+Reuses `0022` for the button-plus-filename row. Adds a preview square above it:
+- Preview frame: container styling (flat, 1px `--input-border`), aspect-square at a thumbnail size.
+- Empty state: muted "No image" placeholder text centered.
+- On `input.change`: `FileReader.readAsDataURL(file)`, then set `<img>` `src` and swap visibility. This is the FileReader exception named in `0014`.
+
+---
+
+## 0024 — Tags: input plus DOM chips plus JS add/remove
+
+- **Date:** 2026-05-14
+
+### Decision
+Tags were deferred on 2026-04-26 because they need JS and were judged an advanced pattern. We're reversing the first per the scoped exceptions in `0014`. The "advanced pattern" concern is reframed too: tag inputs are common enough in modern forms that mirk would feel incomplete without one. Multi-select stays deferred.
+
+**Construction:**
+- Wrapper `<div data-tags>` styled as a container (flat 1px `--input-border` frame on `--bevel-bg`).
+- Inside: zero or more chip `<span>` elements plus a trailing `<input type="text" data-tag-input>`.
+- Each chip: a styled span containing the tag text, a `×` remove button, and an `<input type="hidden" name="tags[]" value="…">` for form submission.
+
+**Round-trip:** chips are real DOM. Hidden inputs serialize on submit. Text input is empty by default. `outerHTML` captures it all.
+
+**Behavior (per `0014`):**
+- Enter or `,` in the text input: append a chip from the typed text, clear the input.
+- Backspace in an empty input: remove the last chip.
+- Click `×` on a chip: remove that chip.
+
+**Variants:**
+- Rect: hard-bordered chips, sharp corners on chip and wrapper.
+- Round: gradient-frame pill chips, 5px corners on the wrapper.
+
+### Spec updates
+- `README.md`'s no-DIY-JS bullet now references `0014`.
+- `PLAN.md` deferred list loses tags; build order gains "19 — Tags".

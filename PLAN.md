@@ -30,9 +30,9 @@ For each item: read Primer source, read Carbon source, add a `## NNNN — <compo
 - [ ] 16 — Markdown — see "Open questions" below
 - [ ] 17 — Rich text / WYSIWYG (atop overtype.dev, styled)
 - [ ] 18 — Code editor (styled third-party plugin; choice TBD — likely CodeMirror or Prism + textarea)
+- [ ] 19 — Tags (CSS-bevelled chips + small JS for add/remove, per `DECISIONS.md` 0024)
 
 ### Deferred (revisit later)
-- [ ] Tags (input-style) — needs JS, postponed
 - [ ] Multi-select — needs JS, postponed
 
 ### Cross-cutting (revisit after a few components are built)

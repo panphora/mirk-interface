@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>experiments — buttons & dropdowns</title>
+<title>experiments — buttons, inputs, choice, dates, files, tags</title>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <style>
   @font-face {
@@ -86,6 +86,54 @@
       </div>
     </div>
 
+    <!-- ─────────────── TEXTAREA • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Message</label>
+        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+      </div>
+    </div>
+
+    <!-- ─────────────── TEXTAREA • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Message</label>
+        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+      </div>
+    </div>
+
+    <!-- ─────────────── NUMBER • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Number • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Quantity</label>
+        <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
+          <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+          <div class="flex flex-col p-[2px] gap-[2px] border-l-[1px] border-solid border-[var(--input-border)]">
+            <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
+            <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── NUMBER • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Number • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Quantity</label>
+        <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
+          <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+          <div class="flex flex-col p-[2px] gap-[2px] border-l-[1px] border-solid border-[var(--input-border)]">
+            <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
+            <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ─────────────── BUTTON • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
@@ -138,6 +186,441 @@
             </select>
           </div>
           <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── CHECKBOX • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── CHECKBOX • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox • Rounded</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── RADIO • RECT (SQUARE) ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-d" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dawn</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-d" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dusk</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-d" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Auto</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── RADIO • ROUND (CIRCLE) ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio • Round</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-d" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dawn</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-d" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dusk</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-d" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Auto</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TOGGLE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only">
+          <span class="relative shrink-0 w-[44px] h-[24px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] bg-[var(--bevel-bg)] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] transition-transform duration-150 group-has-[:checked]:translate-x-[20px]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Wifi</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only" checked>
+          <span class="relative shrink-0 w-[44px] h-[24px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] bg-[var(--bevel-bg)] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] transition-transform duration-150 group-has-[:checked]:translate-x-[20px]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Notifications</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TOGGLE • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Round</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only">
+          <span class="relative shrink-0 w-[48px] h-[26px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[20px] h-[20px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]">
+              <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            </span>
+          </span>
+          <span class="text-[18px] leading-normal">Wifi</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only" checked>
+          <span class="relative shrink-0 w-[48px] h-[26px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[20px] h-[20px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]">
+              <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            </span>
+          </span>
+          <span class="text-[18px] leading-normal">Notifications</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SEGMENTED • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Segmented • Rect</h2>
+      <div role="radiogroup" aria-label="Size" class="inline-flex">
+        <label class="cursor-pointer">
+          <input type="radio" name="size-rect-d" value="s" class="peer sr-only">
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Small</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-rect-d" value="m" class="peer sr-only" checked>
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Medium</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-rect-d" value="l" class="peer sr-only">
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Large</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SEGMENTED • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Segmented • Round</h2>
+      <div role="radiogroup" aria-label="Size" class="inline-flex">
+        <label class="cursor-pointer">
+          <input type="radio" name="size-round-d" value="s" class="peer sr-only">
+          <span class="block px-5 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-l-[16px] rounded-r-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Small</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-round-d" value="m" class="peer sr-only" checked>
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Medium</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-round-d" value="l" class="peer sr-only">
+          <span class="block px-5 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-l-none rounded-r-[16px] peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Large</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SLIDER • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Volume</label>
+        <div class="relative h-[28px] w-full" data-slider style="--value: 60%">
+          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[12px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] overflow-hidden">
+            <div class="h-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)]" style="width: var(--value)"></div>
+          </div>
+          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[18px] h-[24px] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── SLIDER • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Volume</label>
+        <div class="relative h-[28px] w-full" data-slider style="--value: 60%">
+          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[10px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)]" style="width: var(--value)"></div>
+          </div>
+          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[22px] h-[22px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)">
+            <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Start</label>
+        <div class="relative">
+          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Start</label>
+        <div class="relative">
+          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TIME • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Time • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Reminder</label>
+        <div class="relative">
+          <input type="time" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">◌</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TIME • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Time • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Reminder</label>
+        <div class="relative">
+          <input type="time" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">◌</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATETIME • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Datetime • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Appointment</label>
+        <div class="relative">
+          <input type="datetime-local" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATETIME • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Datetime • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Appointment</label>
+        <div class="relative">
+          <input type="datetime-local" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE RANGE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date Range • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Trip dates</label>
+        <div class="flex items-stretch gap-2" data-date-range>
+          <div class="relative flex-1">
+            <input type="date" data-range-start class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+          <div class="flex items-center text-[18px] leading-normal opacity-60">→</div>
+          <div class="relative flex-1">
+            <input type="date" data-range-end class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE RANGE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date Range • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Trip dates</label>
+        <div class="flex items-stretch gap-2" data-date-range>
+          <div class="relative flex-1">
+            <input type="date" data-range-start class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+          <div class="flex items-center text-[18px] leading-normal opacity-60">→</div>
+          <div class="relative flex-1">
+            <input type="date" data-range-end class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="flex items-stretch w-full" data-file-picker>
+          <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] flex items-center shrink-0">
+            <input type="file" class="sr-only" data-file-input>
+            <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Choose…</span>
+          </label>
+          <div class="flex-1 min-w-0 flex items-center px-4 bg-[var(--bevel-bg)] text-[var(--placeholder-color)] border-[1px] border-l-0 border-solid border-[var(--input-border)] text-[18px] leading-normal truncate" data-filename>No file chosen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="flex items-stretch gap-2 w-full" data-file-picker>
+          <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] shrink-0 flex items-center">
+            <input type="file" class="sr-only" data-file-input>
+            <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose…</span>
+          </label>
+          <div class="flex-1 min-w-0 flex items-center px-4 bg-[var(--bevel-bg)] text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] text-[18px] leading-normal truncate rounded-[5px]" data-filename>No file chosen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm" data-image-picker>
+        <label class="text-[18px] leading-normal">Avatar</label>
+        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-none overflow-hidden relative">
+          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
+          <span data-image-placeholder>No image</span>
+        </div>
+        <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
+          <input type="file" accept="image/*" class="sr-only" data-image-input>
+          <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Upload image</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm" data-image-picker>
+        <label class="text-[18px] leading-normal">Avatar</label>
+        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-[5px] overflow-hidden relative">
+          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
+          <span data-image-placeholder>No image</span>
+        </div>
+        <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
+          <input type="file" accept="image/*" class="sr-only" data-image-input>
+          <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Upload image</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAGS • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Topics</label>
+        <div data-tags data-tags-variant="rect" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
+          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+            <span>design</span>
+            <input type="hidden" name="tags[]" value="design">
+            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+          </span>
+          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+            <span>ascii</span>
+            <input type="hidden" name="tags[]" value="ascii">
+            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+          </span>
+          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAGS • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Topics</label>
+        <div data-tags data-tags-variant="round" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
+          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
+            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+              <span>design</span>
+              <input type="hidden" name="tags[]" value="design">
+              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            </span>
+          </span>
+          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
+            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+              <span>ascii</span>
+              <input type="hidden" name="tags[]" value="ascii">
+              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            </span>
+          </span>
+          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -228,6 +711,54 @@
       </div>
     </div>
 
+    <!-- ─────────────── TEXTAREA • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Message</label>
+        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+      </div>
+    </div>
+
+    <!-- ─────────────── TEXTAREA • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Message</label>
+        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+      </div>
+    </div>
+
+    <!-- ─────────────── NUMBER • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Number • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Quantity</label>
+        <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
+          <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+          <div class="flex flex-col p-[2px] gap-[2px] border-l-[1px] border-solid border-[var(--input-border)]">
+            <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
+            <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── NUMBER • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Number • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Quantity</label>
+        <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
+          <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+          <div class="flex flex-col p-[2px] gap-[2px] border-l-[1px] border-solid border-[var(--input-border)]">
+            <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
+            <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ─────────────── BUTTON • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
@@ -280,6 +811,441 @@
             </select>
           </div>
           <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── CHECKBOX • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── CHECKBOX • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox • Rounded</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] flex items-center justify-center text-[14px] leading-none text-[var(--bevel-fg)] group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 relative z-10">✓</span>
+          </span>
+          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── RADIO • RECT (SQUARE) ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-l" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dawn</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-l" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dusk</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-rect-l" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none flex items-center justify-center group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:checked]:[box-shadow:inset_2px_2px_0_0_var(--bevel-br),inset_-2px_-2px_0_0_var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="opacity-0 group-has-[:checked]:opacity-100 w-[8px] h-[8px] bg-[var(--bevel-fg)] relative z-10"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Auto</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── RADIO • ROUND (CIRCLE) ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio • Round</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-l" class="sr-only" checked>
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dawn</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-l" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Dusk</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="radio" name="theme-round-l" class="sr-only">
+          <span class="relative shrink-0 w-[22px] h-[22px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:checked]:border-0 group-has-[:checked]:bg-gradient-to-t group-has-[:checked]:from-[var(--bevel-br)] group-has-[:checked]:to-[var(--bevel-tl)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="hidden group-has-[:checked]:block absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[7px] h-[7px] rounded-full bg-[var(--bevel-fg)]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Auto</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TOGGLE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Rect</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only">
+          <span class="relative shrink-0 w-[44px] h-[24px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] bg-[var(--bevel-bg)] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] transition-transform duration-150 group-has-[:checked]:translate-x-[20px]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Wifi</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only" checked>
+          <span class="relative shrink-0 w-[44px] h-[24px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] bg-[var(--bevel-bg)] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] transition-transform duration-150 group-has-[:checked]:translate-x-[20px]"></span>
+          </span>
+          <span class="text-[18px] leading-normal">Notifications</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TOGGLE • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Round</h2>
+      <div class="flex flex-col gap-3">
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only">
+          <span class="relative shrink-0 w-[48px] h-[26px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[20px] h-[20px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]">
+              <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            </span>
+          </span>
+          <span class="text-[18px] leading-normal">Wifi</span>
+        </label>
+        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
+          <input type="checkbox" role="switch" class="sr-only" checked>
+          <span class="relative shrink-0 w-[48px] h-[26px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full transition-colors duration-150 group-has-[:checked]:bg-[var(--accent)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
+            <span class="absolute top-[2px] left-[2px] w-[20px] h-[20px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]">
+              <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+            </span>
+          </span>
+          <span class="text-[18px] leading-normal">Notifications</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SEGMENTED • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Segmented • Rect</h2>
+      <div role="radiogroup" aria-label="Size" class="inline-flex">
+        <label class="cursor-pointer">
+          <input type="radio" name="size-rect-l" value="s" class="peer sr-only">
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Small</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-rect-l" value="m" class="peer sr-only" checked>
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Medium</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-rect-l" value="l" class="peer sr-only">
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Large</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SEGMENTED • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Segmented • Round</h2>
+      <div role="radiogroup" aria-label="Size" class="inline-flex">
+        <label class="cursor-pointer">
+          <input type="radio" name="size-round-l" value="s" class="peer sr-only">
+          <span class="block px-5 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-l-[16px] rounded-r-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Small</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-round-l" value="m" class="peer sr-only" checked>
+          <span class="block px-4 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-none peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Medium</span>
+        </label>
+        <label class="cursor-pointer -ml-[1px]">
+          <input type="radio" name="size-round-l" value="l" class="peer sr-only">
+          <span class="block px-5 py-[4px] bg-[var(--bevel-bg)] border-[3px] border-solid border-[var(--input-border)] text-[var(--bevel-fg)] text-[18px] leading-normal rounded-l-none rounded-r-[16px] peer-checked:border-t-[var(--bevel-br)] peer-checked:border-l-[var(--bevel-br)] peer-checked:border-r-[var(--bevel-tl)] peer-checked:border-b-[var(--bevel-tl)] peer-checked:bg-gradient-to-t peer-checked:from-[var(--bevel-br)] peer-checked:to-[var(--bevel-tl)] peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]">Large</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── SLIDER • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Volume</label>
+        <div class="relative h-[28px] w-full" data-slider style="--value: 60%">
+          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[12px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] overflow-hidden">
+            <div class="h-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)]" style="width: var(--value)"></div>
+          </div>
+          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[18px] h-[24px] border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── SLIDER • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Volume</label>
+        <div class="relative h-[28px] w-full" data-slider style="--value: 60%">
+          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[10px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)]" style="width: var(--value)"></div>
+          </div>
+          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[22px] h-[22px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)">
+            <span class="absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Start</label>
+        <div class="relative">
+          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Start</label>
+        <div class="relative">
+          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TIME • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Time • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Reminder</label>
+        <div class="relative">
+          <input type="time" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">◌</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TIME • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Time • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Reminder</label>
+        <div class="relative">
+          <input type="time" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">◌</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATETIME • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Datetime • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Appointment</label>
+        <div class="relative">
+          <input type="datetime-local" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATETIME • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Datetime • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Appointment</label>
+        <div class="relative">
+          <input type="datetime-local" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+          <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[20px] leading-none">□</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE RANGE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date Range • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Trip dates</label>
+        <div class="flex items-stretch gap-2" data-date-range>
+          <div class="relative flex-1">
+            <input type="date" data-range-start class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+          <div class="flex items-center text-[18px] leading-normal opacity-60">→</div>
+          <div class="relative flex-1">
+            <input type="date" data-range-end class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── DATE RANGE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date Range • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Trip dates</label>
+        <div class="flex items-stretch gap-2" data-date-range>
+          <div class="relative flex-1">
+            <input type="date" data-range-start class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+          <div class="flex items-center text-[18px] leading-normal opacity-60">→</div>
+          <div class="relative flex-1">
+            <input type="date" data-range-end class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[32px] pb-[9px] pl-[12px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
+            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[16px] leading-none">□</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="flex items-stretch w-full" data-file-picker>
+          <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] flex items-center shrink-0">
+            <input type="file" class="sr-only" data-file-input>
+            <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Choose…</span>
+          </label>
+          <div class="flex-1 min-w-0 flex items-center px-4 bg-[var(--bevel-bg)] text-[var(--placeholder-color)] border-[1px] border-l-0 border-solid border-[var(--input-border)] text-[18px] leading-normal truncate" data-filename>No file chosen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="flex items-stretch gap-2 w-full" data-file-picker>
+          <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] shrink-0 flex items-center">
+            <input type="file" class="sr-only" data-file-input>
+            <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose…</span>
+          </label>
+          <div class="flex-1 min-w-0 flex items-center px-4 bg-[var(--bevel-bg)] text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] text-[18px] leading-normal truncate rounded-[5px]" data-filename>No file chosen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm" data-image-picker>
+        <label class="text-[18px] leading-normal">Avatar</label>
+        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-none overflow-hidden relative">
+          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
+          <span data-image-placeholder>No image</span>
+        </div>
+        <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
+          <input type="file" accept="image/*" class="sr-only" data-image-input>
+          <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Upload image</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • ROUNDED ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rounded</h2>
+      <div class="flex flex-col gap-2 max-w-sm" data-image-picker>
+        <label class="text-[18px] leading-normal">Avatar</label>
+        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-[5px] overflow-hidden relative">
+          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
+          <span data-image-placeholder>No image</span>
+        </div>
+        <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
+          <input type="file" accept="image/*" class="sr-only" data-image-input>
+          <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Upload image</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAGS • RECT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Rect</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Topics</label>
+        <div data-tags data-tags-variant="rect" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
+          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+            <span>design</span>
+            <input type="hidden" name="tags[]" value="design">
+            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+          </span>
+          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+            <span>ascii</span>
+            <input type="hidden" name="tags[]" value="ascii">
+            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+          </span>
+          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAGS • ROUND ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Round</h2>
+      <div class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Topics</label>
+        <div data-tags data-tags-variant="round" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
+          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
+            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+              <span>design</span>
+              <input type="hidden" name="tags[]" value="design">
+              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            </span>
+          </span>
+          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
+            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+              <span>ascii</span>
+              <input type="hidden" name="tags[]" value="ascii">
+              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            </span>
+          </span>
+          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -346,6 +1312,138 @@
   </section>
 
 </div>
+
+<script>
+  // Number stepper (DECISIONS 0014)
+  document.querySelectorAll('[data-number] [data-step]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.closest('[data-number]').querySelector('input[type=number]');
+      if (btn.dataset.step === 'up') input.stepUp(); else input.stepDown();
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  });
+
+  // Slider value → CSS var (DECISIONS 0019)
+  document.querySelectorAll('[data-slider]').forEach(wrapper => {
+    const input = wrapper.querySelector('[data-slider-input]');
+    const update = () => wrapper.style.setProperty('--value', `${input.value}%`);
+    input.addEventListener('input', update);
+    update();
+  });
+
+  // Date range cross-validation (DECISIONS 0021)
+  document.querySelectorAll('[data-date-range]').forEach(group => {
+    const start = group.querySelector('[data-range-start]');
+    const end = group.querySelector('[data-range-end]');
+    start.addEventListener('change', () => { if (start.value) end.min = start.value; });
+    end.addEventListener('change', () => { if (end.value) start.max = end.value; });
+  });
+
+  // File picker filename (DECISIONS 0022)
+  document.querySelectorAll('[data-file-picker]').forEach(picker => {
+    const input = picker.querySelector('[data-file-input]');
+    const display = picker.querySelector('[data-filename]');
+    if (!display) return;
+    input.addEventListener('change', () => {
+      if (input.files.length > 0) {
+        display.textContent = input.files[0].name;
+        display.classList.remove('text-[var(--placeholder-color)]');
+        display.classList.add('text-[var(--bevel-fg)]');
+      } else {
+        display.textContent = 'No file chosen';
+        display.classList.remove('text-[var(--bevel-fg)]');
+        display.classList.add('text-[var(--placeholder-color)]');
+      }
+    });
+  });
+
+  // Image picker preview (DECISIONS 0023)
+  document.querySelectorAll('[data-image-picker]').forEach(picker => {
+    const input = picker.querySelector('[data-image-input]');
+    const preview = picker.querySelector('[data-image-preview]');
+    const placeholder = picker.querySelector('[data-image-placeholder]');
+    input.addEventListener('change', () => {
+      if (input.files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = e.target.result;
+          preview.classList.remove('hidden');
+          if (placeholder) placeholder.classList.add('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    });
+  });
+
+  // Tags add/remove (DECISIONS 0024)
+  document.querySelectorAll('[data-tags]').forEach(tags => {
+    const input = tags.querySelector('[data-tag-input]');
+    const variant = tags.dataset.tagsVariant || 'rect';
+
+    const makeChip = (value) => {
+      const chip = document.createElement('span');
+      if (variant === 'round') {
+        chip.className = 'inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal';
+        const inner = document.createElement('span');
+        inner.className = 'inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]';
+        const text = document.createElement('span');
+        text.textContent = value;
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'tags[]';
+        hidden.value = value;
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.dataset.tagRemove = '';
+        close.className = 'cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none';
+        close.textContent = '×';
+        inner.append(text, hidden, close);
+        chip.append(inner);
+      } else {
+        chip.className = 'inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal';
+        const text = document.createElement('span');
+        text.textContent = value;
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'tags[]';
+        hidden.value = value;
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.dataset.tagRemove = '';
+        close.className = 'cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none';
+        close.textContent = '×';
+        chip.append(text, hidden, close);
+      }
+      return chip;
+    };
+
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ',') {
+        const value = input.value.trim();
+        if (value) {
+          e.preventDefault();
+          tags.insertBefore(makeChip(value), input);
+          input.value = '';
+        }
+      } else if (e.key === 'Backspace' && !input.value) {
+        const chips = tags.querySelectorAll(':scope > span');
+        if (chips.length) chips[chips.length - 1].remove();
+      }
+    });
+
+    tags.addEventListener('click', e => {
+      const remove = e.target.closest('[data-tag-remove]');
+      if (remove) {
+        const chip = remove.closest(':scope > span') || remove.closest('span');
+        let walker = chip;
+        while (walker && walker.parentElement !== tags) walker = walker.parentElement;
+        if (walker) walker.remove();
+        return;
+      }
+      if (e.target === tags) input.focus();
+    });
+  });
+</script>
 
 </body>
 </html>

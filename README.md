@@ -57,7 +57,7 @@ Practical consequences:
 
 - **Default to native form elements** (`<input>`, `<select>`, `<textarea>`, `<input type="date">`, `<input type="file">`, etc.) — they ship with accessibility, keyboard handling, and serialization for free.
 - **Use CSS-only state** via `:checked`, `:focus`, `:focus-within`, `:has()`, `:placeholder-shown`, `:user-invalid`, etc. Example: a segmented control is just radio buttons + sibling-selector styling — no JS at all.
-- **No DIY JavaScript.** If a component genuinely cannot be built with native HTML + CSS (rich text, code editor, anything similar), we use a curated third-party plugin (e.g. [overtype.dev](https://overtype.dev) for rich text) and **style** it. We do not write our own JS components.
+- **No DIY JavaScript by default.** Native HTML wherever it reaches a respectable result. Two scoped exceptions: third-party engines for primitives natives can't deliver at all (rich text via [overtype.dev](https://overtype.dev), code editor TBD), and small native-augmentation scripts named in `DECISIONS.md` 0014 (number stepper, slider visual bridge, date range cross-validation, file picker filename, image preview, tags add/remove). We never write full JS components.
 - **No web components.** Same reason — we want copy-paste HTML, not custom-element registrations the user has to wire up.
 - **No build step required to use a mirk component.** A user pastes the HTML into any project, includes Tailwind, and it works. A `<script>` tag is included alongside only when a plugin is unavoidable, with a clear CDN reference.
 
