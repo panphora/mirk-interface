@@ -39,7 +39,7 @@ Form components only, in five groups:
 
 **Numeric & boolean** — number / integer (min/max/step) · range / slider · toggle / boolean
 
-**Choice** — select (single) · multi-select · radio · checkboxes · button group / segmented control · tags
+**Choice** — select (single) · multi-select · radio · checkboxes · tags
 
 **Date & time** — date · time · datetime · date range
 

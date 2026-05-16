@@ -29,19 +29,20 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0009 | [Text input: solid uniform border, rect and rounded variants](#0009--text-input-solid-uniform-border-rect-and-rounded-variants) |
 | 0010 | [Per-panel CSS vars when bevel semantics don't translate](#0010--per-panel-css-vars-when-bevel-semantics-dont-translate) |
 | 0011 | [Placeholder color: explicit hex, never opacity](#0011--placeholder-color-explicit-hex-never-opacity) |
-| 0012 | [Stateful indicators: flat off, pressed-in bevel selected](#0012--stateful-indicators-flat-off-pressed-in-bevel-selected) |
+| 0012 | [Stateful indicators: bevel on unselected, flat on selected](#0012--stateful-indicators-bevel-on-unselected-flat-on-selected) |
 | 0013 | [Rect vs round axis: per-component mapping](#0013--rect-vs-round-axis-per-component-mapping) |
 | 0014 | [DIY JavaScript: scoped exceptions](#0014--diy-javascript-scoped-exceptions) |
 | 0015 | [Textarea: container pattern, vertical resize only](#0015--textarea-container-pattern-vertical-resize-only) |
-| 0016 | [Radio: square-radio exception for the rect variant](#0016--radio-square-radio-exception-for-the-rect-variant) |
-| 0017 | [Toggle: flat track plus always-beveled thumb](#0017--toggle-flat-track-plus-always-beveled-thumb) |
-| 0018 | [Segmented control: grouped radios, shared internal borders](#0018--segmented-control-grouped-radios-shared-internal-borders) |
-| 0019 | [Slider: bevel thumb plus bevel filled portion, JS visual bridge](#0019--slider-bevel-thumb-plus-bevel-filled-portion-js-visual-bridge) |
-| 0020 | [Date / time / datetime: hide UA chrome, overlay glyph](#0020--date--time--datetime-hide-ua-chrome-overlay-glyph) |
+| 0016 | [Radio: square-radio exception — REMOVED](#0016--radio-square-radio-exception-for-the-rect-variant--removed) |
+| 0017 | [Toggle: transparent track, darker thumb via per-panel control vars](#0017--toggle-transparent-track-darker-thumb-via-per-panel-control-vars) |
+| 0018 | [Segmented control: removed from scope](#0018--segmented-control-removed-from-scope) |
+| 0019 | [Slider: beveled thumb, flat filled portion](#0019--slider-beveled-thumb-flat-filled-portion) |
+| 0020 | [Date / time / datetime: confined picker indicator preserves typing](#0020--date--time--datetime-confined-picker-indicator-preserves-typing) |
 | 0021 | [Date range: two date inputs plus JS cross-validation](#0021--date-range-two-date-inputs-plus-js-cross-validation) |
-| 0022 | [File picker: hidden input plus label-as-button plus JS filename](#0022--file-picker-hidden-input-plus-label-as-button-plus-js-filename) |
+| 0022 | [File picker: ship all four variants on a 2×2 style × corner matrix](#0022--file-picker-ship-all-four-variants-on-a-22-style--corner-matrix) |
 | 0023 | [Image input: file picker plus FileReader preview](#0023--image-input-file-picker-plus-filereader-preview) |
 | 0024 | [Tags: input plus DOM chips plus JS add/remove](#0024--tags-input-plus-dom-chips-plus-js-addremove) |
+| 0025 | [Sortable: drag handle dots, dedicated per-panel tokens, L-shape border](#0025--sortable-drag-handle-dots-dedicated-per-panel-tokens-l-shape-border) |
 
 ## Template
 
@@ -345,7 +346,7 @@ Lose the bevel depth cue. Carried instead by `--input-border` vs. `--bevel-bg` c
 ### Decision
 When light and dark panels need values that move in **opposite directions** along the same axis (e.g., a border that should be darker-than-bg in light *and* lighter-than-bg in dark), introduce a **dedicated per-panel CSS var** rather than reusing an existing bevel var.
 
-In use: `--input-border`, `--placeholder-color`. Each is defined once in `.panel-dark` and once in `.panel-light` with the value appropriate to that panel.
+In use: `--input-border`, `--placeholder-color`, `--ctrl-bg` / `--ctrl-hi` / `--ctrl-lo`, `--mark-fg`, `--sortable-dot` / `--sortable-shadow`, `--sortable-label` / `--sortable-placeholder`, `--slider-fill`. Each is defined once in `.panel-dark` and once in `.panel-light` with the value appropriate to that panel.
 
 ### Why
 - `--bevel-tl` / `--bevel-br` have **parallel** semantics across panels (tl = highlight side, br = shadow side). Asymmetric needs don't fit either var.
@@ -376,29 +377,45 @@ Browser-default `::placeholder` colors also vary, so `placeholder:opacity-N` mod
 
 ---
 
-## 0012 — Stateful indicators: flat off, pressed-in bevel selected
+## 0012 — Stateful indicators: bevel on unselected, flat on selected
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14 (rewritten same day; see `HISTORY.md` for the prior version)
 
 ### Decision
-Indicators that visualize their own selection state read as flat in the off state and pressed-in (depressed bevel) in the selected state.
+Indicators that visualize their own selection state read as **beveled in the unselected state (clickable affordance)** and **flat with a mark in the selected state (confirmed)**.
 
-- **Off:** 1px `--input-border` outline on `--bevel-bg`, the text-input container vocabulary from `0009`.
-- **Selected:** pressed-in bevel (top and left = shadow `--bevel-br`, right and bottom = highlight `--bevel-tl`) plus a `from-bevel-br to-bevel-tl` gradient fill. Implemented with `inset` box-shadow so the indicator does not change size on selection.
-- **Round variant:** the round-button gradient frame substitutes for the four-side bevel, same metaphor in the round vocabulary.
+- **Unselected (clickable):**
+  - **Checkbox (sharp-cornered square):** solid `--bevel-bg` + `2px` real CSS borders with directional colors — top + left `--bevel-tl` (highlight), right + bottom `--bevel-br` (shadow). Same construction the rect button and dropdown use, just at indicator scale. Real borders miter at 45° where adjacent colors meet, matching the button's corner geometry. "Press me to select."
+  - **Radio (circle):** the round-button look — outer gradient frame `from-bevel-br to-bevel-tl` + inner pill `from-bevel-bg to-pill-inner-top`. Same vocabulary the round button uses for its pressable surface.
+- **Selected (confirmed):**
+  - **Checkbox:** solid `--bevel-bg` + `2px` real CSS borders, uniformly `--input-border` on all four sides (directional bevel colors swap to a flat hairline). Same border-width as the unselected state, so the inner content area doesn't shift between states. Center mark: CSS-drawn checkmark — a `w-[6px] h-[12px]` div with `border-right` + `border-bottom` at `2.5px`, rotated 45deg, translated `-1.5px` y / `0.5px` x for optical centering. Sharp pixel edges, longer rising stroke. Color `--mark-fg`.
+  - **Radio:** flat `--bevel-bg` with a `2px` real CSS border in `--input-border` around the full circle — same width and color as the checkbox selected-state ring, so the two selected states share one frame vocabulary. Outer `25×25` stays fixed (border-box), so the radio's perceived outer edge doesn't shift between off and on. Center mark: `9px × 9px` solid circle in `--mark-fg` (sized against the 25px outer per the perceptual-bump rule in `0013`).
 
-**Applies to:** checkbox, radio, segmented control segment.
+**Applies to:** checkbox, radio. Each ships as a single variant — checkbox is always sharp-cornered square, radio is always circle (see `0013` for why these two components break the rect/round axis).
 
-**Does not apply to:** toggle thumb and slider thumb. Those are handles, always beveled regardless of state. State for toggle is track color plus thumb position. State for slider is filled-portion width plus thumb position.
+**Does not apply to:** toggle thumb and slider thumb. Those are handles, always beveled regardless of state. State for toggle is track color plus thumb position (`0017`). State for slider is filled-portion width plus thumb position (`0019`).
 
 ### Why
-Off=flat reuses the container vocabulary, so an unselected indicator reads as an empty slot. Selected=pressed-in reuses the rect button's active state, so a selected indicator reads as "I pressed this and it stayed in." Both are already in the kit, no new visual language required.
+- **Bevel reads as "press me" on first glance.** A raised bevel (light top-left, dark bottom-right) looks like an empty button waiting to be activated. That's the right affordance for an unselected indicator.
+- **Flat with a sharp mark reads as "done" on first glance.** A clean box with a check or fill says "this one is on." Maximum legibility at the smallest target sizes.
+- **Earlier attempt (flat off / bevel selected) failed the obviousness test.** The "I pressed it and it stayed in" metaphor was logically clean but visually heavy for selected checkboxes — too busy, the bevel competed with the check glyph. Inverting the pattern lets the selected state be the calm one and the unselected state carry the visual energy.
+
+### Construction: real CSS borders, not inset box-shadow
+An earlier version of the checkbox used `bg-gradient-to-t from-bevel-br to-bevel-tl` + `box-shadow inset 2px 2px 0 var(--bevel-tl), inset -2px -2px 0 var(--bevel-br)` to build the bevel. That collided with itself: the gradient's bottom anchor is `--bevel-br`, and the bottom inset shadow is also `--bevel-br`, so the bottom edge disappeared (especially visible in light mode where the bevel range is compressed). It also meant the four corners met as overlapping rectangles rather than the 45° diagonal that real CSS borders produce on the rect button.
+
+Switching to a solid `--bevel-bg` background plus `2px` real CSS borders with per-side colors fixes both: every edge contrasts against the uniform fill, and adjacent border colors miter at 45° — the same corner geometry the button uses. Keeping the same `2px` width in the selected state (uniform `--input-border`) means content area is constant, no layout shift.
+
+### Checkmark geometry
+Unicode `✓` in Departure Mono is too small and slightly rounded at our indicator size. The CSS-drawn replacement gives:
+- Sharp pixel-aligned edges (no font hinting variance).
+- Explicit width-to-height ratio (~1:2) for the asymmetric proportions of a real check.
+- Single color via `border-color`, no glyph metric drift.
 
 ### Tradeoff
-A selected checkbox looks similar to a depressed rect button at a glance. Acceptable: surrounding context (label position, group layout, size) disambiguates.
+The unselected state is visually heavier than a typical "empty box" checkbox. Acceptable: mirk's stance is "obvious," and an unselected indicator should still telegraph its interactivity. Multiple unselected checkboxes in a column may read busier than a clean column of flat outlines — to be reviewed at form scale.
 
 ### Source comparison
-Primer and Carbon both use a solid-fill background plus a contrasting check glyph for selected, no bevel. We deviate to telegraph "pressable" via the visual vocabulary already used elsewhere in mirk.
+Primer and Carbon both use flat outlines for unselected and solid-fill + check for selected (the inverse of mirk's previous rule, and now the same direction as mirk's new selected state). The novelty here is making the **unselected** state visually rich — neither reference does this. The bet: clarity-at-a-glance beats convention.
 
 ---
 
@@ -413,18 +430,35 @@ Every component ships in two variants on a sharp-vs-softened axis. What "round" 
 |---|---|---|
 | Textarea | `rounded-none` | `rounded-[5px]` |
 | Number | rect frame, sharp ▲▼ mini-buttons | rounded 5px frame, same internal buttons |
-| Checkbox | sharp-cornered square indicator | 5px-cornered square indicator |
-| Radio | square indicator with square fill (see `0016`) | circular indicator with circular fill |
+| Checkbox | sharp-cornered square indicator (single variant — see "Axis exceptions" below) | — |
+| Radio | circular indicator with circular fill (single variant — see "Axis exceptions" below) | — |
 | Toggle | rectangular track plus rectangular thumb | pill track plus circular thumb |
-| Segmented | sharp end caps, sharp internal seams | pill end caps (16px outer), sharp internal seams |
 | Slider | rectangular thumb on rectangular track | circular thumb on pill track |
 | Date / Time / Datetime / Date range | `rounded-none` frame | `rounded-[5px]` frame |
-| File picker | rect bevel button + rect filename frame | round-pill button + rect filename frame |
+| File picker | rect bevel button — Compact or Button+Text style (see `0022`) | round-pill button — Compact or Button+Text style (see `0022`) |
 | Image input | sharp preview frame + rect button | 5px-corner preview frame + round-pill button |
-| Tags | sharp chips on a sharp wrapper | pill chips on a 5px-cornered wrapper |
+| Tags | sharp chips on a sharp wrapper | pill chips on a 15px-cornered wrapper |
 
 ### Naming
 "Round" means fully-pill. "Rounded" means softened-but-still-square (5px). Each component picks the label that matches its shape. Consistent axis, different vocabulary per component.
+
+### Axis exceptions: checkbox and radio
+Checkbox is **always** a sharp-cornered square. Radio is **always** a circle. Neither ships a second variant.
+
+**Why these two are exceptions.** Shape is part of the standard convention for these controls, and breaking it confuses users at the very moment the kit's "obvious" stance is supposed to pay off. A rounded checkbox reads as something other than a checkbox; a square radio reads as a tile or button. We tried both during the scaffold pass and pulled them on visual review.
+
+The rect/round axis still exists for everything else — these two just don't sit on it.
+
+### Sizing: round indicators get a perceptual bump
+A circle inscribed in a `w×h` box looks smaller than a square of the same `w×h` because the circle's area is `π/4 ≈ 78%` of the square's, and the visual weight is closer to area than to bounding-box. Matching the bounding box makes the round variant feel undersized next to its rect sibling.
+
+Rule: when a round indicator sits in the same visual family as a rect one, give the round one a bigger bounding box so they read at the same weight.
+
+Current sizes:
+- Checkbox rect, checkbox rounded, radio rect: `22×22px`.
+- Radio round: `25×25px`.
+
+Applies wherever shape changes inside a shared indicator family. If a future component pairs a square and a circle at the same nominal size, the circle gets the bump.
 
 ---
 
@@ -476,61 +510,70 @@ Disabling resize is overbearing on long content. Horizontal resize breaks surrou
 
 ---
 
-## 0016 — Radio: square-radio exception for the rect variant
+## 0016 — Radio: square-radio exception for the rect variant — REMOVED
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14, removed 2026-05-15
 
-### Decision
-Convention is "radios are round." We make a single exception: the rect variant of radio is a **square indicator with a square inner fill**, not a circle.
-
-### Why
-The kit's organizing axis is rect vs round. A radio that ignored the axis to stay round-only would be a hole in the system. A square radio reads as "single-choice tile" and is visually distinct from a checkbox (square with ✓) and from the round radio (circle with a dot). The `0012` selection metaphor translates without modification.
-
-### Visual differentiation between selected states
-- Checkbox (rect or rounded): pressed-in bevel + `✓` glyph.
-- Radio (rect): pressed-in bevel + small filled square.
-- Radio (round): pressed-in gradient frame + small filled circle.
-
-The user shouldn't have to think to tell them apart at a glance.
+### Status
+Removed. Radio now ships as a circle only (no rect variant). The original "fill the rect column of the axis with a square radio" idea was abandoned because a square radio reads as a tile or button rather than a radio — the convention that radios are round is doing real work for users, and breaking it costs more in clarity than the axis-completeness gains. See `0013` "Axis exceptions" for the current rule, and `HISTORY.md` 2026-05-15 for the reasoning.
 
 ---
 
-## 0017 — Toggle: flat track plus always-beveled thumb
+## 0017 — Toggle: transparent track, darker thumb via per-panel control vars
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14 (revised same day; see `HISTORY.md`)
 
 ### Decision
 The toggle is a **track** (container) plus a **thumb** (handle).
 
-- **Track:** flat container, 1px `--input-border`, bg `--bevel-bg` when off, bg `--accent` when on.
-- **Thumb:** mini bevel. Rect variant uses a four-side bevel. Round variant uses the round-button gradient frame on a circle. Always beveled, regardless of state.
+- **Track:** **transparent background** — the panel canvas shows through. 1px `--input-border` outline only. No fill change on state (track stays the same; thumb position encodes state).
+- **Thumb:** mini bevel using a distinct per-panel color palette so the toggle doesn't share the bevel-button palette. Three new vars per panel:
+  - `--ctrl-bg` — solid thumb base
+  - `--ctrl-hi` — bevel highlight (top-left side)
+  - `--ctrl-lo` — bevel shadow (bottom-right side)
+  - Light panel: `#8C7660 / #A89078 / #6E5C49` (medium browns).
+  - Dark panel: `#5F6582 / #7780A0 / #3F4459` (medium blue-grays).
+- **Thumb structure:**
+  - **Rect:** `bg-[var(--ctrl-bg)]` + 4-side bevel via colored borders (`border-t/l = --ctrl-hi`, `border-r/b = --ctrl-lo`).
+  - **Round:** outer gradient `from-ctrl-lo to-ctrl-hi` ring + inner solid `--ctrl-bg` pill. Mini round-button construction, but in the control palette, not the bevel palette.
 - **State:** native `<input type="checkbox">` with `role="switch"`, visually hidden via `sr-only`. Thumb position driven by `translateX` on `group-has-[:checked]:`.
 
-### Why thumb stays beveled in both states
-A handle that flattens when off stops reading as a handle. The `0012` "off=flat" rule applies to indicators that ARE the state visualizer (checkbox indicator, radio dot, selected segment). The toggle's state visualizer is track-color plus thumb-position, not the thumb's own surface.
+### Why these changes
+- **Transparent track.** The original `--bevel-bg` track fill looked "pasty" in light mode — a beige thumb on a beige track had insufficient contrast. Letting the panel canvas show through gives the toggle its visual rhythm from the thumb alone.
+- **Dedicated control palette.** Reusing `--bevel-tl/br` made the toggle thumb look like a tiny version of a bevel button, which read as a button-press affordance rather than a toggle state. A darker brown / lighter blue-gray distinguishes "this is the toggle's prominent color" from "this is a button."
+- **Thumb stays beveled in both states.** A handle that flattens when off stops reading as a handle. The `0012` "flat on selected" rule applies to indicators that ARE the state visualizer (checkbox, radio). The toggle's state visualizer is thumb position, not the thumb's surface, so the thumb keeps its bevel regardless of state.
+
+### Apply
+- `--ctrl-bg/hi/lo` are defined in both `.panel-dark` and `.panel-light` (per `0010`). Same names, different values per panel.
+- The slider's filled portion reuses `--ctrl-bg` for visual consistency with the toggle thumb (`0019`).
 
 ---
 
-## 0018 — Segmented control: grouped radios, shared internal borders
+## 0018 — Segmented control: removed from scope
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14 (originally locked same day; removed same day after visual review — see `HISTORY.md`)
 
 ### Decision
-Segmented controls are visually-styled `<input type="radio">` groups with sibling-selector CSS. No JS.
+**Removed from mirk's scope.** Visual review on 2026-05-14 flagged the segmented control as the weakest part of the kit, and a radio button group covers the same affordance with a more familiar pattern.
 
-- Each segment is a `<label>` wrapping a visually-hidden `<input type="radio">` plus a styled `<span>`.
-- Segments live in a horizontal flex container with `-ml-[1px]` on every segment after the first, so adjacent borders collapse to a single hairline.
-- Unselected segment: flat (`0012` off).
-- Selected segment: pressed-in bevel (`0012` selected).
-- Rect: every segment sharp-cornered.
-- Round: first gets `rounded-l-[16px]`, last gets `rounded-r-[16px]`, middles stay sharp.
-- Border width is constant (3px) across both states. Only colors swap on selection, so segments don't shift size when clicked.
+Removed from:
+- `README.md` Component scope (Choice family)
+- `PLAN.md` build order (item 07 deleted)
+- `experiments/experiments.html` (sections removed in both panels)
+
+### Why
+- The component does one job: "pick one from a small horizontal set of options." Radio button groups do that job and we already ship two radio variants (`0016`).
+- Visually it occupied a middle ground that didn't read as either "row of buttons" or "row of radios" — neither metaphor was clear at a glance, which violates the kit's stance.
+- The locked construction (grouped radios with sibling-selector CSS, 3px constant border, end-cap radius on round) was workable but never visually settled.
+
+### Revisit trigger
+A real use case where neither radios nor a select handles the choice cleanly (e.g., a 2-3 option toggle inside a dense form row where radios would burn vertical space). No current need.
 
 ---
 
-## 0019 — Slider: bevel thumb plus bevel filled portion, JS visual bridge
+## 0019 — Slider: beveled thumb, flat filled portion
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14 (filled-portion treatment revised same day; see `HISTORY.md`)
 
 ### Decision
 Native `<input type="range">` is unstylable enough across browsers that mirk's bevel aesthetic can't be reached with CSS alone. We render the visual layer in CSS divs and let the native input drive state.
@@ -538,29 +581,43 @@ Native `<input type="range">` is unstylable enough across browsers that mirk's b
 **Construction:**
 - Wrapper `<div data-slider style="--value: 60%">` houses:
   - the native `<input type="range">` overlaid `opacity: 0` with `z-10` to capture pointer, drag, and keyboard;
-  - a track div (container styling, `--bevel-bg` fill, 1px `--input-border`);
-  - a filled div sized to `width: var(--value)` with the round-button gradient (`from-bevel-br to-bevel-tl`);
+  - a track div sized to the full width, `--canvas` fill (page background, so the unfilled portion reads as a slot cut into the page), 1px `--input-border` running uninterrupted around the entire track (both sides of the thumb);
+  - a filled div sized to `width: var(--value)` with a **flat solid color** in `--slider-fill` (a per-panel token; see below);
   - a thumb div positioned at `left: var(--value)` with `-translate-x-1/2`.
-- Rect variant: thumb is a mini four-side bevel.
-- Round variant: thumb is a circle with gradient frame plus inner pill (mini round button); track has `rounded-full`.
+- Rect thumb: `w-[21px] h-[24px]`, no rounded corners, `bg-[var(--toggle-bg)]` + `3px` bevel borders (top + left `--toggle-hi`, right + bottom `--toggle-lo`). Thicker borders than the standard `2px` bevel because the slider thumb is bigger than other beveled elements in the kit and the bevel needs the extra weight to read clearly at this size.
+- Round thumb: `w-[24px] h-[24px]` circle (`rounded-full`), outer gradient `from-[var(--toggle-lo)] to-[var(--toggle-hi)]` + solid inner pill `bg-[var(--toggle-bg)]` inset 2px. Sized noticeably larger than the toggle Round thumb (`20×20`) so the slider's gradient ring carries weight on its own against the slim track.
+- Wrapper: `relative h-[32px] w-full` to host the taller thumb plus a few pixels of padding for focus offset. Track sits centered inside.
+- Both variants: thumb has no internal grip pattern. The thumb's own size + bevel/gradient is the affordance.
 
 **JS (per `0014`):** wire `input` event on the range to mirror `.value` into `--value` on the wrapper.
+
+### Why flat filled portion
+Earlier version used a `from-bevel-br to-bevel-tl` gradient on the filled portion. Visual review found the gradient read as "this is interactive" — the same cue the beveled thumb already carries. Duplicating that cue on the filled length made the whole control feel too prominent. With a flat fill, the thumb carries "drag me" and the filled length just says "this much value." Different jobs, different visual weights.
+
+### Why `--canvas` track and `--slider-fill` filled portion
+Earlier rounds tried `--bevel-bg` as the track + `--ctrl-bg` as the fill (too dark/loud), then `--canvas` track + `--bevel-bg` fill (right direction, but the dark-mode fill at `#1D1F2F` sat too close to the dark page tone — the filled portion didn't read distinctly enough). Final layout: track is `--canvas` so the empty channel reads as a slot cut into the page; filled portion is `--slider-fill`, a new per-panel token that resolves to `--bevel-bg`'s value in light mode (`#e9d3bd`, no visible change) and a step lighter (`#232639`, same as `--bevel-hover-bg`) in dark mode. The asymmetry exists because dark mode's `--bevel-bg` and `--canvas` are close in lightness, so the fill needs an extra nudge to stay legible; light mode's `--bevel-bg` already contrasts plenty against `--canvas`. 1px `--input-border` continues to run uninterrupted around the whole track, reinforcing the slot read.
+
+### Why the thumb uses the toggle palette but its own bigger/taller geometry
+The thumb tokens are `--toggle-bg` / `--toggle-hi` / `--toggle-lo` (per `0017`) so the slider and the toggle thumb share one "handle" color family, visually distinct from the bevel-button palette. But the slider thumb's geometry is its own: `21 × 28` rect / `22 × 30` pill, both noticeably bigger and taller than the toggle thumb (`18 × 18` / `20 × 20`), and the Rect thumb uses `3px` bevel borders instead of `2px`. Reason: the slider thumb sits over a much thinner track than the toggle thumb sits inside, so the slider thumb has to carry the whole "this is a grippable handle" read on its own, without a surrounding frame the way the toggle thumb has its track. Earlier attempts that matched the toggle thumb's exact dimensions (`18 × 18` rect / `20 × 20` round) looked undersized and flat — the bevel and gradient didn't read distinctly enough at that scale against a slim track. The pill shape on the Round variant — taller than wide rather than circular — was selected after a side-by-side mockup comparison against grip-lined and dot-grid alternatives; the clean pill won on the kit's "obvious" stance (size + bevel carries the affordance without needing decorative grip marks).
 
 ### A11y
 Native range handles arrow keys, value announcement, form submission. The `<input>` captures interaction at `opacity: 0`. The visual divs are decorative.
 
 ---
 
-## 0020 — Date / time / datetime: hide UA chrome, overlay glyph
+## 0020 — Date / time / datetime: confined picker indicator preserves typing
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-14 (revised same day; see `HISTORY.md`)
 
 ### Decision
 Native UA chrome on `<input type="date">`, `time`, and `datetime-local` varies wildly across browsers. We suppress it and overlay a Departure Mono glyph on the right edge, same pattern the dropdown uses for its `›` chevron.
 
-- `::-webkit-calendar-picker-indicator { opacity: 0 }` positioned absolutely over the input so click-anywhere still opens the native picker.
+- `::-webkit-calendar-picker-indicator { opacity: 0 }` positioned absolutely **on the right edge only** (right: 0; top: 0; bottom: 0; width: 44px). Clicks on the right strip open the native picker. Clicks on the rest of the input focus a typing segment.
 - `::-webkit-inner-spin-button { appearance: none }` and `::-webkit-clear-button { appearance: none }` to suppress Webkit's spinner and clear chrome.
-- Glyph overlay is `pointer-events-none` on the right edge, sized close to the dropdown chevron.
+- Glyph overlay is `pointer-events-none` and sits inside the same right-edge zone so it appears to be the picker button.
+
+### Why a confined indicator (not full-input)
+Earlier version positioned the indicator with `inset-0`, covering the whole input. Clicking anywhere opened the picker, which felt convenient but stole the typing affordance — users couldn't focus a specific segment (year/month/day) to type into it. Confining the indicator to the right edge restores both affordances: type on the left, click the glyph on the right.
 
 ### Glyphs (initial choices, tunable in experiments)
 - Date: `□`.
@@ -568,7 +625,7 @@ Native UA chrome on `<input type="date">`, `time`, and `datetime-local` varies w
 - Datetime: `□`.
 
 ### Result
-Closed-state visual matches text-input and dropdown across all browsers. Native picker still opens, native keyboard input still works.
+Closed-state visual matches text-input and dropdown across all browsers. Native picker opens via the right-edge zone. Native keyboard typing into segments works on the rest of the input.
 
 ---
 
@@ -585,18 +642,34 @@ A single combined-popup picker would buy a marginally nicer UX at the cost of a 
 
 ---
 
-## 0022 — File picker: hidden input plus label-as-button plus JS filename
+## 0022 — File picker: ship all four variants on a 2×2 style × corner matrix
 
-- **Date:** 2026-05-14
+- **Date:** 2026-05-15
 
 ### Decision
-- A `<label>` styled exactly like a bevel button (rect or round) wraps a visually-hidden `<input type="file">`. Click the button, OS picker opens.
-- An adjacent `<div data-filename>` (container styling, flat frame) shows "No file chosen" until a file is picked, then the filename. JS (per `0014`) handles the swap.
-- The hidden input is `sr-only`, not `display: none`, so it stays focusable. The label's focus-visible outline uses `has-[:focus-visible]` per the `0002` wrapped-controls rule.
+File picker ships as four named variants on two independent axes:
 
-### Variants
-Rect: rect bevel button plus rect filename frame.
-Round: round-pill button plus still-rect filename frame. The filename slot is a container regardless of which button pairs with it; container vocabulary stays consistent.
+| Style \ Corner | Rect | Round |
+|---|---|---|
+| **Compact** — small chip-like button lives *inside* a shared container that also holds the filename text | sharp-cornered container + rect mini-button | `rounded-[15px]` container + pill mini-button (deviates from the kit's general 5px "softened" corner; same reason as Tags Round in `0024` — wrapper sits adjacent to pill geometry and needs a larger radius to unify visually) |
+| **Button + Text** — full-size bevel button next to plain filename text, no shared container | rect bevel button + filename text | round-pill button + filename text |
+
+All four sit in `experiments/experiments.html` and ship as documented siblings, not alternatives. Consumers pick whichever matches the surrounding form's density.
+
+### Why ship all four instead of picking one
+The two styles serve genuinely different contexts:
+- **Compact** packs a complete affordance into a single frame — good for forms with many fields where every input wants the same outer rectangle for vertical rhythm.
+- **Button + Text** treats the button as a peer to surrounding buttons, with the filename as freestanding metadata — better when the file picker sits in a row with other actions rather than a column of fields.
+
+A locked single style would force the wrong fit in roughly half the contexts. The kit's existing rect/round axis (`0013`) already accepts that one decision per component isn't enough; the file picker just needs a second axis on top.
+
+### Construction (shared across all four)
+- Hidden `<input type="file">` inside a `<label>` that styles as the button surface — same label-as-button pattern as buttons (`0014` JS exception only covers reading `input.files[0].name` and writing the filename into the label).
+- Bevel direction matches the kit's pressable rule (light top-left, dark bottom-right).
+- Filename frame (Compact) or filename text (Button + Text) uses container styling: flat `--bevel-bg`, 1px `--input-border`, no bevel. Per `0009`'s container-vs-pressable distinction.
+
+### Open: image input
+`0023` (image input) currently uses Button + Text style for its upload button. Whether image input should also ship in all four variants is deferred — it's a different problem because image input also has a preview square, and the preview makes Compact-style "container holds button + filename" redundant (the preview already is the visual filename).
 
 ---
 
@@ -605,10 +678,14 @@ Round: round-pill button plus still-rect filename frame. The filename slot is a 
 - **Date:** 2026-05-14
 
 ### Decision
-Reuses `0022` for the button-plus-filename row. Adds a preview square above it:
+Uses a hidden `<input type="file" accept="image/*">` inside a label-as-button (same construction pattern as the file picker, see `0022`). Adds a preview square above the button:
+
 - Preview frame: container styling (flat, 1px `--input-border`), aspect-square at a thumbnail size.
 - Empty state: muted "No image" placeholder text centered.
 - On `input.change`: `FileReader.readAsDataURL(file)`, then set `<img>` `src` and swap visibility. This is the FileReader exception named in `0014`.
+
+### Style
+Image input adopts the **Button + Text** style from `0022` (full-size bevel button below the preview), in matching Rect or Round corner. Compact-style isn't useful here: the preview already plays the role Compact's filename frame plays in the plain file picker, so wrapping the button inside another container would just add an outer rectangle that duplicates the preview's frame.
 
 ---
 
@@ -633,8 +710,51 @@ Tags were deferred on 2026-04-26 because they need JS and were judged an advance
 
 **Variants:**
 - Rect: hard-bordered chips, sharp corners on chip and wrapper.
-- Round: gradient-frame pill chips, 5px corners on the wrapper.
+- Round: gradient-frame pill chips, 15px corners on the wrapper. (Deviates from the kit's general 5px "softened" corner — the Tags wrapper sits at a larger padding scale and reads sharp at smaller radii against its pill chip contents.)
 
 ### Spec updates
 - `README.md`'s no-DIY-JS bullet now references `0014`.
 - `PLAN.md` deferred list loses tags; build order gains "19 — Tags".
+
+---
+
+## 0025 — Sortable: drag handle dots, dedicated per-panel tokens, L-shape border
+
+- **Date:** 2026-05-15
+
+### Decision
+"Sortable" is a reorderable row: a small drag handle on the left, a wrapper container holding two stacked text inputs ("Link name" + "Link URL") on the right. The whole row reads as one draggable card.
+
+**Construction:**
+- Wrapper: `flex flex-row max-w-md bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]`.
+- Handle strip: `w-[28px] cursor-grab active:cursor-grabbing` with a single `1px --input-border` on its right edge — same hairline as the divider between the two stacked inputs, so the row reads as three flat sections inside one frame. The handle is intentionally not beveled: the dot grid itself carries the "grippable surface" cue, and a bevel around the strip would compete with the wrapper's own frame.
+- Dot grid: `grid grid-cols-2 gap-[3px]`, 8 dots × 4px each (2 wide, 4 tall).
+- Inputs stack: two stacked `<input>`s sharing the wrapper frame, separated by a 1px `--input-border` divider on the top input (the same hairline used on the handle's right edge).
+- Mini uppercase labels above each input use `text-[var(--sortable-label)]` (no opacity — per `0011`'s explicit-color principle).
+- Placeholders use `placeholder:text-[var(--sortable-placeholder)]`, not the kit's general `--placeholder-color`, because the Sortable's smaller framed inputs read better with a slightly lighter placeholder (one notch up the lightness scale from the standard input placeholder).
+
+**Dot color tokens (per `0010`):**
+- Light: `--sortable-dot: #e2c5a6;` `--sortable-shadow: #c7a47f;` — warm tans, dot one step above `--bevel-bg`, shadow one step below it.
+- Dark: `--sortable-dot: #393f5b;` `--sortable-shadow: #111527;` — cool blues, dot a few shades above bg, shadow near-black.
+
+**Label and placeholder tokens (per `0010`):**
+- Light: `--sortable-label: #3c332a;` (high-contrast warm dark brown for the mini caps), `--sortable-placeholder: #99826c;` (one notch lighter than the kit's `--placeholder-color` so the smaller framed inputs read evenly).
+- Dark: `--sortable-label: #edeef2;` (near off-white, slightly cooler than `--bevel-fg`), `--sortable-placeholder: #6f7695;` (one notch lighter than the standard `--placeholder-color`).
+
+**Shadow as L-border (not diagonal drop-shadow):**
+Each dot uses three stacked `box-shadow`s:
+- `1px 0 0 0 var(--sortable-shadow)` — right column.
+- `0 1px 0 0 var(--sortable-shadow)` — bottom row.
+- `1px 1px 0 0 var(--sortable-shadow)` — bottom-right corner.
+
+Result: the dot's 4×4 footprint expands to a 5×5 region with a 1px-thick L wrapping the right and bottom edges. Reads as a tactile sticker. The single-shadow diagonal drop variant (`1px 1px` alone) skipped the top-right and bottom-left corner pixels and read weaker.
+
+### Why dedicated tokens, not reused bevel/ctrl vars
+Tuning showed the sweet spot for both dot and shadow lives between the existing bevel and ctrl tokens — close to `--bevel-br` in dark mode, between `--bevel-hover-bg` and `--input-border` in light. Reusing any single existing token forced a compromise (too dim, too bright, or wrong saturation). Two new per-panel vars keep the dots tunable without disturbing other components.
+
+### Why 8 dots @ 4px
+Earlier rounds (6 dots and 2px dots) read sparse or too small — the handle didn't telegraph as a grippable surface. 2×4 at 4px gives a real texture inside the 28px strip without crowding.
+
+### Scope
+- Visual only. Reordering JS is out of scope; `cursor-grab` is the only affordance today. Wire drag/drop when a real consumer needs it.
+- Single variant. No rect/round axis yet: the wrapping container is rectangular. Follow `0013`'s pattern if a rounded version becomes useful.

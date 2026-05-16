@@ -20,4 +20,4 @@ One `## <topic>` heading per item, with bullets for:
 
 ---
 
-_(no items currently being brainstormed)_
+_(no open items right now)_

@@ -18,7 +18,6 @@ For each item: read Primer source, read Carbon source, add a `## NNNN — <compo
 - [ ] 04 — Checkbox + checkbox group
 - [ ] 05 — Radio + radio group
 - [ ] 06 — Toggle / boolean (styled `<input type="checkbox">`)
-- [ ] 07 — Button group / segmented control (styled radios, CSS-only)
 - [ ] 08 — Select / dropdown (single) — approach already locked in `HISTORY.md` 2026-04-27
 - [ ] 09 — Range / slider
 - [ ] 10 — Date
