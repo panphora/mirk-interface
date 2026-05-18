@@ -18,9 +18,9 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 
 | #    | Title |
 | ---- | ----- |
-| 0001 | [Theming foundations: Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side](#0001--theming-foundations-tailwind-v4-cdn-class-based-dark-mode-both-themes-shown-side-by-side) |
+| 0001 | [Theming foundations: Tailwind v4 CDN, `prefers-color-scheme` default + `.light` / `.dark` author override](#0001--theming-foundations-tailwind-v4-cdn-prefers-color-scheme-default--light--dark-author-override) |
 | 0002 | [Focus ring: 1px outline, 2px offset, `:focus-visible` only](#0002--focus-ring-1px-outline-2px-offset-focus-visible-only) |
-| 0003 | [`compare.html` loader: Vite dev server for Primer; Carbon stays on its CDN](#0003--comparehtml-loader-vite-dev-server-for-primer-carbon-stays-on-its-cdn) |
+| 0003 | [`compare.html` loader: Vite dev server — REMOVED](#0003--comparehtml-loader-vite-dev-server-for-primer-carbon-stays-on-its-cdn--removed) |
 | 0004 | [Font: Departure Mono, used uniformly across every mirk component](#0004--font-departure-mono-used-uniformly-across-every-mirk-component) |
 | 0005 | [Color values: no pure white, no pure black](#0005--color-values-no-pure-white-no-pure-black) |
 | 0006 | [Documentation: concise, information-dense](#0006--documentation-concise-information-dense) |
@@ -100,34 +100,38 @@ Things to revisit. Link to a follow-up `PLAN.md` item if appropriate.
 
 ## Decisions
 
-## 0001 — Theming foundations: Tailwind v4 CDN, class-based dark mode, both themes shown side-by-side
+## 0001 — Theming foundations: Tailwind v4 CDN, `prefers-color-scheme` default + `.light` / `.dark` author override
 
-- **Date:** 2026-04-27
+- **Date:** 2026-04-27, rewritten 2026-05-17
 
 ### Context
-Every mirk component must work in light and dark from day one. mirk is buildless, and the dev pages (`index.html`, `compare.html`) need to make parity issues impossible to miss while we're working on a component.
+mirk drops into other developers' pages. Some hosts have light-loving users, some dark-loving, some let visitors choose. The kit has to do the right thing on day one regardless of which scenario applies. The kit's own showcase still has to render both themes simultaneously so a regression in either mode is immediately visible.
 
 ### Decision (mirk)
-- **Tailwind:** v4 via the `@tailwindcss/browser` ESM build at `https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4`. No build step.
-- **Dark mode:** class-based, configured with `@custom-variant dark (&:where(.dark, .dark *))` inside a `<style type="text/tailwindcss">` block. Adding `class="dark"` to any wrapper switches everything inside it to dark.
-- **Theme display in `index.html` and `compare.html`:** every component is rendered **twice, side-by-side** — once in a light wrapper, once in a wrapper with `class="dark"`. There is no toggle. Showing both at once means a regression in either mode is immediately visible.
-- **Eventual end-user/demo behavior:** `prefers-color-scheme` is a *future* concern, deferred until we publish the demos. For now, mirk's own dev pages stay class-based.
-- **Color tokens:** stock Tailwind v4 defaults for now. Harvest a palette once 3–4 components reveal what we actually use.
+- **Tailwind:** v4 via the `@tailwindcss/browser` ESM build at `https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4`. No build step. Consumers without Tailwind on their host can load `https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css` instead (precompiled subset).
+- **Token cascade — four tiers, in source order:**
+  1. `:root { /* light token values */ }` — light is the default.
+  2. `@media (prefers-color-scheme: dark) { :root { /* dark values */ } }` — OS preference flips `:root` to dark.
+  3. `.light { /* light values */; background: var(--canvas); color: var(--fg); }` — author override; wins via specificity (`0,1,0` > `:root`'s `0,0,1`), beats the media query regardless of OS state.
+  4. `.dark { /* dark values */; background: var(--canvas); color: var(--fg); }` — same as above for dark.
+- **Consumer use:** no class anywhere = follow the visitor's OS preference (default behavior). `class="dark"` or `class="light"` on any wrapper (`<html>`, `<body>`, or a smaller subtree) forces that mode for everything inside.
+- **Showcase use (`index.html`):** the page wraps each side in `<section class="light">` and `<section class="dark">` so both render side-by-side regardless of OS preference. The dual-render rule is showcase-only now — not the production convention.
+- **Color tokens:** harvested palette already locked from the experiments. See the token block in `index.html` `<style>` for the full list (28 per-mode tokens including bevel-*, ctrl-*, toggle-*, sortable-*, slider-*).
 
 ### Why this over the alternatives
-- **Class-based over `prefers-color-scheme` (for the dev pages):** we have to drive both states from one page so we can compare them directly. A toggle works but is a tax — you forget to flip it, dark regressions go unnoticed for a sprint.
-- **Both-themes-shown over toggled:** zero cognitive overhead during development. Eyes naturally check both renders.
-- **CDN over a build step:** the project's whole premise is buildless copy-paste. mirk's own pages should embody it.
-- **Stock colors over a palette:** picking colors before they're earned tends to overspecify; harvest is cheaper than reshuffle.
+- **`prefers-color-scheme` default + class override:** respects the visitor's OS preference automatically (the right default for an embedded UI kit), while keeping a clean path for authors who want to enforce a specific mode for branding or product reasons. The old "class-only" rule meant the kit defaulted to its `:root` values forever unless the host added a class, which is the wrong default for the wider mirk audience.
+- **`.light` / `.dark` over `.panel-light` / `.panel-dark` (the old showcase names):** shorter, matches the convention everyone already uses elsewhere, and the `panel-` prefix added zero clarity once the kit shipped beyond the experimental showcase.
+- **Both-themes-shown stays for the showcase:** zero cognitive overhead during development; regression bugs in either mode are immediate. This belongs on the showcase page, not in the consumer's adoption path.
+- **CDN over a build step:** the kit's premise is buildless copy-paste. mirk's own page embodies it.
 
 ### Tradeoffs
-- The dev pages render every component twice (bigger DOM, but we're not optimizing dev pages).
-- Demo pages don't yet honor `prefers-color-scheme` — fine for a dev tool, would matter when hosted.
+- A consumer who forgets the body has `background: var(--canvas)` applied via `:root` may be surprised if they wanted to keep their own background; documented in the intro.
+- The cascade order matters — if a consumer puts `.light` / `.dark` in their own stylesheet *before* loading the kit's tokens, source order may flip the winner. Documented; in practice the drop-in pattern puts the kit's CSS first.
 
 ### Alternatives considered
-- **Single render + manual toggle.** Rejected: parity bugs become invisible until someone flips it. The whole point of dark+light first-class is catching those at write-time.
-- **Two separate files (`index.light.html`, `index.dark.html`).** Rejected: doubles file count, defeats side-by-side.
-- **`prefers-color-scheme` only, no class.** Rejected: can't display both states simultaneously.
+- **Class-only (the prior locked rule).** Rejected on revision — requires the host to know about and add the class, defaulting to "no theme applied" until they do. Bad default for an embedded kit.
+- **`prefers-color-scheme` only, no class.** Rejected — gives no override path; authors can't enforce a mode without per-page hacks.
+- **Two separate files (`index.light.html`, `index.dark.html`).** Rejected as before: doubles file count, defeats side-by-side.
 
 ---
 
@@ -161,39 +165,18 @@ Every interactive element in mirk needs a visible focus indicator. We want a sin
 
 ---
 
-## 0003 — `compare.html` loader: Vite dev server for Primer; Carbon stays on its CDN
+## 0003 — `compare.html` loader: Vite dev server for Primer; Carbon stays on its CDN — REMOVED
 
-- **Date:** 2026-04-27
+- **Date:** 2026-04-27, removed 2026-05-17
 
-### Context
-`compare.html` renders mirk · Primer · Carbon side-by-side, light + dark, so we can judge each mirk component against best-in-class peers as we build. Carbon ships first-class web components on a public CDN — those work buildless. Primer ships React + CSS modules; getting them to load buildless in a browser failed across three independent paths.
+### Status
+Removed. `compare.html`, `vite.config.js`, and the `vite` / `react` / `react-dom` / `@primer/react` / `@primer/primitives` devDependencies were deleted once v1 locked. The side-by-side comparison was design-time scaffolding for the original component build; the kit's 14 components are settled, so the tool no longer earns its build step. Primer and Carbon source remain cloned under `refs/` (gitignored) for v2 component research; we'll read them directly instead of rendering them. If v2 needs a live side-by-side view, we'll revisit the loader approach then.
 
-### Decision (mirk)
-- **`compare.html` requires a Vite dev server.** Run `npm run dev` to view it; Vite resolves the bare-specifier imports for `react`, `react-dom`, and `@primer/react` and pre-bundles Primer's CSS modules.
-- **Carbon stays on `1.www.s81c.com` CDN scripts** inside `compare.html` — no need to install or import; works either via the dev server or any static server.
-- **Scope is `compare.html` only.** `index.html` and the eventual mirk components stay 100% buildless (open in any browser, paste anywhere). Vite is a development convenience for *one* tool page, not part of mirk's authoring or distribution.
-- **Stack:** Vite 6, React 18.3, `@primer/react` 38.x. `package.json` is at the repo root; `node_modules/` is gitignored.
-
-### Why this over the alternatives
-- **Buildless attempts failed.** `esm.sh` 301-redirects Primer's `*.module.css.mjs` files to `text/css` URLs that Chrome's module loader rejects. The UMD bundle throws inside `styled-components` (peer-version mismatch). `lodash` and `lit` import fine via the same path, so the issue is specific to Primer.
-- **`@primer/css` would be lossy.** Primer's classic CSS package is the legacy GitHub.com style, not the modern Primer React design — it'd be a visual approximation, not a real reference.
-- **Iframing Primer's Storybook leaks Storybook chrome** into the comparison, and inter-frame styling is fragile.
-- **Vite gets us the real Primer**, costs us a one-line dev command, and keeps everything else buildless.
-
-### Tradeoffs
-- `compare.html` no longer "just opens in a browser" — you need `npm run dev`. Acceptable because it's an internal dev tool, not something we ship.
-- Adds a `package.json` and `node_modules/` to the repo. Both are gitignored / small commitments and don't affect mirk consumers.
-- If Primer drops support for React 18, we'll need to bump.
-
-### Alternatives considered
-- **A. Pure buildless via `esm.sh`.** Rejected — CSS-module redirects break Chrome's module loader. See `HISTORY.md` 2026-04-27 for the full investigation.
-- **B. UMD bundle (`browser.umd.js` + React UMD + styled-components UMD).** Rejected — runtime error in styled-components, likely a peer-version mismatch in Primer's bundle.
-- **C. `@primer/css` (legacy CSS-only).** Rejected — visually different from modern Primer React; not a fair comparison.
-- **D. Iframe Primer Storybook stories.** Rejected — Storybook chrome contaminates the comparison; inter-frame coordination is fragile.
-- **E. Pre-build a vendor bundle (`vendor/primer.bundle.js`) and serve `compare.html` via any static server.** Considered. Cleaner in some ways (the page itself stays static), but you still need a build step somewhere; might as well make it the dev server since live reload is useful. Revisit if we want to ship `compare.html` as a hosted demo.
-
-### Open questions
-- Do we eventually want a `vite build` config that produces a single hostable `dist/compare.html` for sharing? Not needed today.
+### Why the removal
+- The kit shipped v1 without further visual-comparison work being needed.
+- Vite + React + Primer added 41 transitive packages and a `dev` script consumers had no reason to touch.
+- Keeping a half-used build tool around invites confusion about whether the kit itself needs a build step (it doesn't — `index.html` stays buildless).
+- The original buildless-attempts research (esm.sh CSS-module redirects, UMD peer-version mismatches) stays recorded in `HISTORY.md` so a future revisit doesn't redo that investigation.
 
 ---
 

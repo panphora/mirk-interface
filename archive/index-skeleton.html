@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mirk</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style type="text/tailwindcss">
+    @custom-variant dark (&:where(.dark, .dark *));
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+  <header class="border-b border-gray-200 px-6 py-4">
+    <h1 class="text-base font-semibold">mirk</h1>
+    <p class="text-sm text-gray-600">A form-focused UI kit. Each component is rendered in light and dark side-by-side.</p>
+  </header>
+
+  <main class="px-6 py-8 space-y-12">
+    <template id="component-template">
+      <!--
+        Component template. Copy this <section> per component. Both halves use
+        the exact same markup; only the outer wrapper class differs ("" vs
+        "dark"). The dark variant is wired up via @custom-variant above.
+      -->
+      <section id="NN-component-id" class="space-y-3">
+        <h2 class="text-sm font-medium text-gray-500">NN — Component name</h2>
+        <div class="grid grid-cols-2 border border-gray-200 rounded-md overflow-hidden">
+          <div class="bg-white text-gray-900 p-6">
+            mirk component HTML here
+          </div>
+          <div class="dark bg-gray-950 text-gray-100 p-6">
+            exact same component HTML, copy-pasted
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <p class="text-sm text-gray-500 italic">No components yet. First one drops here.</p>
+  </main>
+</body>
+</html>

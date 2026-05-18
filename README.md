@@ -1,115 +1,118 @@
-# mirk-ui-kit
+# mirk
 
-A form-focused UI kit (**mirk**) built from scratch by studying the best ideas in two reference design systems and writing our own opinionated take.
+A form-focused HTML/CSS UI kit. Fourteen components in plain Tailwind classes and one tiny shared script. No build step, no React, no web components. Published as `mirkui` on npm.
 
-## Getting started — read in this order
+Live showcase: open `index.html` in any browser or static server.
 
-1. **`README.md`** (you are here) — what mirk is, the locked rules, repo layout.
-2. **`HISTORY.md`** — append-only log of every decision and *why* it was made. The audit trail; never overwritten. Read this to understand the reasoning behind the rules below.
-3. **`PLAN.md`** — current task state: what's done, what's next, open questions, deferred items.
-4. **`UNDECIDED.md`** — items currently being brainstormed. Resolved items move out into `DECISIONS.md` + `HISTORY.md`.
-5. **`DECISIONS.md`** — current accepted decisions per component/topic. Living doc; edited freely as choices evolve. **Only major UX choices** belong here (what a component is, how it behaves) — not individual CSS values, which iterate in `experiments/experiments.html` and live in the code. Format, rules, and scope at the top of the file.
+## Use mirk on your page
 
-## Writing style
+1. Load **Tailwind v4** (CDN one-liner is fine).
+2. Paste the **font + tokens** block (defines `@font-face` + the four-tier theme cascade).
+3. Include **mirk.js** once at the bottom of your page.
+4. Copy any component snippet from the showcase, paste it where you need it.
 
-Every md file in this repo: **concise, information-dense**. Bullets over paragraphs. Only the *why* that isn't derivable from code. Lead with the rule, then one line of context. See `DECISIONS.md` 0006.
+All copy-pasteable. The kit follows the visitor's OS theme by default; `class="dark"` or `class="light"` on any wrapper forces a mode.
 
-## Reference systems
+### Install paths
 
-| Column | System  | Source                                          |
-| ------ | ------- | ----------------------------------------------- |
-| 1      | Primer  | https://primer.style — `primer/react`           |
-| 2      | Carbon  | https://carbondesignsystem.com — `carbon-design-system/carbon` |
-| 3      | mirk    | this repo                                       |
+**Recommended — Tailwind v4 + drop-in:**
 
-The showcase app renders all three side-by-side in a **3-column layout** so each component can be visually compared against its Primer and Carbon counterparts as we build it.
+```html
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style>
+  @font-face { font-family: 'Departure Mono'; src: url('https://cdn.jsdelivr.net/npm/mirkui@1.0.0/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2'); }
+  body { font-family: 'Departure Mono', ui-monospace, monospace; }
+  /* paste the :root / @media / .light / .dark token block from index.html */
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"></script>
+```
 
-## Approach
+**Alternative — precompiled CSS (no Tailwind required):**
 
-- Build each component **from scratch, one at a time**.
-- For each component: read Primer's source, read Carbon's source, then either prototype in **`experiments/experiments.html`** (the current working file — light + dark panels side-by-side with the locked palette) and decide as it settles, OR write the decision first when the contract should land before code. Record only **major UX choices** in `DECISIONS.md` (not individual CSS values), and graduate the locked version into `index.html`.
-- Both **light and dark mode** are first-class — every component must work in both from day one.
-- Reference repos live in `refs/` and are **read-only** — never edit them.
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css">
+<script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"></script>
+```
 
-## Component scope
+Trade-off: `mirk.css` ships a frozen Tailwind subset (only the classes the kit uses). You can't tweak component classes freely with arbitrary Tailwind utilities — the recommended path keeps that flexibility.
 
-Form components only, in five groups:
+## What ships in v1
 
-**Text** — single-line text · textarea · markdown · rich text (WYSIWYG, configurable toolbar) · code editor (syntax-highlighted, language-pickable)
+**Components (14):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable. Each in its supported variants (rect / round, sizes where applicable).
 
-**Numeric & boolean** — number / integer (min/max/step) · range / slider · toggle / boolean
+**Runtime (`mirk.js`):** number stepper, slider value bridge, file picker filename, image preview, tags add/remove, copy-button handler. Idempotent. Drop in once.
 
-**Choice** — select (single) · multi-select · radio · checkboxes · tags
+**Tokens (`mirk.css` or inline):** 28 per-mode CSS custom properties driving every color in the kit.
 
-**Date & time** — date · time · datetime · date range
+**Font:** Departure Mono (SIL OFL), served via jsDelivr.
 
-**Media** — image · file picker
+## What's NOT in v1
 
-## Locked technical choices
+Time, datetime, date range. Markdown, rich text, code editor. Multi-select. Planned for v2 — see `PLAN.md`.
 
-### Authoring model — pure HTML + CSS, plugins where native isn't enough
-
-mirk components are **copy-pasteable plain HTML/CSS/Tailwind snippets**. The default is native form elements + CSS. We do not write hand-rolled JS components, and we do not use web components.
-
-The hard rule: **`document.documentElement.outerHTML` must round-trip a component's current state.** Native elements satisfy this for free; that's a major reason we're sticking to them.
-
-Practical consequences:
-
-- **Default to native form elements** (`<input>`, `<select>`, `<textarea>`, `<input type="date">`, `<input type="file">`, etc.) — they ship with accessibility, keyboard handling, and serialization for free.
-- **Use CSS-only state** via `:checked`, `:focus`, `:focus-within`, `:has()`, `:placeholder-shown`, `:user-invalid`, etc. Example: a segmented control is just radio buttons + sibling-selector styling — no JS at all.
-- **No DIY JavaScript by default.** Native HTML wherever it reaches a respectable result. Two scoped exceptions: third-party engines for primitives natives can't deliver at all (rich text via [overtype.dev](https://overtype.dev), code editor TBD), and small native-augmentation scripts named in `DECISIONS.md` 0014 (number stepper, slider visual bridge, date range cross-validation, file picker filename, image preview, tags add/remove). We never write full JS components.
-- **No web components.** Same reason — we want copy-paste HTML, not custom-element registrations the user has to wire up.
-- **No build step required to use a mirk component.** A user pastes the HTML into any project, includes Tailwind, and it works. A `<script>` tag is included alongside only when a plugin is unavoidable, with a clear CDN reference.
-
-### Pages
-
-mirk components all live in a single **`index.html`** at the repo root, with the Tailwind v4 CDN included. There aren't many of them and they fit comfortably in one file together. `index.html` is fully buildless — open it from `file://` or any static server.
-
-A separate **`compare.html`** at the root is the side-by-side development view — mirk components rendered next to their Primer (`@primer/react`) and Carbon (`@carbon/web-components`) counterparts so we can judge each one against best-in-class peers as we build. **`compare.html` is the one exception to the buildless rule:** it's served by a tiny Vite dev server (`npm run dev`) so Vite can resolve Primer's React + CSS-module imports. Carbon stays on its own CDN scripts inside the same page. See `DECISIONS.md` 0003 for why and what we tried first.
-
-### Rich text engine
-
-[**overtype.dev**](https://overtype.dev) — the foundation of mirk's rich text component. It's a markdown editor that keeps its state in a `<textarea>`, which fits the serialization rule cleanly. Detailed reasoning recorded in `decisions/` when that component is built.
-
-## Decision log — non-negotiable
-
-Every meaningful decision is captured in two places:
-
-- **`DECISIONS.md`** — current accepted decision for each component/topic. Edited freely as decisions evolve. Format, rules, and template live at the top of that file.
-- **`HISTORY.md`** — append-only log of every decision and *why*, chronological. **Nothing is ever removed or rewritten.** Even when a decision in `DECISIONS.md` changes, the original `HISTORY.md` entry stays put and a new entry is added. This is the audit trail.
-
-Why so strict:
-
-- We need to remember **why** we did something months from now so we don't accidentally re-litigate or undo it for the wrong reasons.
-- We need a paper trail of "we considered X and rejected it because Y" so we don't keep rediscovering the same dead ends.
-- We need to see **how** a decision evolved if we changed our minds.
-
-Items still being brainstormed live in **`UNDECIDED.md`**. When resolved, they're added to `DECISIONS.md`, logged in `HISTORY.md`, and removed from `UNDECIDED.md`.
-
-## Experiments and artifacts
-
-Two folders track exploratory work:
-
-- **`experiments/experiments.html`** — **the current working file.** New components are prototyped here first (light + dark panels side-by-side with the locked palette and CSS vars) before graduating into `index.html`.
-- **`experiments/`** — other active UI experiments. Sketches, alternate takes, things we're trying before committing to a direction.
-- **`artifacts/`** — graduated experiments. When an experiment is worth keeping around so other files can reference it (a pattern, a study, a reference render), it moves here. Artifacts aren't necessarily final — they're just things we want to be able to point at.
-
-## Repo layout
+## Repo structure
 
 ```
 mirk-ui-kit/
-├── README.md               # this file — affirmed project rules
-├── HISTORY.md              # append-only log of every decision + why (portable lessons-learned)
-├── PLAN.md                 # task tracker (not done / done)
-├── UNDECIDED.md            # items currently being brainstormed
-├── DECISIONS.md            # current accepted decisions per component/topic (living doc)
-├── index.html              # all mirk components, Tailwind v4 via CDN — buildless
-├── compare.html            # side-by-side: mirk vs Primer vs Carbon — needs `npm run dev`
-├── package.json            # Vite + React + @primer/react — only for compare.html
-├── vite.config.js          # minimal Vite config (opens compare.html)
-├── experiments/            # active UI experiments
-├── artifacts/              # graduated experiments, kept for reference
-└── refs/                   # read-only upstream sources
-    ├── primer/             # cloned: primer/react
-    └── carbon/             # cloned: carbon-design-system/carbon
+├── README.md               # this file
+├── index.html              # the v1 showcase + the kit's drop-in instructions (one self-contained page)
+├── mirk.js                 # shared runtime (idempotent, native-only)
+├── mirk.css                # precompiled CSS (alternative to Tailwind v4)
+├── mirk-input.css          # source for mirk.css (run `npm run build:css` to regenerate)
+├── fonts/DepartureMono-1.500/   # the kit's font (SIL OFL)
+├── icons/svg/              # 800 SVG icons (referenced by the icons showcase; not part of the kit package)
+├── package.json            # npm publish config (name: mirkui)
+├── PLAN.md                 # task tracker (v1 done; v2 listed)
+├── DECISIONS.md            # current accepted decisions per component/topic
+├── HISTORY.md              # append-only log of every decision + why
+├── UNDECIDED.md            # active brainstorming
+├── PLAN-V1-UI-KIT.md       # the v1 implementation plan (kept for reference)
+├── experiments/            # active UI experiments (now empty; experiments.html graduated to index.html)
+├── archive/                # graduated experiments + the pre-v1 index.html skeleton
+└── refs/                   # read-only upstream sources (Primer, Carbon)
+```
+
+## Reading order
+
+1. **`README.md`** (you are here)
+2. **`index.html`** — open it. The showcase IS the documentation.
+3. **`HISTORY.md`** — append-only log of every decision and *why*. Read for design context.
+4. **`DECISIONS.md`** — current accepted decisions per component/topic.
+5. **`PLAN.md`** — what's done, what's next.
+
+## Writing style
+
+Every md file: **concise, information-dense**. Bullets over paragraphs. Only the *why* that isn't derivable from code. Lead with the rule, then one line of context. See `DECISIONS.md` 0006.
+
+## Reference systems (used during design)
+
+| System  | Source                                          |
+| ------- | ----------------------------------------------- |
+| Primer  | https://primer.style — `primer/react`           |
+| Carbon  | https://carbondesignsystem.com — `carbon-design-system/carbon` |
+
+Both repos are cloned under `refs/` (gitignored) and read while designing each component. They aren't part of the kit; the side-by-side `compare.html` dev tool that used to render mirk · Primer · Carbon together was removed once v1 locked.
+
+## Locked technical choices
+
+mirk components are **copy-pasteable plain HTML/CSS/Tailwind snippets**. Native form elements + CSS by default. Hard rule: `document.documentElement.outerHTML` must round-trip a component's current state.
+
+- **Default to native form elements** for a11y, keyboard handling, and serialization.
+- **CSS-only state** via `:checked`, `:focus`, `:focus-within`, `:has()`, `:placeholder-shown`, `:user-invalid`, etc.
+- **No DIY JavaScript by default.** Named exceptions in `DECISIONS.md` 0014 (number stepper, slider visual bridge, file picker filename, image preview, tags add/remove, copy button).
+- **No web components.**
+- **No build step required to use a mirk component.** A consumer pastes the HTML into any project, includes mirk.js + tokens, and it works.
+
+## Decision log — non-negotiable
+
+- **`DECISIONS.md`** — current accepted decision per component/topic. Edited freely as decisions evolve.
+- **`HISTORY.md`** — append-only log of every decision and *why*, chronological. **Nothing is ever removed or rewritten.** Even when a decision in `DECISIONS.md` changes, the original `HISTORY.md` entry stays and a new entry is added.
+- **`UNDECIDED.md`** — active brainstorming. Resolved items move to `DECISIONS.md` + `HISTORY.md`.
+
+## Develop / publish
+
+```
+npm install                # installs the Tailwind CLI used by build:css
+npm run build:css          # regenerates mirk.css from index.html + mirk-input.css
+npm publish                # publishes mirkui to npm (only the "files" listed in package.json)
 ```

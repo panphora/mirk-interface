@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@source "./index.html";
+
+@layer base {
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('https://cdn.jsdelivr.net/npm/mirkui@1.0.0/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    font-family: 'Departure Mono', ui-monospace, "Menlo", monospace;
+  }
+
+  pre, code, kbd, samp {
+    font-family: inherit;
+  }
+
+  :root {
+    --canvas: #F7F2EA;
+    --bg: #F7F2EA;
+    --fg: #15120e;
+    --accent: #efefe5;
+    --destructive: #d4183d;
+    --focus-offset: 2px;
+    --focus-color: #BBA288;
+    --bevel-bg: #e9d3bd;
+    --bevel-fg: #15120e;
+    --bevel-tl: #f3ddc7;
+    --bevel-br: #c2ad95;
+    --bevel-hover-bg: #dfc9b3;
+    --pill-inner-top: #efdac7;
+    --input-border: #957E65;
+    --placeholder-color: #7F7366;
+    --ctrl-bg: #8C7660;
+    --toggle-bg: #D7C5AE;
+    --toggle-hi: #E5D3BB;
+    --toggle-lo: #BFAA92;
+    --mark-fg: #3F3225;
+    --sortable-dot: #e2c5a6;
+    --sortable-shadow: #c7a47f;
+    --sortable-label: #231e18;
+    --sortable-placeholder: #99826c;
+    --slider-fill: #e9d3bd;
+    --slider-nub-bg: #D7C5AE;
+    --slider-nub-hi: #E5D3BB;
+    --slider-nub-lo: #BFAA92;
+    background: var(--canvas);
+    color: var(--fg);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --canvas: #0B0C13;
+      --bg: #1D1F2F;
+      --fg: #F6F7F9;
+      --accent: #232639;
+      --destructive: #ff5566;
+      --focus-offset: 3px;
+      --focus-color: #5A607F;
+      --bevel-bg: #1D1F2F;
+      --bevel-fg: #F6F7F9;
+      --bevel-tl: #474C65;
+      --bevel-br: #131725;
+      --bevel-hover-bg: #232639;
+      --pill-inner-top: #232639;
+      --input-border: #6E738E;
+      --placeholder-color: #545973;
+      --ctrl-bg: #5F6582;
+      --toggle-bg: #7A809F;
+      --toggle-hi: #979CB4;
+      --toggle-lo: #5E6587;
+      --mark-fg: #E1E3EA;
+      --sortable-dot: #393f5b;
+      --sortable-shadow: #111527;
+      --sortable-label: #edeef2;
+      --sortable-placeholder: #6f7695;
+      --slider-fill: #232639;
+      --slider-nub-bg: #6B7294;
+      --slider-nub-hi: #898EA9;
+      --slider-nub-lo: #545A78;
+    }
+  }
+
+  .light {
+    --canvas: #F7F2EA;
+    --bg: #F7F2EA;
+    --fg: #15120e;
+    --accent: #efefe5;
+    --destructive: #d4183d;
+    --focus-offset: 2px;
+    --focus-color: #BBA288;
+    --bevel-bg: #e9d3bd;
+    --bevel-fg: #15120e;
+    --bevel-tl: #f3ddc7;
+    --bevel-br: #c2ad95;
+    --bevel-hover-bg: #dfc9b3;
+    --pill-inner-top: #efdac7;
+    --input-border: #957E65;
+    --placeholder-color: #7F7366;
+    --ctrl-bg: #8C7660;
+    --toggle-bg: #D7C5AE;
+    --toggle-hi: #E5D3BB;
+    --toggle-lo: #BFAA92;
+    --mark-fg: #3F3225;
+    --sortable-dot: #e2c5a6;
+    --sortable-shadow: #c7a47f;
+    --sortable-label: #231e18;
+    --sortable-placeholder: #99826c;
+    --slider-fill: #e9d3bd;
+    --slider-nub-bg: #D7C5AE;
+    --slider-nub-hi: #E5D3BB;
+    --slider-nub-lo: #BFAA92;
+    background: var(--canvas);
+    color: var(--fg);
+  }
+
+  .dark {
+    --canvas: #0B0C13;
+    --bg: #1D1F2F;
+    --fg: #F6F7F9;
+    --accent: #232639;
+    --destructive: #ff5566;
+    --focus-offset: 3px;
+    --focus-color: #5A607F;
+    --bevel-bg: #1D1F2F;
+    --bevel-fg: #F6F7F9;
+    --bevel-tl: #474C65;
+    --bevel-br: #131725;
+    --bevel-hover-bg: #232639;
+    --pill-inner-top: #232639;
+    --input-border: #6E738E;
+    --placeholder-color: #545973;
+    --ctrl-bg: #5F6582;
+    --toggle-bg: #7A809F;
+    --toggle-hi: #979CB4;
+    --toggle-lo: #5E6587;
+    --mark-fg: #E1E3EA;
+    --sortable-dot: #393f5b;
+    --sortable-shadow: #111527;
+    --sortable-label: #edeef2;
+    --sortable-placeholder: #6f7695;
+    --slider-fill: #232639;
+    --slider-nub-bg: #6B7294;
+    --slider-nub-hi: #898EA9;
+    --slider-nub-lo: #545A78;
+    background: var(--canvas);
+    color: var(--fg);
+  }
+}
