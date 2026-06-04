@@ -17,13 +17,13 @@ Two ways to load mirk. The drop-in path is primary and needs no build and no Tai
 Add these two tags once, then paste any component snippet where you need it.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface/mirk.css">
-<script src="https://cdn.jsdelivr.net/npm/mirk-interface/mirk.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css">
+<script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"></script>
 ```
 
 `mirk.css` ships the font, the 28 theme tokens, and all fourteen components, and it renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page, anywhere you just want components without a toolchain.
 
-Those URLs are served straight from npm by jsDelivr, no setup. They resolve to the latest version. To lock one, pin it in either URL: `mirk-interface@2` (latest 2.x) or `mirk-interface@2.0.0` (exact). The same files are on unpkg too: `https://unpkg.com/mirk-interface/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirk-interface/fonts/...` on the CDN.
+Those URLs are served straight from npm by jsDelivr, no setup. The `@2` pin tracks the latest 2.x release, so you get patches and minor updates but never a breaking major. Pin exactly with `mirk-interface@2.0.0` to freeze a version, or drop the pin (`.../npm/mirk-interface/mirk.css`) to ride the newest major. The same files are on unpkg too: `https://unpkg.com/mirk-interface@2/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirk-interface@2/fonts/...` on the CDN.
 
 ### Optional: Tailwind, to override mirk with utilities
 
