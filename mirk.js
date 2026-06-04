@@ -1,189 +1,145 @@
 /*
- * mirk.js — runtime for the mirk UI kit (https://github.com/davidmiranda/mirk-ui-kit)
- * Pure native APIs, no dependencies. Safe to include twice.
- * Drop this script in once at the bottom of your page.
+ * mirk.js — the delegated runtime for the mirk UI kit, v2.
+ * https://github.com/davidmiranda/mirk-ui-kit
+ *
+ * One listener per interaction on `document`. No init(), no MutationObserver:
+ * every current AND future element is handled, so injected / re-rendered /
+ * saved-and-reopened markup just works. Idempotent; safe to include twice.
+ *
+ * The markup carries the initial state — chips are real DOM, the slider fill is
+ * an inline --mirk-value, native inputs hold their own value — so the page is
+ * correct before this script runs. JS only enhances the transitions.
  */
 (function () {
-  if (window.__mirk_init) return;
-  window.__mirk_init = true;
+  if (window.__mirk) return;
+  window.__mirk = true;
 
-  function init() {
-    // Number stepper — custom ▲▼ buttons fire stepUp / stepDown on the input.
-    document.querySelectorAll('[data-number] [data-step]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = btn.closest('[data-number]').querySelector('input[type=number]');
-        if (btn.dataset.step === 'up') input.stepUp(); else input.stepDown();
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-    });
+  // Number stepper — bevel buttons drive the native input.
+  document.addEventListener("click", (e) => {
+    const step = e.target.closest(".mirk-number__step");
+    if (!step) return;
+    const input = step.closest(".mirk-number").querySelector("input[type=number]");
+    if (!input) return;
+    step.dataset.step === "up" ? input.stepUp() : input.stepDown();
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
 
-    // Slider — mirror the native range value into a --value CSS var on the wrapper.
-    document.querySelectorAll('[data-slider]').forEach(wrapper => {
-      const input = wrapper.querySelector('[data-slider-input]');
-      if (!input) return;
-      const update = () => wrapper.style.setProperty('--value', `${input.value}%`);
-      input.addEventListener('input', update);
-      update();
-    });
+  // Slider — mirror the value into --mirk-value on the wrapper (fill width + nub
+  // left both read it). The markup ships an inline --mirk-value matching value=,
+  // so the fill is correct before this runs; this only handles dragging.
+  document.addEventListener("input", (e) => {
+    const input = e.target.closest(".mirk-slider__input");
+    if (!input) return;
+    input.closest(".mirk-slider").style.setProperty("--mirk-value", `${input.value}%`);
+  });
 
-    // File picker — display the chosen filename next to / inside the button.
-    document.querySelectorAll('[data-file-picker]').forEach(picker => {
-      const input = picker.querySelector('[data-file-input]');
-      const display = picker.querySelector('[data-filename]');
-      if (!input || !display) return;
-      input.addEventListener('change', () => {
-        if (input.files.length > 0) {
-          display.textContent = input.files[0].name;
-          display.classList.remove('text-[var(--placeholder-color)]');
-          display.classList.add('text-[var(--bevel-fg)]');
-        } else {
-          display.textContent = 'No file chosen';
-          display.classList.remove('text-[var(--bevel-fg)]');
-          display.classList.add('text-[var(--placeholder-color)]');
-        }
-      });
-    });
+  // File picker — show the chosen filename (state lives in the input's files).
+  document.addEventListener("change", (e) => {
+    const input = e.target.closest(".mirk-file__input");
+    if (!input) return;
+    const name = input.closest(".mirk-file").querySelector(".mirk-file__name");
+    if (!name) return;
+    if (input.files.length) {
+      name.textContent = input.files[0].name;
+      name.dataset.filled = "";
+    } else {
+      name.textContent = "No file chosen";
+      delete name.dataset.filled;
+    }
+  });
 
-    // Image input — FileReader thumbnail preview.
-    document.querySelectorAll('[data-image-picker]').forEach(picker => {
-      const input = picker.querySelector('[data-image-input]');
-      const preview = picker.querySelector('[data-image-preview]');
-      const placeholder = picker.querySelector('[data-image-placeholder]');
-      if (!input || !preview) return;
-      input.addEventListener('change', () => {
-        if (input.files.length > 0) {
-          const reader = new FileReader();
-          reader.onload = e => {
-            preview.src = e.target.result;
-            preview.classList.remove('hidden');
-            if (placeholder) placeholder.classList.add('hidden');
-          };
-          reader.readAsDataURL(input.files[0]);
-        }
-      });
-    });
+  // Image input — FileReader thumbnail preview.
+  document.addEventListener("change", (e) => {
+    const input = e.target.closest(".mirk-image__input");
+    if (!input || !input.files.length) return;
+    const root = input.closest(".mirk-image");
+    const preview = root.querySelector(".mirk-image__preview");
+    if (!preview) return;
+    const placeholder = root.querySelector(".mirk-image__placeholder");
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      preview.src = ev.target.result;
+      preview.removeAttribute("hidden");
+      if (placeholder) placeholder.setAttribute("hidden", "");
+    };
+    reader.readAsDataURL(input.files[0]);
+  });
 
-    // Auto-add a copy button to any [data-copy] element that doesn't have one.
-    // Lets showcase pages mark a section copyable with no per-instance markup.
-    document.querySelectorAll('[data-copy]').forEach(el => {
-      if (el.querySelector('[data-copy-btn]')) return;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.dataset.copyBtn = '';
-      btn.className = 'text-[10px] uppercase tracking-[0.2em] self-start mt-2 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer';
-      btn.textContent = 'copy';
-      el.appendChild(btn);
-    });
+  // Tags — Enter / comma adds a real chip, × or Backspace-on-empty removes one.
+  // Chips are DOM elements (and carry a hidden input), so outerHTML keeps them.
+  function makeChip(value, round) {
+    const text = document.createElement("span");
+    text.textContent = value;
+    const hidden = document.createElement("input");
+    hidden.type = "hidden"; hidden.name = "tags[]"; hidden.value = value;
+    const remove = document.createElement("button");
+    remove.type = "button"; remove.className = "mirk-tags__remove"; remove.textContent = "×";
 
-    // Tags — Enter or comma adds, Backspace on empty removes last, × removes chip.
-    document.querySelectorAll('[data-tags]').forEach(tags => {
-      const input = tags.querySelector('[data-tag-input]');
-      const variant = tags.dataset.tagsVariant || 'rect';
-      if (!input) return;
-
-      const makeChip = (value) => {
-        const chip = document.createElement('span');
-        if (variant === 'round') {
-          chip.className = 'inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal';
-          const inner = document.createElement('span');
-          inner.className = 'inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]';
-          const text = document.createElement('span');
-          text.textContent = value;
-          const hidden = document.createElement('input');
-          hidden.type = 'hidden';
-          hidden.name = 'tags[]';
-          hidden.value = value;
-          const close = document.createElement('button');
-          close.type = 'button';
-          close.dataset.tagRemove = '';
-          close.className = 'cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none';
-          close.textContent = '×';
-          inner.append(text, hidden, close);
-          chip.append(inner);
-        } else {
-          chip.className = 'inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal';
-          const text = document.createElement('span');
-          text.textContent = value;
-          const hidden = document.createElement('input');
-          hidden.type = 'hidden';
-          hidden.name = 'tags[]';
-          hidden.value = value;
-          const close = document.createElement('button');
-          close.type = 'button';
-          close.dataset.tagRemove = '';
-          close.className = 'cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none';
-          close.textContent = '×';
-          chip.append(text, hidden, close);
-        }
-        return chip;
-      };
-
-      input.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ',') {
-          const value = input.value.trim();
-          if (value) {
-            e.preventDefault();
-            tags.insertBefore(makeChip(value), input);
-            input.value = '';
-          }
-        } else if (e.key === 'Backspace' && !input.value) {
-          const chips = tags.querySelectorAll(':scope > span');
-          if (chips.length) chips[chips.length - 1].remove();
-        }
-      });
-
-      tags.addEventListener('click', e => {
-        const remove = e.target.closest('[data-tag-remove]');
-        if (remove) {
-          let walker = remove.closest('span');
-          while (walker && walker.parentElement !== tags) walker = walker.parentElement;
-          if (walker) walker.remove();
-          return;
-        }
-        if (e.target === tags) input.focus();
-      });
-    });
+    const chip = document.createElement("span");
+    chip.className = "mirk-tags__chip";
+    if (round) {
+      const inner = document.createElement("span");
+      inner.className = "mirk-tags__chip-inner";
+      inner.append(text, hidden, remove);
+      chip.append(inner);
+    } else {
+      chip.append(text, hidden, remove);
+    }
+    return chip;
   }
 
+  document.addEventListener("keydown", (e) => {
+    const input = e.target.closest(".mirk-tags__input");
+    if (!input) return;
+    const tags = input.closest(".mirk-tags");
+    if (e.key === "Enter" || e.key === ",") {
+      const value = input.value.trim();
+      if (!value) return;
+      e.preventDefault();
+      input.before(makeChip(value, tags.classList.contains("mirk-tags--round")));
+      input.value = "";
+    } else if (e.key === "Backspace" && !input.value) {
+      const chips = tags.querySelectorAll(".mirk-tags__chip");
+      chips[chips.length - 1]?.remove();
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const remove = e.target.closest(".mirk-tags__remove");
+    if (remove) { remove.closest(".mirk-tags__chip").remove(); return; }
+    const tags = e.target.closest(".mirk-tags");
+    if (tags && e.target === tags) tags.querySelector(".mirk-tags__input")?.focus();
+  });
+
   // Copy button — delegated so dynamically-added buttons work too.
-  // [data-copy]              copies innerHTML (default — component markup).
-  // [data-copy="text"]       copies textContent (for <pre>/<code> blocks
-  //                          whose displayed source contains HTML that must
-  //                          paste as raw characters, not re-escaped entities).
-  document.addEventListener('click', e => {
-    const btn = e.target.closest('[data-copy-btn]');
+  // [data-copy]         copies the component's innerHTML (clean markup).
+  // [data-copy="text"]  copies textContent (for <pre>/<code> source blocks
+  //                     whose displayed HTML must paste as raw characters).
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-copy-btn]");
     if (!btn) return;
-    const copyable = btn.closest('[data-copy]');
+    const copyable = btn.closest("[data-copy]");
     if (!copyable) return;
 
     const clone = copyable.cloneNode(true);
-    clone.querySelectorAll('[data-copy-btn]').forEach(b => b.remove());
+    clone.querySelectorAll("[data-copy-btn]").forEach((b) => b.remove());
 
-    const mode = copyable.getAttribute('data-copy');
-    const payload = mode === 'text'
-      ? clone.textContent.replace(/^\s+|\s+$/g, '')
+    const mode = copyable.getAttribute("data-copy");
+    const payload = mode === "text"
+      ? clone.textContent.replace(/^\s+|\s+$/g, "")
       : clone.innerHTML
-          .replace(/\s+data-copy(="[^"]*")?/g, '')
-          .replace(/^\s*\n/gm, '')
+          .replace(/\s+data-copy(="[^"]*")?/g, "")
+          .replace(/^\s*\n/gm, "")
           .trim();
 
     navigator.clipboard.writeText(payload).then(() => {
       const original = btn.textContent;
-      btn.textContent = 'copied';
-      btn.dataset.copied = '';
-      setTimeout(() => {
-        btn.textContent = original;
-        delete btn.dataset.copied;
-      }, 1200);
+      btn.textContent = "copied";
+      btn.dataset.copied = "";
+      setTimeout(() => { btn.textContent = original; delete btn.dataset.copied; }, 1200);
     }).catch(() => {
-      btn.textContent = 'error';
-      setTimeout(() => { btn.textContent = 'copy'; }, 1200);
+      btn.textContent = "error";
+      setTimeout(() => { btn.textContent = "copy"; }, 1200);
     });
   });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
 })();

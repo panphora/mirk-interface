@@ -4,154 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>mirk — a form-focused UI kit</title>
+<!-- Pin the cascade-layer order so utilities always beat mirk's components. -->
+<style>@layer theme, base, components, utilities;</style>
+<!-- Tailwind is OPTIONAL — used here only for the page layout + showcase chrome. -->
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<style>
-  @font-face {
-    font-family: 'Departure Mono';
-    src: url('fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
-    font-weight: 400; font-style: normal; font-display: swap;
-  }
-
-  html, body { margin: 0; padding: 0; }
-  body { font-family: 'Departure Mono', ui-monospace, "Menlo", monospace; }
-  /* Tailwind v4 preflight sets <pre>/<code>/<kbd>/<samp> to ui-monospace — override so they inherit Departure Mono. */
-  pre, code, kbd, samp { font-family: inherit; }
-
-  /* Light is the default. */
-  :root {
-    --canvas: #F7F2EA;
-    --bg: #F7F2EA;
-    --fg: #15120e;
-    --accent: #efefe5;
-    --destructive: #d4183d;
-    --focus-offset: 2px;
-    --focus-color: #BBA288;
-    --bevel-bg: #e9d3bd;
-    --bevel-fg: #15120e;
-    --bevel-tl: #f3ddc7;
-    --bevel-br: #c2ad95;
-    --bevel-hover-bg: #dfc9b3;
-    --pill-inner-top: #efdac7;
-    --input-border: #957E65;
-    --placeholder-color: #7F7366;
-    --ctrl-bg: #8C7660;
-    --toggle-bg: #DFC9AF;
-    --toggle-hi: #E9D6C3;
-    --toggle-lo: #C7A88A;
-    --mark-fg: #3F3225;
-    --sortable-dot: #e2c5a6;
-    --sortable-shadow: #c7a47f;
-    --sortable-label: #231e18;
-    --sortable-placeholder: #99826c;
-    --slider-fill: #e9d3bd;
-    --slider-nub-bg: #DFC9AF;
-    --slider-nub-hi: #E9D6C3;
-    --slider-nub-lo: #C7A88A;
-    background: var(--canvas);
-    color: var(--fg);
-  }
-
-  /* OS preference flips :root to dark. */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --canvas: #0B0C13;
-      --bg: #1D1F2F;
-      --fg: #F6F7F9;
-      --accent: #232639;
-      --destructive: #ff5566;
-      --focus-offset: 3px;
-      --focus-color: #5A607F;
-      --bevel-bg: #1D1F2F;
-      --bevel-fg: #F6F7F9;
-      --bevel-tl: #474C65;
-      --bevel-br: #131725;
-      --bevel-hover-bg: #232639;
-      --pill-inner-top: #232639;
-      --input-border: #6E738E;
-      --placeholder-color: #545973;
-      --ctrl-bg: #5F6582;
-      --toggle-bg: #656D95;
-      --toggle-hi: #7F87AD;
-      --toggle-lo: #505677;
-      --mark-fg: #E1E3EA;
-      --sortable-dot: #393f5b;
-      --sortable-shadow: #111527;
-      --sortable-label: #edeef2;
-      --sortable-placeholder: #6f7695;
-      --slider-fill: #232639;
-      --slider-nub-bg: #656D95;
-      --slider-nub-hi: #7F87AD;
-      --slider-nub-lo: #505677;
-    }
-  }
-
-  /* Author override — wins by specificity, beats prefers-color-scheme. */
-  .light {
-    --canvas: #F7F2EA;
-    --bg: #F7F2EA;
-    --fg: #15120e;
-    --accent: #efefe5;
-    --destructive: #d4183d;
-    --focus-offset: 2px;
-    --focus-color: #BBA288;
-    --bevel-bg: #e9d3bd;
-    --bevel-fg: #15120e;
-    --bevel-tl: #f3ddc7;
-    --bevel-br: #c2ad95;
-    --bevel-hover-bg: #dfc9b3;
-    --pill-inner-top: #efdac7;
-    --input-border: #957E65;
-    --placeholder-color: #7F7366;
-    --ctrl-bg: #8C7660;
-    --toggle-bg: #DFC9AF;
-    --toggle-hi: #E9D6C3;
-    --toggle-lo: #C7A88A;
-    --mark-fg: #3F3225;
-    --sortable-dot: #e2c5a6;
-    --sortable-shadow: #c7a47f;
-    --sortable-label: #231e18;
-    --sortable-placeholder: #99826c;
-    --slider-fill: #e9d3bd;
-    --slider-nub-bg: #DFC9AF;
-    --slider-nub-hi: #E9D6C3;
-    --slider-nub-lo: #C7A88A;
-    background: var(--canvas);
-    color: var(--fg);
-  }
-
-  .dark {
-    --canvas: #0B0C13;
-    --bg: #1D1F2F;
-    --fg: #F6F7F9;
-    --accent: #232639;
-    --destructive: #ff5566;
-    --focus-offset: 3px;
-    --focus-color: #5A607F;
-    --bevel-bg: #1D1F2F;
-    --bevel-fg: #F6F7F9;
-    --bevel-tl: #474C65;
-    --bevel-br: #131725;
-    --bevel-hover-bg: #232639;
-    --pill-inner-top: #232639;
-    --input-border: #6E738E;
-    --placeholder-color: #545973;
-    --ctrl-bg: #5F6582;
-    --toggle-bg: #656D95;
-    --toggle-hi: #7F87AD;
-    --toggle-lo: #505677;
-    --mark-fg: #E1E3EA;
-    --sortable-dot: #393f5b;
-    --sortable-shadow: #111527;
-    --sortable-label: #edeef2;
-    --sortable-placeholder: #6f7695;
-    --slider-fill: #232639;
-    --slider-nub-bg: #656D95;
-    --slider-nub-hi: #7F87AD;
-    --slider-nub-lo: #505677;
-    background: var(--canvas);
-    color: var(--fg);
-  }
-</style>
+<!-- The kit itself: tokens, font, and all fourteen components. -->
+<link rel="stylesheet" href="mirk.css">
+<style>html, body { margin: 0; padding: 0; }</style>
 </head>
 <body>
 
@@ -165,17 +24,16 @@
     <!-- ─────────────── INTRO ─────────────── -->
     <div class="space-y-5 max-w-xl">
       <h1 class="text-[44px] leading-none">mirk</h1>
-      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components in plain Tailwind classes and one tiny shared script. No build step, no React, no web components.</p>
+      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
       <p class="text-[16px] leading-relaxed">mirk is <strong>violently obvious</strong>. Bevel borders that look pressable, sharp pixel typography, no invisible focus states. A deliberate callback to the UIs of the 80s and 90s, when buttons looked like buttons.</p>
-      <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">class="light"</code> to any wrapper to force a mode.</p>
+      <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="light"</code> to any wrapper to force a mode.</p>
     </div>
 
     <!-- ─────────────── HOW TO USE ─────────────── -->
     <div class="space-y-3 max-w-xl">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">To use mirk</h2>
       <ol class="space-y-1 text-[16px] leading-relaxed list-decimal pl-6">
-        <li>Make sure Tailwind v4 is loaded on your page.</li>
-        <li>Paste the three blocks below into your page (once).</li>
+        <li>Drop the two tags below into your page (once).</li>
         <li>Click <strong>copy</strong> on any component, paste it where you need it.</li>
       </ol>
     </div>
@@ -184,120 +42,29 @@
     <div class="space-y-6 max-w-xl">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">Drop in once</h2>
 
-      <!-- 1. Tailwind v4 -->
+      <!-- 1. mirk.css -->
       <div class="space-y-2">
-        <div class="text-[12px] opacity-70">1. Tailwind v4 — in your <code>&lt;head&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"&gt;&lt;/script&gt;</code></pre>
+        <div class="text-[12px] opacity-70">1. mirk.css — in your <code>&lt;head&gt;</code></div>
+        <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.css"&gt;</code></pre>
         </div>
       </div>
 
-      <!-- 2. Font + tokens -->
+      <!-- 2. mirk.js -->
       <div class="space-y-2">
-        <div class="text-[12px] opacity-70">2. Font + tokens — in your <code>&lt;head&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-auto max-h-[280px]"><code>&lt;style&gt;
-@font-face {
-  font-family: 'Departure Mono';
-  src: url('https://cdn.jsdelivr.net/npm/mirkui@1.0.0/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-body { font-family: 'Departure Mono', ui-monospace, monospace; }
-
-/* Light is the default. */
-:root {
-  --canvas: #F7F2EA; --bg: #F7F2EA; --fg: #15120e;
-  --accent: #efefe5; --destructive: #d4183d;
-  --focus-offset: 2px; --focus-color: #BBA288;
-  --bevel-bg: #e9d3bd; --bevel-fg: #15120e;
-  --bevel-tl: #f3ddc7; --bevel-br: #c2ad95;
-  --bevel-hover-bg: #dfc9b3; --pill-inner-top: #efdac7;
-  --input-border: #957E65; --placeholder-color: #7F7366;
-  --ctrl-bg: #8C7660;
-  --toggle-bg: #DFC9AF; --toggle-hi: #E9D6C3; --toggle-lo: #C7A88A;
-  --mark-fg: #3F3225;
-  --sortable-dot: #e2c5a6; --sortable-shadow: #c7a47f;
-  --sortable-label: #231e18; --sortable-placeholder: #99826c;
-  --slider-fill: #e9d3bd;
-  --slider-nub-bg: #DFC9AF; --slider-nub-hi: #E9D6C3; --slider-nub-lo: #C7A88A;
-  background: var(--canvas); color: var(--fg);
-}
-
-/* OS preference flips :root to dark. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #0B0C13; --bg: #1D1F2F; --fg: #F6F7F9;
-    --accent: #232639; --destructive: #ff5566;
-    --focus-offset: 3px; --focus-color: #5A607F;
-    --bevel-bg: #1D1F2F; --bevel-fg: #F6F7F9;
-    --bevel-tl: #474C65; --bevel-br: #131725;
-    --bevel-hover-bg: #232639; --pill-inner-top: #232639;
-    --input-border: #6E738E; --placeholder-color: #545973;
-    --ctrl-bg: #5F6582;
-    --toggle-bg: #656D95; --toggle-hi: #7F87AD; --toggle-lo: #505677;
-    --mark-fg: #E1E3EA;
-    --sortable-dot: #393f5b; --sortable-shadow: #111527;
-    --sortable-label: #edeef2; --sortable-placeholder: #6f7695;
-    --slider-fill: #232639;
-    --slider-nub-bg: #656D95; --slider-nub-hi: #7F87AD; --slider-nub-lo: #505677;
-  }
-}
-
-/* Author override — wins by specificity. */
-.light {
-  --canvas: #F7F2EA; --bg: #F7F2EA; --fg: #15120e;
-  --accent: #efefe5; --destructive: #d4183d;
-  --focus-offset: 2px; --focus-color: #BBA288;
-  --bevel-bg: #e9d3bd; --bevel-fg: #15120e;
-  --bevel-tl: #f3ddc7; --bevel-br: #c2ad95;
-  --bevel-hover-bg: #dfc9b3; --pill-inner-top: #efdac7;
-  --input-border: #957E65; --placeholder-color: #7F7366;
-  --ctrl-bg: #8C7660;
-  --toggle-bg: #DFC9AF; --toggle-hi: #E9D6C3; --toggle-lo: #C7A88A;
-  --mark-fg: #3F3225;
-  --sortable-dot: #e2c5a6; --sortable-shadow: #c7a47f;
-  --sortable-label: #231e18; --sortable-placeholder: #99826c;
-  --slider-fill: #e9d3bd;
-  --slider-nub-bg: #DFC9AF; --slider-nub-hi: #E9D6C3; --slider-nub-lo: #C7A88A;
-  background: var(--canvas); color: var(--fg);
-}
-
-.dark {
-  --canvas: #0B0C13; --bg: #1D1F2F; --fg: #F6F7F9;
-  --accent: #232639; --destructive: #ff5566;
-  --focus-offset: 3px; --focus-color: #5A607F;
-  --bevel-bg: #1D1F2F; --bevel-fg: #F6F7F9;
-  --bevel-tl: #474C65; --bevel-br: #131725;
-  --bevel-hover-bg: #232639; --pill-inner-top: #232639;
-  --input-border: #6E738E; --placeholder-color: #545973;
-  --ctrl-bg: #5F6582;
-  --toggle-bg: #656D95; --toggle-hi: #7F87AD; --toggle-lo: #505677;
-  --mark-fg: #E1E3EA;
-  --sortable-dot: #393f5b; --sortable-shadow: #111527;
-  --sortable-label: #edeef2; --sortable-placeholder: #6f7695;
-  --slider-fill: #232639;
-  --slider-nub-bg: #656D95; --slider-nub-hi: #7F87AD; --slider-nub-lo: #505677;
-  background: var(--canvas); color: var(--fg);
-}
-&lt;/style&gt;</code></pre>
-        </div>
-        <div class="text-[12px] opacity-70">Skip the block above and use <code class="text-[12px] px-[3px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css"&gt;</code> if you don't want Tailwind.</div>
-      </div>
-
-      <!-- 3. mirk.js -->
-      <div class="space-y-2">
-        <div class="text-[12px] opacity-70">3. mirk.js — before <code>&lt;/body&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"&gt;&lt;/script&gt;</code></pre>
+        <div class="text-[12px] opacity-70">2. mirk.js — before <code>&lt;/body&gt;</code></div>
+        <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.js"&gt;&lt;/script&gt;</code></pre>
         </div>
       </div>
+
+      <div class="text-[12px] opacity-70">Renders fully on its own. Using Tailwind? <code class="text-[12px] px-[3px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">@import "mirkui/mirk.css";</code> and utility classes override any mirk class — mirk is built for it, but never needs it.</div>
     </div>
 
     <!-- ─────────────── COMPONENTS HEADER ─────────────── -->
-    <div class="max-w-xl pt-2 border-t border-solid border-[var(--input-border)]">
+    <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Components — 14</h2>
     </div>
 
@@ -307,17 +74,17 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[4px] pr-3 pb-[4px] pl-3 text-[14px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--small">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[5px] pr-[14px] pb-[6px] pl-[14px] text-[16px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--large">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -329,17 +96,17 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[4px] pr-3 pb-[4px] pl-3 text-[14px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--small mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[5px] pr-[14px] pb-[6px] pl-[14px] text-[16px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--large mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -350,7 +117,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Message</label>
-        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+        <textarea rows="4" placeholder="Write something…" class="mirk-textarea"></textarea>
         <button type="button" data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
       </div>
     </div>
@@ -360,7 +127,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rounded</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Message</label>
-        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+        <textarea rows="4" placeholder="Write something…" class="mirk-textarea mirk-textarea--rounded"></textarea>
         <button type="button" data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
       </div>
     </div>
@@ -371,33 +138,33 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[4px] pr-2 pb-[4px] pl-3 text-[14px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number mirk-number--small">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[5px] pr-[10px] pb-[6px] pl-[14px] text-[16px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number mirk-number--large">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
@@ -411,33 +178,33 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[4px] pr-2 pb-[4px] pl-3 text-[14px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--small mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[5px] pr-[10px] pb-[6px] pl-[14px] text-[16px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--large mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
@@ -450,21 +217,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
       <div class="flex items-end gap-4 flex-wrap">
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer border-[2px] border-t-[#474C65] border-r-[#131725] border-b-[#131725] border-l-[#474C65] bg-[#1D1F2F] hover:bg-[#232639] active:border-b-[#474C65] active:border-l-[#131725] active:border-t-[#131725] active:border-r-[#474C65] text-[14px] leading-normal px-3 py-[3px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button mirk-button--small"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer border-[2px] border-t-[#474C65] border-r-[#131725] border-b-[#131725] border-l-[#474C65] bg-[#1D1F2F] hover:bg-[#232639] active:border-b-[#474C65] active:border-l-[#131725] active:border-t-[#131725] active:border-r-[#474C65] text-[16px] leading-normal p-[4px_14px_5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer border-[3px] border-t-[#474C65] border-r-[#131725] border-b-[#131725] border-l-[#474C65] bg-[#1D1F2F] hover:bg-[#232639] active:border-b-[#474C65] active:border-l-[#131725] active:border-t-[#131725] active:border-r-[#474C65] text-[18px] leading-normal p-[4px_17px_7px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button mirk-button--large"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -475,15 +236,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Round</h2>
       <div class="flex items-end gap-4 flex-wrap">
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[14px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 px-[14px] py-[2px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round mirk-button--small"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[16px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[4px] pb-[6px] px-[17px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[18px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round mirk-button--large"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -495,49 +256,49 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[3px] pr-9 pb-[3px] pl-3 text-[14px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select mirk-select--small">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[18px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-10 pb-[5px] pl-[14px] text-[16px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 inline-block rotate-90 text-[20px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-12 pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select mirk-select--large">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
@@ -550,9 +311,9 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] py-[2px] pr-9 pl-[14px] text-[14px] leading-normal rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round mirk-select--small">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -562,15 +323,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[18px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[4px] pr-10 pb-[6px] pl-[17px] text-[16px] leading-normal rounded-[12px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -580,15 +341,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 inline-block rotate-90 text-[20px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[7px] pr-12 pb-[9px] pl-6 text-[18px] leading-normal rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round mirk-select--large">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -598,7 +359,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
@@ -609,19 +370,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" class="sr-only">
-          <span class="relative shrink-0 w-[22px] h-[22px] rounded-none flex items-center justify-center bg-[var(--bevel-bg)] border-[2px] border-solid border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] group-has-[:checked]:border-t-[var(--input-border)] group-has-[:checked]:border-r-[var(--input-border)] group-has-[:checked]:border-b-[var(--input-border)] group-has-[:checked]:border-l-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="opacity-0 group-has-[:checked]:opacity-100 block w-[6px] h-[12px] border-r-[2.5px] border-b-[2.5px] border-[var(--mark-fg)] rotate-45 -translate-y-[1.5px] translate-x-[0.5px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        <label class="mirk-checkbox">
+          <input type="checkbox" class="mirk-sr-only">
+          <span class="mirk-checkbox__box"><span class="mirk-checkbox__mark"></span></span>
+          <span class="mirk-checkbox__label">Subscribe to updates</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" class="sr-only" checked>
-          <span class="relative shrink-0 w-[22px] h-[22px] rounded-none flex items-center justify-center bg-[var(--bevel-bg)] border-[2px] border-solid border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] group-has-[:checked]:border-t-[var(--input-border)] group-has-[:checked]:border-r-[var(--input-border)] group-has-[:checked]:border-b-[var(--input-border)] group-has-[:checked]:border-l-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="opacity-0 group-has-[:checked]:opacity-100 block w-[6px] h-[12px] border-r-[2.5px] border-b-[2.5px] border-[var(--mark-fg)] rotate-45 -translate-y-[1.5px] translate-x-[0.5px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        <label class="mirk-checkbox">
+          <input type="checkbox" class="mirk-sr-only" checked>
+          <span class="mirk-checkbox__box"><span class="mirk-checkbox__mark"></span></span>
+          <span class="mirk-checkbox__label">Send weekly digest</span>
         </label>
       </div>
     </div>
@@ -630,50 +387,37 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-d" class="sr-only" checked>
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Dawn</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-d" class="mirk-sr-only" checked>
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Dawn</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-d" class="sr-only">
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Dusk</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-d" class="mirk-sr-only">
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Dusk</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-d" class="sr-only">
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Auto</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-d" class="mirk-sr-only">
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Auto</span>
         </label>
       </div>
     </div>
 
-    <!-- ─────────────── TOGGLE • RECT (transparent track, ctrl-palette thumb) ─────────────── -->
+    <!-- ─────────────── TOGGLE • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Rect</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only">
-          <span class="relative shrink-0 w-[49px] h-[27px] border-[1px] border-solid border-[var(--input-border)] rounded-none group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[19px] h-[19px] bg-[var(--toggle-bg)] border-[2px] border-t-[var(--toggle-hi)] border-l-[var(--toggle-hi)] border-r-[var(--toggle-lo)] border-b-[var(--toggle-lo)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Wifi</span>
+        <label class="mirk-toggle">
+          <input type="checkbox" role="switch" class="mirk-sr-only">
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Wifi</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only" checked>
-          <span class="relative shrink-0 w-[49px] h-[27px] border-[1px] border-solid border-[var(--input-border)] rounded-none group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[19px] h-[19px] bg-[var(--toggle-bg)] border-[2px] border-t-[var(--toggle-hi)] border-l-[var(--toggle-hi)] border-r-[var(--toggle-lo)] border-b-[var(--toggle-lo)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Notifications</span>
+        <label class="mirk-toggle">
+          <input type="checkbox" role="switch" class="mirk-sr-only" checked>
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Notifications</span>
         </label>
       </div>
     </div>
@@ -682,38 +426,28 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Round</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only">
-          <span class="relative shrink-0 w-[50px] h-[29px] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[21px] h-[21px] rounded-full bg-gradient-to-t from-[var(--toggle-lo)] to-[var(--toggle-hi)] transition-transform duration-150 group-has-[:checked]:translate-x-[21px]">
-              <span class="absolute inset-[2px] rounded-full bg-[var(--toggle-bg)]"></span>
-            </span>
-          </span>
-          <span class="text-[18px] leading-normal">Wifi</span>
+        <label class="mirk-toggle mirk-toggle--round">
+          <input type="checkbox" role="switch" class="mirk-sr-only">
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Wifi</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only" checked>
-          <span class="relative shrink-0 w-[50px] h-[29px] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[21px] h-[21px] rounded-full bg-gradient-to-t from-[var(--toggle-lo)] to-[var(--toggle-hi)] transition-transform duration-150 group-has-[:checked]:translate-x-[21px]">
-              <span class="absolute inset-[2px] rounded-full bg-[var(--toggle-bg)]"></span>
-            </span>
-          </span>
-          <span class="text-[18px] leading-normal">Notifications</span>
+        <label class="mirk-toggle mirk-toggle--round">
+          <input type="checkbox" role="switch" class="mirk-sr-only" checked>
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Notifications</span>
         </label>
       </div>
     </div>
 
-    <!-- ─────────────── SLIDER • RECT (flat filled portion) ─────────────── -->
+    <!-- ─────────────── SLIDER • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Volume</label>
-        <div class="relative h-[32px] w-full" data-slider style="--value: 60%">
-          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[12px] bg-[var(--canvas)] border-[1px] border-solid border-[var(--input-border)] overflow-hidden">
-            <div class="h-full bg-[var(--slider-fill)]" style="width: var(--value)"></div>
-          </div>
-          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[21px] h-[21px] border-[2px] border-t-[var(--slider-nub-hi)] border-l-[var(--slider-nub-hi)] border-r-[var(--slider-nub-lo)] border-b-[var(--slider-nub-lo)] bg-[var(--slider-nub-bg)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)"></div>
+        <div class="mirk-slider" style="--mirk-value: 60%">
+          <input type="range" min="0" max="100" value="60" class="mirk-slider__input">
+          <div class="mirk-slider__track"><div class="mirk-slider__fill"></div></div>
+          <div class="mirk-slider__nub"></div>
         </div>
       </div>
     </div>
@@ -723,26 +457,22 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Round</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Volume</label>
-        <div class="relative h-[32px] w-full" data-slider style="--value: 60%">
-          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[10px] bg-[var(--canvas)] border-[1px] border-solid border-[var(--input-border)] rounded-full overflow-hidden">
-            <div class="h-full bg-[var(--slider-fill)]" style="width: var(--value)"></div>
-          </div>
-          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[24px] h-[24px] rounded-full bg-gradient-to-t from-[var(--slider-nub-lo)] to-[var(--slider-nub-hi)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)">
-            <span class="absolute inset-[2px] rounded-full bg-[var(--slider-nub-bg)]"></span>
-          </div>
+        <div class="mirk-slider mirk-slider--round" style="--mirk-value: 60%">
+          <input type="range" min="0" max="100" value="60" class="mirk-slider__input">
+          <div class="mirk-slider__track"><div class="mirk-slider__fill"></div></div>
+          <div class="mirk-slider__nub"></div>
         </div>
       </div>
     </div>
 
-    <!-- ─────────────── DATE • RECT (confined picker indicator) ─────────────── -->
+    <!-- ─────────────── DATE • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Start</label>
-        <div class="relative">
-          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:top-0 [&::-webkit-calendar-picker-indicator]:bottom-0 [&::-webkit-calendar-picker-indicator]:w-[44px] [&::-webkit-calendar-picker-indicator]:m-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
+        <div class="mirk-date">
+          <input type="date" class="mirk-date__field">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="mirk-date__icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
         </div>
       </div>
     </div>
@@ -752,54 +482,54 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rounded</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Start</label>
-        <div class="relative">
-          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:top-0 [&::-webkit-calendar-picker-indicator]:bottom-0 [&::-webkit-calendar-picker-indicator]:w-[44px] [&::-webkit-calendar-picker-indicator]:m-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
+        <div class="mirk-date mirk-date--rounded">
+          <input type="date" class="mirk-date__field">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="mirk-date__icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
         </div>
       </div>
     </div>
 
-    <!-- ─────────────── FILE • RECT — Compact (button inside container) ─────────────── -->
+    <!-- ─────────────── FILE • RECT — Compact ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect — Compact</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 px-2 py-1 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] w-full" data-file-picker>
-          <label class="cursor-pointer inline-flex items-center px-3 py-[3px] -ml-[1px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span>Choose</span>
+        <div class="mirk-file mirk-file--compact">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[16px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
 
-    <!-- ─────────────── FILE • ROUND — Compact (pill chip-button inside rounded container) ─────────────── -->
+    <!-- ─────────────── FILE • ROUND — Compact ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Compact</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 px-2 py-1 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[15px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] w-full" data-file-picker>
-          <label class="cursor-pointer inline-flex items-center p-[2px] -ml-[1px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="inline-flex items-center px-[14px] py-[2px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose</span>
+        <div class="mirk-file mirk-file--compact mirk-file--round">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[16px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
 
-    <!-- ─────────────── FILE • RECT — Button + Text (separate, no shared container) ─────────────── -->
+    <!-- ─────────────── FILE • RECT — Button + Text ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect — Button + Text</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 w-full" data-file-picker>
-          <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] flex items-center shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Choose…</span>
+        <div class="mirk-file">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose…</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[18px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -809,12 +539,12 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Button + Text</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 w-full" data-file-picker>
-          <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] shrink-0 flex items-center">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose…</span>
+        <div class="mirk-file mirk-file--round">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose…</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[18px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -822,15 +552,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── IMAGE • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rect</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-sm" data-image-picker>
+      <div data-copy class="mirk-image max-w-sm">
         <label class="text-[18px] leading-normal">Avatar</label>
-        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-none overflow-hidden relative">
-          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
-          <span data-image-placeholder>No image</span>
+        <div class="mirk-image__frame">
+          <img class="mirk-image__preview" hidden alt="">
+          <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
-          <input type="file" accept="image/*" class="sr-only" data-image-input>
-          <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Upload image</span>
+        <label class="mirk-image__button">
+          <input type="file" accept="image/*" class="mirk-image__input">
+          <span class="mirk-image__button-label">Upload image</span>
         </label>
       </div>
     </div>
@@ -838,15 +568,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── IMAGE • ROUNDED ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rounded</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-sm" data-image-picker>
+      <div data-copy class="mirk-image mirk-image--rounded max-w-sm">
         <label class="text-[18px] leading-normal">Avatar</label>
-        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-[5px] overflow-hidden relative">
-          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
-          <span data-image-placeholder>No image</span>
+        <div class="mirk-image__frame">
+          <img class="mirk-image__preview" hidden alt="">
+          <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
-          <input type="file" accept="image/*" class="sr-only" data-image-input>
-          <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Upload image</span>
+        <label class="mirk-image__button">
+          <input type="file" accept="image/*" class="mirk-image__input">
+          <span class="mirk-image__button-label">Upload image</span>
         </label>
       </div>
     </div>
@@ -856,18 +586,18 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Topics</label>
-        <div data-tags data-tags-variant="rect" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
-          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+        <div class="mirk-tags">
+          <span class="mirk-tags__chip">
             <span>design</span>
             <input type="hidden" name="tags[]" value="design">
-            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            <button type="button" class="mirk-tags__remove">×</button>
           </span>
-          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+          <span class="mirk-tags__chip">
             <span>ascii</span>
             <input type="hidden" name="tags[]" value="ascii">
-            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            <button type="button" class="mirk-tags__remove">×</button>
           </span>
-          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+          <input type="text" class="mirk-tags__input" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -877,22 +607,22 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Round</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Topics</label>
-        <div data-tags data-tags-variant="round" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[15px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
-          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
-            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+        <div class="mirk-tags mirk-tags--round">
+          <span class="mirk-tags__chip">
+            <span class="mirk-tags__chip-inner">
               <span>design</span>
               <input type="hidden" name="tags[]" value="design">
-              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+              <button type="button" class="mirk-tags__remove">×</button>
             </span>
           </span>
-          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
-            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+          <span class="mirk-tags__chip">
+            <span class="mirk-tags__chip-inner">
               <span>ascii</span>
               <input type="hidden" name="tags[]" value="ascii">
-              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+              <button type="button" class="mirk-tags__remove">×</button>
             </span>
           </span>
-          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+          <input type="text" class="mirk-tags__input" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -900,29 +630,29 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── SORTABLE ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Sortable</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-md">
+      <div data-copy class="mirk-sortable max-w-md">
       <!-- Wire your own reorder library (e.g. SortableJS). cursor-grab is the only built-in cue. -->
-      <div class="flex flex-row w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-        <div class="w-[28px] shrink-0 flex items-center justify-center cursor-grab active:cursor-grabbing border-r border-solid border-[var(--input-border)]">
-          <div class="grid grid-cols-2 gap-[3px]">
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
+      <div class="mirk-sortable__item">
+        <div class="mirk-sortable__grip">
+          <div class="mirk-sortable__dots">
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
           </div>
         </div>
-        <div class="flex flex-col flex-1 min-w-0">
-          <div class="px-[17px] pt-[8px] pb-[9px] border-b border-solid border-[var(--input-border)]">
-            <label class="block text-[11px] uppercase tracking-[0.2em] mb-[2px] text-[var(--sortable-label)]">Link name</label>
-            <input type="text" placeholder="Design review" class="w-full bg-transparent text-[18px] leading-normal text-[var(--bevel-fg)] placeholder:text-[var(--sortable-placeholder)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+        <div class="mirk-sortable__body">
+          <div class="mirk-sortable__row">
+            <label class="mirk-sortable__label">Link name</label>
+            <input type="text" placeholder="Design review" class="mirk-sortable__field">
           </div>
-          <div class="px-[17px] pt-[8px] pb-[9px]">
-            <label class="block text-[11px] uppercase tracking-[0.2em] mb-[2px] text-[var(--sortable-label)]">Link URL</label>
-            <input type="url" placeholder="https://" class="w-full bg-transparent text-[18px] leading-normal text-[var(--bevel-fg)] placeholder:text-[var(--sortable-placeholder)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <div class="mirk-sortable__row">
+            <label class="mirk-sortable__label">Link URL</label>
+            <input type="url" placeholder="https://" class="mirk-sortable__field">
           </div>
         </div>
       </div>
@@ -1004,17 +734,16 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── INTRO ─────────────── -->
     <div class="space-y-5 max-w-xl">
       <h1 class="text-[44px] leading-none">mirk</h1>
-      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components in plain Tailwind classes and one tiny shared script. No build step, no React, no web components.</p>
+      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
       <p class="text-[16px] leading-relaxed">mirk is <strong>violently obvious</strong>. Bevel borders that look pressable, sharp pixel typography, no invisible focus states. A deliberate callback to the UIs of the 80s and 90s, when buttons looked like buttons.</p>
-      <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">class="light"</code> to any wrapper to force a mode.</p>
+      <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="light"</code> to any wrapper to force a mode.</p>
     </div>
 
     <!-- ─────────────── HOW TO USE ─────────────── -->
     <div class="space-y-3 max-w-xl">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">To use mirk</h2>
       <ol class="space-y-1 text-[16px] leading-relaxed list-decimal pl-6">
-        <li>Make sure Tailwind v4 is loaded on your page.</li>
-        <li>Paste the three blocks below into your page (once).</li>
+        <li>Drop the two tags below into your page (once).</li>
         <li>Click <strong>copy</strong> on any component, paste it where you need it.</li>
       </ol>
     </div>
@@ -1023,120 +752,29 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div class="space-y-6 max-w-xl">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">Drop in once</h2>
 
-      <!-- 1. Tailwind v4 -->
+      <!-- 1. mirk.css -->
       <div class="space-y-2">
-        <div class="text-[12px] opacity-70">1. Tailwind v4 — in your <code>&lt;head&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"&gt;&lt;/script&gt;</code></pre>
+        <div class="text-[12px] opacity-70">1. mirk.css — in your <code>&lt;head&gt;</code></div>
+        <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.css"&gt;</code></pre>
         </div>
       </div>
 
-      <!-- 2. Font + tokens -->
+      <!-- 2. mirk.js -->
       <div class="space-y-2">
-        <div class="text-[12px] opacity-70">2. Font + tokens — in your <code>&lt;head&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-auto max-h-[280px]"><code>&lt;style&gt;
-@font-face {
-  font-family: 'Departure Mono';
-  src: url('https://cdn.jsdelivr.net/npm/mirkui@1.0.0/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-body { font-family: 'Departure Mono', ui-monospace, monospace; }
-
-/* Light is the default. */
-:root {
-  --canvas: #F7F2EA; --bg: #F7F2EA; --fg: #15120e;
-  --accent: #efefe5; --destructive: #d4183d;
-  --focus-offset: 2px; --focus-color: #BBA288;
-  --bevel-bg: #e9d3bd; --bevel-fg: #15120e;
-  --bevel-tl: #f3ddc7; --bevel-br: #c2ad95;
-  --bevel-hover-bg: #dfc9b3; --pill-inner-top: #efdac7;
-  --input-border: #957E65; --placeholder-color: #7F7366;
-  --ctrl-bg: #8C7660;
-  --toggle-bg: #DFC9AF; --toggle-hi: #E9D6C3; --toggle-lo: #C7A88A;
-  --mark-fg: #3F3225;
-  --sortable-dot: #e2c5a6; --sortable-shadow: #c7a47f;
-  --sortable-label: #231e18; --sortable-placeholder: #99826c;
-  --slider-fill: #e9d3bd;
-  --slider-nub-bg: #DFC9AF; --slider-nub-hi: #E9D6C3; --slider-nub-lo: #C7A88A;
-  background: var(--canvas); color: var(--fg);
-}
-
-/* OS preference flips :root to dark. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #0B0C13; --bg: #1D1F2F; --fg: #F6F7F9;
-    --accent: #232639; --destructive: #ff5566;
-    --focus-offset: 3px; --focus-color: #5A607F;
-    --bevel-bg: #1D1F2F; --bevel-fg: #F6F7F9;
-    --bevel-tl: #474C65; --bevel-br: #131725;
-    --bevel-hover-bg: #232639; --pill-inner-top: #232639;
-    --input-border: #6E738E; --placeholder-color: #545973;
-    --ctrl-bg: #5F6582;
-    --toggle-bg: #656D95; --toggle-hi: #7F87AD; --toggle-lo: #505677;
-    --mark-fg: #E1E3EA;
-    --sortable-dot: #393f5b; --sortable-shadow: #111527;
-    --sortable-label: #edeef2; --sortable-placeholder: #6f7695;
-    --slider-fill: #232639;
-    --slider-nub-bg: #656D95; --slider-nub-hi: #7F87AD; --slider-nub-lo: #505677;
-  }
-}
-
-/* Author override — wins by specificity. */
-.light {
-  --canvas: #F7F2EA; --bg: #F7F2EA; --fg: #15120e;
-  --accent: #efefe5; --destructive: #d4183d;
-  --focus-offset: 2px; --focus-color: #BBA288;
-  --bevel-bg: #e9d3bd; --bevel-fg: #15120e;
-  --bevel-tl: #f3ddc7; --bevel-br: #c2ad95;
-  --bevel-hover-bg: #dfc9b3; --pill-inner-top: #efdac7;
-  --input-border: #957E65; --placeholder-color: #7F7366;
-  --ctrl-bg: #8C7660;
-  --toggle-bg: #DFC9AF; --toggle-hi: #E9D6C3; --toggle-lo: #C7A88A;
-  --mark-fg: #3F3225;
-  --sortable-dot: #e2c5a6; --sortable-shadow: #c7a47f;
-  --sortable-label: #231e18; --sortable-placeholder: #99826c;
-  --slider-fill: #e9d3bd;
-  --slider-nub-bg: #DFC9AF; --slider-nub-hi: #E9D6C3; --slider-nub-lo: #C7A88A;
-  background: var(--canvas); color: var(--fg);
-}
-
-.dark {
-  --canvas: #0B0C13; --bg: #1D1F2F; --fg: #F6F7F9;
-  --accent: #232639; --destructive: #ff5566;
-  --focus-offset: 3px; --focus-color: #5A607F;
-  --bevel-bg: #1D1F2F; --bevel-fg: #F6F7F9;
-  --bevel-tl: #474C65; --bevel-br: #131725;
-  --bevel-hover-bg: #232639; --pill-inner-top: #232639;
-  --input-border: #6E738E; --placeholder-color: #545973;
-  --ctrl-bg: #5F6582;
-  --toggle-bg: #656D95; --toggle-hi: #7F87AD; --toggle-lo: #505677;
-  --mark-fg: #E1E3EA;
-  --sortable-dot: #393f5b; --sortable-shadow: #111527;
-  --sortable-label: #edeef2; --sortable-placeholder: #6f7695;
-  --slider-fill: #232639;
-  --slider-nub-bg: #656D95; --slider-nub-hi: #7F87AD; --slider-nub-lo: #505677;
-  background: var(--canvas); color: var(--fg);
-}
-&lt;/style&gt;</code></pre>
-        </div>
-        <div class="text-[12px] opacity-70">Skip the block above and use <code class="text-[12px] px-[3px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css"&gt;</code> if you don't want Tailwind.</div>
-      </div>
-
-      <!-- 3. mirk.js -->
-      <div class="space-y-2">
-        <div class="text-[12px] opacity-70">3. mirk.js — before <code>&lt;/body&gt;</code></div>
-        <div data-copy="text" class="relative bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] hover:bg-[var(--bevel-hover-bg)]">copy</button>
-          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"&gt;&lt;/script&gt;</code></pre>
+        <div class="text-[12px] opacity-70">2. mirk.js — before <code>&lt;/body&gt;</code></div>
+        <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+          <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+          <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;script src="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.js"&gt;&lt;/script&gt;</code></pre>
         </div>
       </div>
+
+      <div class="text-[12px] opacity-70">Renders fully on its own. Using Tailwind? <code class="text-[12px] px-[3px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">@import "mirkui/mirk.css";</code> and utility classes override any mirk class — mirk is built for it, but never needs it.</div>
     </div>
 
     <!-- ─────────────── COMPONENTS HEADER ─────────────── -->
-    <div class="max-w-xl pt-2 border-t border-solid border-[var(--input-border)]">
+    <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Components — 14</h2>
     </div>
 
@@ -1146,17 +784,17 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[4px] pr-3 pb-[4px] pl-3 text-[14px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--small">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[5px] pr-[14px] pb-[6px] pl-[14px] text-[16px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--large">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -1168,17 +806,17 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[4px] pr-3 pb-[4px] pl-3 text-[14px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--small mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[5px] pr-[14px] pb-[6px] pl-[14px] text-[16px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Email</label>
-          <input type="text" placeholder="you@domain.com" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <input type="text" placeholder="you@domain.com" class="mirk-input mirk-input--large mirk-input--rounded">
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -1189,7 +827,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Message</label>
-        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+        <textarea rows="4" placeholder="Write something…" class="mirk-textarea"></textarea>
         <button type="button" data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
       </div>
     </div>
@@ -1199,7 +837,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Textarea • Rounded</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Message</label>
-        <textarea rows="4" placeholder="Write something…" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] placeholder:text-[var(--placeholder-color)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[17px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none resize-y focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"></textarea>
+        <textarea rows="4" placeholder="Write something…" class="mirk-textarea mirk-textarea--rounded"></textarea>
         <button type="button" data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
       </div>
     </div>
@@ -1210,33 +848,33 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[4px] pr-2 pb-[4px] pl-3 text-[14px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number mirk-number--small">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[5px] pr-[10px] pb-[6px] pl-[14px] text-[16px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center">▼</button>
+          <div class="mirk-number mirk-number--large">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
@@ -1250,33 +888,33 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[4px] pr-2 pb-[4px] pl-3 text-[14px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-2 cursor-pointer text-[8px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--small mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[5px] pr-[10px] pb-[6px] pl-[14px] text-[16px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-[10px] cursor-pointer text-[9px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Quantity</label>
-          <div class="flex items-stretch w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[5px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]" data-number>
-            <input type="number" value="5" min="0" max="999" step="1" class="flex-1 min-w-0 bg-transparent text-[var(--bevel-fg)] pt-[6px] pr-[12px] pb-[9px] pl-[17px] text-[18px] leading-normal outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-            <div class="flex flex-col p-[2px] gap-[2px]">
-              <button type="button" data-step="up" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▲</button>
-              <button type="button" data-step="down" class="flex-1 px-3 cursor-pointer text-[10px] leading-none border-[2px] border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:1px] flex items-center justify-center rounded-[3px]">▼</button>
+          <div class="mirk-number mirk-number--large mirk-number--rounded">
+            <input type="number" value="5" min="0" max="999" step="1" class="mirk-number__input">
+            <div class="mirk-number__steps">
+              <button type="button" data-step="up" class="mirk-number__step">▲</button>
+              <button type="button" data-step="down" class="mirk-number__step">▼</button>
             </div>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
@@ -1289,21 +927,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Rect</h2>
       <div class="flex items-end gap-4 flex-wrap">
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer text-[#15120e] border-[2px] border-t-[#f3ddc7] border-r-[#c2ad95] border-b-[#c2ad95] border-l-[#f3ddc7] bg-[#e9d3bd] hover:bg-[#dfc9b3] active:border-b-[#f3ddc7] active:border-l-[#c2ad95] active:border-t-[#c2ad95] active:border-r-[#f3ddc7] text-[14px] leading-normal px-3 py-[3px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button mirk-button--small"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer text-[#15120e] border-[2px] border-t-[#f3ddc7] border-r-[#c2ad95] border-b-[#c2ad95] border-l-[#f3ddc7] bg-[#e9d3bd] hover:bg-[#dfc9b3] active:border-b-[#f3ddc7] active:border-l-[#c2ad95] active:border-t-[#c2ad95] active:border-r-[#f3ddc7] text-[16px] leading-normal p-[4px_14px_5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="group text-center cursor-pointer text-[#15120e] border-[3px] border-t-[#f3ddc7] border-r-[#c2ad95] border-b-[#c2ad95] border-l-[#f3ddc7] bg-[#e9d3bd] hover:bg-[#dfc9b3] active:border-b-[#f3ddc7] active:border-l-[#c2ad95] active:border-t-[#c2ad95] active:border-r-[#f3ddc7] text-[18px] leading-normal p-[4px_17px_7px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-            <span class="whitespace-nowrap select-none inline-block group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">discover more</span>
-          </button>
+          <button class="mirk-button mirk-button--large"><span class="mirk-button__label">discover more</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -1314,15 +946,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Button • Round</h2>
       <div class="flex items-end gap-4 flex-wrap">
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[14px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 px-[14px] py-[2px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round mirk-button--small"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[16px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[4px] pb-[6px] px-[17px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col items-start gap-1">
-          <button class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] active:bg-gradient-to-b text-[18px] leading-normal outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]"><span class="w-full h-full flex items-center gap-2 pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Play Game</span></button>
+          <button class="mirk-button mirk-button--round mirk-button--large"><span class="mirk-button__label">Play Game</span></button>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
       </div>
@@ -1334,49 +966,49 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[3px] pr-9 pb-[3px] pl-3 text-[14px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select mirk-select--small">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[18px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-10 pb-[5px] pl-[14px] text-[16px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 inline-block rotate-90 text-[20px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Country</label>
-          <div class="relative">
-            <select class="w-full appearance-none bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] pt-[4px] pr-12 pb-[7px] pl-[17px] text-[18px] leading-normal rounded-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
-              <option value="">Select a country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="mx">Mexico</option>
-              <option value="uk">United Kingdom</option>
-              <option value="de">Germany</option>
-              <option value="jp">Japan</option>
+          <div class="mirk-select mirk-select--large">
+            <select class="mirk-select__field">
+                <option value="">Select a country</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="uk">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
             </select>
-            <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
@@ -1389,9 +1021,9 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <div class="flex flex-col gap-4 max-w-sm">
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[14px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] py-[2px] pr-9 pl-[14px] text-[14px] leading-normal rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round mirk-select--small">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -1401,15 +1033,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[18px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[16px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[4px] pr-10 pb-[6px] pl-[17px] text-[16px] leading-normal rounded-[12px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -1419,15 +1051,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 inline-block rotate-90 text-[20px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy MD</button>
         </div>
         <div data-copy class="flex flex-col gap-1">
           <label class="text-[18px] leading-normal">Country</label>
-          <div class="relative">
-            <div class="p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-              <select class="w-full appearance-none text-[var(--bevel-fg)] pt-[7px] pr-12 pb-[9px] pl-6 text-[18px] leading-normal rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)] focus:outline-none">
+          <div class="mirk-select mirk-select--round mirk-select--large">
+            <div class="mirk-select__frame">
+              <select class="mirk-select__field">
                 <option value="">Select a country</option>
                 <option value="us">United States</option>
                 <option value="ca">Canada</option>
@@ -1437,7 +1069,7 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
                 <option value="jp">Japan</option>
               </select>
             </div>
-            <span aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 inline-block rotate-90 text-[24px] leading-none">›</span>
+            <span aria-hidden="true" class="mirk-select__chevron">›</span>
           </div>
           <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy LG</button>
         </div>
@@ -1448,19 +1080,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Checkbox</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" class="sr-only">
-          <span class="relative shrink-0 w-[22px] h-[22px] rounded-none flex items-center justify-center bg-[var(--bevel-bg)] border-[2px] border-solid border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] group-has-[:checked]:border-t-[var(--input-border)] group-has-[:checked]:border-r-[var(--input-border)] group-has-[:checked]:border-b-[var(--input-border)] group-has-[:checked]:border-l-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="opacity-0 group-has-[:checked]:opacity-100 block w-[6px] h-[12px] border-r-[2.5px] border-b-[2.5px] border-[var(--mark-fg)] rotate-45 -translate-y-[1.5px] translate-x-[0.5px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Subscribe to updates</span>
+        <label class="mirk-checkbox">
+          <input type="checkbox" class="mirk-sr-only">
+          <span class="mirk-checkbox__box"><span class="mirk-checkbox__mark"></span></span>
+          <span class="mirk-checkbox__label">Subscribe to updates</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" class="sr-only" checked>
-          <span class="relative shrink-0 w-[22px] h-[22px] rounded-none flex items-center justify-center bg-[var(--bevel-bg)] border-[2px] border-solid border-t-[var(--bevel-tl)] border-l-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] group-has-[:checked]:border-t-[var(--input-border)] group-has-[:checked]:border-r-[var(--input-border)] group-has-[:checked]:border-b-[var(--input-border)] group-has-[:checked]:border-l-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="opacity-0 group-has-[:checked]:opacity-100 block w-[6px] h-[12px] border-r-[2.5px] border-b-[2.5px] border-[var(--mark-fg)] rotate-45 -translate-y-[1.5px] translate-x-[0.5px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Send weekly digest</span>
+        <label class="mirk-checkbox">
+          <input type="checkbox" class="mirk-sr-only" checked>
+          <span class="mirk-checkbox__box"><span class="mirk-checkbox__mark"></span></span>
+          <span class="mirk-checkbox__label">Send weekly digest</span>
         </label>
       </div>
     </div>
@@ -1469,29 +1097,20 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Radio</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-l" class="sr-only" checked>
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Dawn</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-l" class="mirk-sr-only" checked>
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Dawn</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-l" class="sr-only">
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Dusk</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-l" class="mirk-sr-only">
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Dusk</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="radio" name="theme-round-l" class="sr-only">
-          <span class="relative shrink-0 w-[25px] h-[25px] rounded-full bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] group-has-[:checked]:bg-none group-has-[:checked]:bg-[var(--bevel-bg)] group-has-[:checked]:border-[2px] group-has-[:checked]:border-solid group-has-[:checked]:border-[var(--input-border)] group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="block group-has-[:checked]:hidden absolute inset-[2px] rounded-full bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]"></span>
-            <span class="hidden group-has-[:checked]:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full bg-[var(--mark-fg)]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Auto</span>
+        <label class="mirk-radio">
+          <input type="radio" name="theme-round-l" class="mirk-sr-only">
+          <span class="mirk-radio__ring"><span class="mirk-radio__fill"></span><span class="mirk-radio__dot"></span></span>
+          <span class="mirk-radio__label">Auto</span>
         </label>
       </div>
     </div>
@@ -1500,19 +1119,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Rect</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only">
-          <span class="relative shrink-0 w-[49px] h-[27px] border-[1px] border-solid border-[var(--input-border)] rounded-none group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[19px] h-[19px] bg-[var(--toggle-bg)] border-[2px] border-t-[var(--toggle-hi)] border-l-[var(--toggle-hi)] border-r-[var(--toggle-lo)] border-b-[var(--toggle-lo)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Wifi</span>
+        <label class="mirk-toggle">
+          <input type="checkbox" role="switch" class="mirk-sr-only">
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Wifi</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only" checked>
-          <span class="relative shrink-0 w-[49px] h-[27px] border-[1px] border-solid border-[var(--input-border)] rounded-none group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[19px] h-[19px] bg-[var(--toggle-bg)] border-[2px] border-t-[var(--toggle-hi)] border-l-[var(--toggle-hi)] border-r-[var(--toggle-lo)] border-b-[var(--toggle-lo)] transition-transform duration-150 group-has-[:checked]:translate-x-[22px]"></span>
-          </span>
-          <span class="text-[18px] leading-normal">Notifications</span>
+        <label class="mirk-toggle">
+          <input type="checkbox" role="switch" class="mirk-sr-only" checked>
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Notifications</span>
         </label>
       </div>
     </div>
@@ -1521,23 +1136,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Toggle • Round</h2>
       <div data-copy class="flex flex-col gap-3">
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only">
-          <span class="relative shrink-0 w-[50px] h-[29px] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[21px] h-[21px] rounded-full bg-gradient-to-t from-[var(--toggle-lo)] to-[var(--toggle-hi)] transition-transform duration-150 group-has-[:checked]:translate-x-[21px]">
-              <span class="absolute inset-[2px] rounded-full bg-[var(--toggle-bg)]"></span>
-            </span>
-          </span>
-          <span class="text-[18px] leading-normal">Wifi</span>
+        <label class="mirk-toggle mirk-toggle--round">
+          <input type="checkbox" role="switch" class="mirk-sr-only">
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Wifi</span>
         </label>
-        <label class="group inline-flex items-center gap-3 cursor-pointer w-fit">
-          <input type="checkbox" role="switch" class="sr-only" checked>
-          <span class="relative shrink-0 w-[50px] h-[29px] border-[1px] border-solid border-[var(--input-border)] rounded-full group-has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] group-has-[:focus-visible]:[outline-offset:var(--focus-offset)]">
-            <span class="absolute top-[3px] left-[3px] w-[21px] h-[21px] rounded-full bg-gradient-to-t from-[var(--toggle-lo)] to-[var(--toggle-hi)] transition-transform duration-150 group-has-[:checked]:translate-x-[21px]">
-              <span class="absolute inset-[2px] rounded-full bg-[var(--toggle-bg)]"></span>
-            </span>
-          </span>
-          <span class="text-[18px] leading-normal">Notifications</span>
+        <label class="mirk-toggle mirk-toggle--round">
+          <input type="checkbox" role="switch" class="mirk-sr-only" checked>
+          <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+          <span class="mirk-toggle__label">Notifications</span>
         </label>
       </div>
     </div>
@@ -1547,12 +1154,10 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Volume</label>
-        <div class="relative h-[32px] w-full" data-slider style="--value: 60%">
-          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[12px] bg-[var(--canvas)] border-[1px] border-solid border-[var(--input-border)] overflow-hidden">
-            <div class="h-full bg-[var(--slider-fill)]" style="width: var(--value)"></div>
-          </div>
-          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[21px] h-[21px] border-[2px] border-t-[var(--slider-nub-hi)] border-l-[var(--slider-nub-hi)] border-r-[var(--slider-nub-lo)] border-b-[var(--slider-nub-lo)] bg-[var(--slider-nub-bg)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)"></div>
+        <div class="mirk-slider" style="--mirk-value: 60%">
+          <input type="range" min="0" max="100" value="60" class="mirk-slider__input">
+          <div class="mirk-slider__track"><div class="mirk-slider__fill"></div></div>
+          <div class="mirk-slider__nub"></div>
         </div>
       </div>
     </div>
@@ -1562,14 +1167,10 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Slider • Round</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Volume</label>
-        <div class="relative h-[32px] w-full" data-slider style="--value: 60%">
-          <input type="range" min="0" max="100" value="60" data-slider-input class="peer absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-          <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[10px] bg-[var(--canvas)] border-[1px] border-solid border-[var(--input-border)] rounded-full overflow-hidden">
-            <div class="h-full bg-[var(--slider-fill)]" style="width: var(--value)"></div>
-          </div>
-          <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-[24px] h-[24px] rounded-full bg-gradient-to-t from-[var(--slider-nub-lo)] to-[var(--slider-nub-hi)] pointer-events-none peer-focus-visible:[outline:1px_solid_var(--focus-color)] peer-focus-visible:[outline-offset:var(--focus-offset)]" style="left: var(--value)">
-            <span class="absolute inset-[2px] rounded-full bg-[var(--slider-nub-bg)]"></span>
-          </div>
+        <div class="mirk-slider mirk-slider--round" style="--mirk-value: 60%">
+          <input type="range" min="0" max="100" value="60" class="mirk-slider__input">
+          <div class="mirk-slider__track"><div class="mirk-slider__fill"></div></div>
+          <div class="mirk-slider__nub"></div>
         </div>
       </div>
     </div>
@@ -1579,9 +1180,9 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Start</label>
-        <div class="relative">
-          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-none outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:top-0 [&::-webkit-calendar-picker-indicator]:bottom-0 [&::-webkit-calendar-picker-indicator]:w-[44px] [&::-webkit-calendar-picker-indicator]:m-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
+        <div class="mirk-date">
+          <input type="date" class="mirk-date__field">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="mirk-date__icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
         </div>
       </div>
     </div>
@@ -1591,9 +1192,9 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Date • Rounded</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Start</label>
-        <div class="relative">
-          <input type="date" class="w-full bg-[var(--bevel-bg)] text-[var(--bevel-fg)] border-[1px] border-solid border-[var(--input-border)] pt-[6px] pr-[44px] pb-[9px] pl-[17px] text-[18px] leading-normal rounded-[5px] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)] [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:top-0 [&::-webkit-calendar-picker-indicator]:bottom-0 [&::-webkit-calendar-picker-indicator]:w-[44px] [&::-webkit-calendar-picker-indicator]:m-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-clear-button]:appearance-none">
-          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
+        <div class="mirk-date mirk-date--rounded">
+          <input type="date" class="mirk-date__field">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" class="mirk-date__icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M5 4h14v2H5zm0 16h14v2H5zM3 10h2v10H3zm0-4h2v2H3zm16 0h2v2h-2zm0 4h2v10h-2zM3 8h18v2H3zm12-6h2v2h-2zM7 2h2v2H7z"/></svg>
         </div>
       </div>
     </div>
@@ -1603,12 +1204,12 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect — Compact</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 px-2 py-1 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] w-full" data-file-picker>
-          <label class="cursor-pointer inline-flex items-center px-3 py-[3px] -ml-[1px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span>Choose</span>
+        <div class="mirk-file mirk-file--compact">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[16px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -1618,12 +1219,12 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Compact</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 px-2 py-1 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[15px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] w-full" data-file-picker>
-          <label class="cursor-pointer inline-flex items-center p-[2px] -ml-[1px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="inline-flex items-center px-[14px] py-[2px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose</span>
+        <div class="mirk-file mirk-file--compact mirk-file--round">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[16px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -1633,12 +1234,12 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Rect — Button + Text</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 w-full" data-file-picker>
-          <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] flex items-center shrink-0">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Choose…</span>
+        <div class="mirk-file">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose…</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[18px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -1648,12 +1249,12 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Button + Text</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
-        <div class="flex items-center gap-3 w-full" data-file-picker>
-          <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] shrink-0 flex items-center">
-            <input type="file" class="sr-only" data-file-input>
-            <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Choose…</span>
+        <div class="mirk-file mirk-file--round">
+          <label class="mirk-file__button">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-file__button-label">Choose…</span>
           </label>
-          <span class="text-[var(--placeholder-color)] text-[18px] leading-normal truncate min-w-0" data-filename>No file chosen</span>
+          <span class="mirk-file__name">No file chosen</span>
         </div>
       </div>
     </div>
@@ -1661,15 +1262,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── IMAGE • RECT ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rect</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-sm" data-image-picker>
+      <div data-copy class="mirk-image max-w-sm">
         <label class="text-[18px] leading-normal">Avatar</label>
-        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-none overflow-hidden relative">
-          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
-          <span data-image-placeholder>No image</span>
+        <div class="mirk-image__frame">
+          <img class="mirk-image__preview" hidden alt="">
+          <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="group cursor-pointer border-[3px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] hover:bg-[var(--bevel-hover-bg)] active:border-t-[var(--bevel-br)] active:border-l-[var(--bevel-br)] active:border-r-[var(--bevel-tl)] active:border-b-[var(--bevel-tl)] text-[var(--bevel-fg)] text-[18px] leading-normal px-[17px] pt-[4px] pb-[7px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
-          <input type="file" accept="image/*" class="sr-only" data-image-input>
-          <span class="whitespace-nowrap select-none group-active:translate-x-[1.5px] group-active:translate-y-[1.5px]">Upload image</span>
+        <label class="mirk-image__button">
+          <input type="file" accept="image/*" class="mirk-image__input">
+          <span class="mirk-image__button-label">Upload image</span>
         </label>
       </div>
     </div>
@@ -1677,15 +1278,15 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── IMAGE • ROUNDED ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Rounded</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-sm" data-image-picker>
+      <div data-copy class="mirk-image mirk-image--rounded max-w-sm">
         <label class="text-[18px] leading-normal">Avatar</label>
-        <div class="w-[120px] h-[120px] bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] flex items-center justify-center text-[var(--placeholder-color)] text-[14px] leading-normal rounded-[5px] overflow-hidden relative">
-          <img data-image-preview class="hidden absolute inset-0 w-full h-full object-cover" alt="">
-          <span data-image-placeholder>No image</span>
+        <div class="mirk-image__frame">
+          <img class="mirk-image__preview" hidden alt="">
+          <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="relative cursor-pointer opacity-90 hover:opacity-100 transition-opacity p-[2px] bg-[var(--canvas)] rounded-[16px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[18px] leading-normal has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] inline-flex items-center justify-center w-fit">
-          <input type="file" accept="image/*" class="sr-only" data-image-input>
-          <span class="flex items-center pt-[7px] pb-[9px] px-6 bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[14px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">Upload image</span>
+        <label class="mirk-image__button">
+          <input type="file" accept="image/*" class="mirk-image__input">
+          <span class="mirk-image__button-label">Upload image</span>
         </label>
       </div>
     </div>
@@ -1695,18 +1296,18 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Rect</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Topics</label>
-        <div data-tags data-tags-variant="rect" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-none has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
-          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+        <div class="mirk-tags">
+          <span class="mirk-tags__chip">
             <span>design</span>
             <input type="hidden" name="tags[]" value="design">
-            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            <button type="button" class="mirk-tags__remove">×</button>
           </span>
-          <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[2px] border-[2px] border-t-[var(--bevel-tl)] border-r-[var(--bevel-br)] border-b-[var(--bevel-br)] border-l-[var(--bevel-tl)] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] text-[14px] leading-normal">
+          <span class="mirk-tags__chip">
             <span>ascii</span>
             <input type="hidden" name="tags[]" value="ascii">
-            <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+            <button type="button" class="mirk-tags__remove">×</button>
           </span>
-          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+          <input type="text" class="mirk-tags__input" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -1716,22 +1317,22 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Tags • Round</h2>
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Topics</label>
-        <div data-tags data-tags-variant="round" class="flex flex-wrap items-center gap-2 p-2 bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)] rounded-[15px] has-[:focus-visible]:[outline:1px_solid_var(--focus-color)] has-[:focus-visible]:[outline-offset:var(--focus-offset)] cursor-text">
-          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
-            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+        <div class="mirk-tags mirk-tags--round">
+          <span class="mirk-tags__chip">
+            <span class="mirk-tags__chip-inner">
               <span>design</span>
               <input type="hidden" name="tags[]" value="design">
-              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+              <button type="button" class="mirk-tags__remove">×</button>
             </span>
           </span>
-          <span class="inline-flex items-center p-[2px] rounded-[12px] bg-gradient-to-t from-[var(--bevel-br)] to-[var(--bevel-tl)] text-[14px] leading-normal">
-            <span class="inline-flex items-center gap-2 pl-3 pr-2 py-[1px] bg-[var(--bevel-bg)] text-[var(--bevel-fg)] rounded-[10px] bg-gradient-to-t from-[var(--bevel-bg)] to-[var(--pill-inner-top)]">
+          <span class="mirk-tags__chip">
+            <span class="mirk-tags__chip-inner">
               <span>ascii</span>
               <input type="hidden" name="tags[]" value="ascii">
-              <button type="button" data-tag-remove class="cursor-pointer hover:text-[var(--destructive)] text-[14px] leading-none">×</button>
+              <button type="button" class="mirk-tags__remove">×</button>
             </span>
           </span>
-          <input type="text" data-tag-input class="flex-1 min-w-[120px] bg-transparent text-[var(--bevel-fg)] outline-none text-[18px] leading-normal placeholder:text-[var(--placeholder-color)]" placeholder="Add tag…">
+          <input type="text" class="mirk-tags__input" placeholder="Add tag…">
         </div>
       </div>
     </div>
@@ -1739,29 +1340,29 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
     <!-- ─────────────── SORTABLE ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Sortable</h2>
-      <div data-copy class="flex flex-col gap-2 max-w-md">
+      <div data-copy class="mirk-sortable max-w-md">
       <!-- Wire your own reorder library (e.g. SortableJS). cursor-grab is the only built-in cue. -->
-      <div class="flex flex-row w-full bg-[var(--bevel-bg)] border-[1px] border-solid border-[var(--input-border)]">
-        <div class="w-[28px] shrink-0 flex items-center justify-center cursor-grab active:cursor-grabbing border-r border-solid border-[var(--input-border)]">
-          <div class="grid grid-cols-2 gap-[3px]">
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
-            <span class="block w-[4px] h-[4px] bg-[var(--sortable-dot)] [box-shadow:1px_0_0_0_var(--sortable-shadow),0_1px_0_0_var(--sortable-shadow),1px_1px_0_0_var(--sortable-shadow)]"></span>
+      <div class="mirk-sortable__item">
+        <div class="mirk-sortable__grip">
+          <div class="mirk-sortable__dots">
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
+            <span class="mirk-sortable__dot"></span>
           </div>
         </div>
-        <div class="flex flex-col flex-1 min-w-0">
-          <div class="px-[17px] pt-[8px] pb-[9px] border-b border-solid border-[var(--input-border)]">
-            <label class="block text-[11px] uppercase tracking-[0.2em] mb-[2px] text-[var(--sortable-label)]">Link name</label>
-            <input type="text" placeholder="Design review" class="w-full bg-transparent text-[18px] leading-normal text-[var(--bevel-fg)] placeholder:text-[var(--sortable-placeholder)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+        <div class="mirk-sortable__body">
+          <div class="mirk-sortable__row">
+            <label class="mirk-sortable__label">Link name</label>
+            <input type="text" placeholder="Design review" class="mirk-sortable__field">
           </div>
-          <div class="px-[17px] pt-[8px] pb-[9px]">
-            <label class="block text-[11px] uppercase tracking-[0.2em] mb-[2px] text-[var(--sortable-label)]">Link URL</label>
-            <input type="url" placeholder="https://" class="w-full bg-transparent text-[18px] leading-normal text-[var(--bevel-fg)] placeholder:text-[var(--sortable-placeholder)] outline-none focus-visible:[outline:1px_solid_var(--focus-color)] focus-visible:[outline-offset:var(--focus-offset)]">
+          <div class="mirk-sortable__row">
+            <label class="mirk-sortable__label">Link URL</label>
+            <input type="url" placeholder="https://" class="mirk-sortable__field">
           </div>
         </div>
       </div>
@@ -1839,7 +1440,18 @@ body { font-family: 'Departure Mono', ui-monospace, monospace; }
 
 <script src="mirk.js"></script>
 <script>
-  // Demo-only: load SVG icons from the kit's icon library. Not part of mirk.js.
+  // Demo-only chrome (NOT part of the kit): auto-add a copy button to any
+  // [data-copy] block that doesn't already have one, and populate the icon grid.
+  document.querySelectorAll('[data-copy]').forEach(el => {
+    if (el.querySelector('[data-copy-btn]')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.copyBtn = '';
+    btn.className = 'text-[10px] uppercase tracking-[0.2em] self-start mt-2 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer';
+    btn.textContent = 'copy';
+    el.appendChild(btn);
+  });
+
   const ICONS = [
     'home', 'menu', 'search',
     'arrow-up', 'arrow-down', 'arrow-left', 'arrow-right',
