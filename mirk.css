@@ -530,9 +530,15 @@
     border: 2px solid;
     border-color: var(--mirk-bevel-tl) var(--mirk-bevel-br) var(--mirk-bevel-br) var(--mirk-bevel-tl);
   }
-  .mirk-tags__remove { cursor: pointer; font-size: 14px; line-height: 1; }
+  .mirk-tags__remove {
+    appearance: none; -webkit-appearance: none;
+    margin: 0; padding: 0; border: 0; background: none; color: inherit;
+    cursor: pointer; font-size: 14px; line-height: 1;
+  }
   .mirk-tags__remove:hover { color: var(--mirk-destructive); }
   .mirk-tags__input {
+    appearance: none; -webkit-appearance: none;
+    border: 0; padding: 0;
     flex: 1; min-width: 120px; background: transparent; color: var(--mirk-bevel-fg);
     outline: none; font-size: 18px; line-height: 1.5;
   }
