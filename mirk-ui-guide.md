@@ -89,8 +89,8 @@ mirk.js    ← one delegated runtime for the six components native CSS can't fin
 **Primary path: drop-in, zero install, no Tailwind.**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.css">
-<script src="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css">
+<script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"></script>
 ```
 
 This renders fully on its own. It is the path for a single-file HTML artifact, a
@@ -100,7 +100,7 @@ Hyperclay app, a Rails view, a static page. Most users live here.
 
 ```css
 @import "tailwindcss";
-@import "mirkui/mirk.css";
+@import "mirk-interface/mirk.css";
 ```
 
 Now `class="mirk-input mirk-input--large w-full font-sans"` works, utilities win
@@ -110,7 +110,7 @@ over the component layer.
 
 ```css
 @import "tailwindcss";
-@plugin "mirkui";
+@plugin "mirk-interface";
 ```
 
 The plugin just injects the same CSS. Offer it for familiarity, never make it the
@@ -578,11 +578,11 @@ mirk-tags(__chip,__remove,__input)  mirk-sortable(__item)  mirk-sr-only
 
 ---
 
-## 10. Publishing `mirkui` (appendix)
+## 10. Publishing `mirk-interface` (appendix)
 
 ```json
 {
-  "name": "mirkui",
+  "name": "mirk-interface",
   "version": "2.0.0",
   "type": "module",
   "main": "mirk.js",

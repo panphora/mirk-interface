@@ -1,6 +1,6 @@
 # mirk
 
-A form-focused HTML/CSS UI kit. Fourteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirkui` on npm.
+A form-focused HTML/CSS UI kit. Fourteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
 
 Every component is built on native HTML elements with a pixel-bevel look set in Departure Mono. State lives where the platform already keeps it: in native attributes, in CSS state selectors, and in real DOM nodes. That means a component's visible state round-trips through `outerHTML`, so a saved-and-reopened file renders correctly before any script runs. mirk targets malleable HTML (Hyperclay), but nothing in it is Hyperclay-specific: it is plain CSS and one small delegated runtime that work on any page.
 
@@ -17,13 +17,13 @@ Two ways to load mirk. The drop-in path is primary and needs no build and no Tai
 Add these two tags once, then paste any component snippet where you need it.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui/mirk.css">
-<script src="https://cdn.jsdelivr.net/npm/mirkui/mirk.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface/mirk.css">
+<script src="https://cdn.jsdelivr.net/npm/mirk-interface/mirk.js"></script>
 ```
 
 `mirk.css` ships the font, the 28 theme tokens, and all fourteen components, and it renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page, anywhere you just want components without a toolchain.
 
-Those URLs are served straight from npm by jsDelivr, no setup. They resolve to the latest version. To lock one, pin it in either URL: `mirkui@2` (latest 2.x) or `mirkui@2.0.0` (exact). The same files are on unpkg too: `https://unpkg.com/mirkui/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirkui/fonts/...` on the CDN.
+Those URLs are served straight from npm by jsDelivr, no setup. They resolve to the latest version. To lock one, pin it in either URL: `mirk-interface@2` (latest 2.x) or `mirk-interface@2.0.0` (exact). The same files are on unpkg too: `https://unpkg.com/mirk-interface/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirk-interface/fonts/...` on the CDN.
 
 ### Optional: Tailwind, to override mirk with utilities
 
@@ -31,7 +31,7 @@ Import Tailwind first, then mirk.
 
 ```css
 @import "tailwindcss";
-@import "mirkui/mirk.css";
+@import "mirk-interface/mirk.css";
 ```
 
 Now `class="mirk-input mirk-input--large w-full font-sans"` works: utilities win over the component layer because mirk lives in `@layer components`, with zero `!important`. Use this path when you already build with Tailwind and want to tweak mirk components with utility classes. Tailwind is never required.
@@ -754,14 +754,14 @@ mirk-sr-only                                  (visually hidden, still focusable)
 
 ```bash
 npm run build      # the "build" is a copy: mkdir -p dist && cp mirk.css mirk.js dist/
-npm publish        # publishes mirkui (only the "files" listed in package.json)
+npm publish        # publishes mirk-interface (only the "files" listed in package.json)
 ```
 
 `mirk.css` is hand-written, not generated, there is nothing to compile. `npm publish` ships only the lean `files` list, not the whole repo.
 
 ## Repo structure
 
-The npm package (`mirkui`) ships a lean subset: `mirk.css`, `mirk.js`, the Departure Mono font (woff2 plus its LICENSE), `README.md`, and `LICENSE`. Everything else, the showcase, the icons, the design docs, lives in the [GitHub repo](https://github.com/panphora/mirk-ui-kit).
+The npm package (`mirk-interface`) ships a lean subset: `mirk.css`, `mirk.js`, the Departure Mono font (woff2 plus its LICENSE), `README.md`, and `LICENSE`. Everything else, the showcase, the icons, the design docs, lives in the [GitHub repo](https://github.com/panphora/mirk-ui-kit).
 
 ```
 mirk-ui-kit/
@@ -772,7 +772,7 @@ mirk-ui-kit/
 ├── fonts/DepartureMono-1.500/   # the kit's font, SIL OFL (woff2 + LICENSE ship)
 ├── index.html              # the showcase, a self-contained page (repo only)
 ├── icons/svg/              # SVG icons used by the icons showcase (repo only)
-├── package.json            # npm publish config (name: mirkui, 2.0.0)
+├── package.json            # npm publish config (name: mirk-interface, 2.0.0)
 └── ...                     # design docs, experiments, references (repo only)
 ```
 

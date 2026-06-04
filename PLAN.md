@@ -4,7 +4,7 @@ Task tracker. Project rules and scope live in `README.md`. Decision reasoning li
 
 ## v1 — shipped
 
-Fourteen components in the kit, all rendered on `index.html` side-by-side in light + dark with per-instance copy buttons. Runtime in `mirk.js`. Precompiled CSS in `mirk.css`. Departure Mono served from jsDelivr. Published as `mirkui` on npm (or pending publish — see `PLAN-V1-UI-KIT.md` phase 14).
+Fourteen components in the kit, all rendered on `index.html` side-by-side in light + dark with per-instance copy buttons. Runtime in `mirk.js`. Precompiled CSS in `mirk.css`. Departure Mono served from jsDelivr. Published as `mirk-interface` on npm (or pending publish — see `PLAN-V1-UI-KIT.md` phase 14).
 
 - [x] 00 — Button (rect + round, 3 sizes each)
 - [x] 01 — Single-line text input (rect + rounded, 3 sizes each)
@@ -56,4 +56,4 @@ For each item: read Primer source, read Carbon source, add a `## NNNN — <compo
 - [x] Single-select dropdown approach picked: native `<select>` with `appearance: base-select` (2026-04-27, see `HISTORY.md`)
 - [x] `index.html` skeleton — Tailwind v4 CDN, dark `@custom-variant`, side-by-side light/dark layout (2026-04-27)
 - [x] `compare.html` dev tool stood up (Carbon via WC CDN, Primer via Vite-resolved imports) (2026-04-27), then removed once v1 locked (2026-05-17)
-- [x] v1 promotion: `experiments.html` → `index.html` at repo root, copy buttons on every instance, `mirk.js` extracted, `mirk.css` precompiled, package restructured for npm publish as `mirkui` (2026-05-17, see `PLAN-V1-UI-KIT.md` and `HISTORY.md`)
+- [x] v1 promotion: `experiments.html` → `index.html` at repo root, copy buttons on every instance, `mirk.js` extracted, `mirk.css` precompiled, package restructured for npm publish as `mirk-interface` (2026-05-17, see `PLAN-V1-UI-KIT.md` and `HISTORY.md`)

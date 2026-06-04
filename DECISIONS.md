@@ -109,7 +109,7 @@ Things to revisit. Link to a follow-up `PLAN.md` item if appropriate.
 mirk drops into other developers' pages. Some hosts have light-loving users, some dark-loving, some let visitors choose. The kit has to do the right thing on day one regardless of which scenario applies. The kit's own showcase still has to render both themes simultaneously so a regression in either mode is immediately visible.
 
 ### Decision (mirk)
-- **Tailwind:** v4 via the `@tailwindcss/browser` ESM build at `https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4`. No build step. Consumers without Tailwind on their host can load `https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css` instead (precompiled subset).
+- **Tailwind:** v4 via the `@tailwindcss/browser` ESM build at `https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4`. No build step. Consumers without Tailwind on their host can load `https://cdn.jsdelivr.net/npm/mirk-interface@1.0.0/mirk.css` instead (precompiled subset).
 - **Token cascade — four tiers, in source order:**
   1. `:root { /* light token values */ }` — light is the default.
   2. `@media (prefers-color-scheme: dark) { :root { /* dark values */ } }` — OS preference flips `:root` to dark.
@@ -763,7 +763,7 @@ v1 shipped each component as a copy-paste block of Tailwind utility classes plus
 ### Deviations from the guide (and why)
 - **`--mirk-focus-offset` keeps its 2px light / 3px dark split** (the guide unified to 2px). It is the one non-color token, so `light-dark()` can't carry it; we preserve exact v1 behavior with a one-line override under the dark selectors.
 - **`mirk-select` keeps `appearance: none` + a styled `__chevron`**, not `appearance: base-select` / `::picker(select)`. base-select would change the closed-control rendering and isn't cross-browser yet; the chevron approach renders identically everywhere today. base-select is a future enhancement.
-- **Tailwind path is `@import "mirkui/mirk.css"`, not a JS `@plugin`.** Tailwind v4 plugins inject CSS-*in-JS* objects, not raw CSS, so a `@plugin` would either duplicate `mirk.css` in JS (the exact drift this rework removes) or land components in the wrong layer. The CSS import delivers the same ergonomics — utilities override mirk — with zero duplication.
+- **Tailwind path is `@import "mirk-interface/mirk.css"`, not a JS `@plugin`.** Tailwind v4 plugins inject CSS-*in-JS* objects, not raw CSS, so a `@plugin` would either duplicate `mirk.css` in JS (the exact drift this rework removes) or land components in the wrong layer. The CSS import delivers the same ergonomics — utilities override mirk — with zero duplication.
 
 ### Verification
 The conversion changed *form*, not *pixels*. Confirmed by a computed-style + geometry diff (width, height, padding, border widths/colors, background, gradients, radius, font, transforms) across all 27 demos in both the light and dark columns: **zero meaningful differences** between the v1 utility markup and the v2 semantic classes. Remaining computed-string differences are non-visual (inline-block→inline-flex blockification with identical box metrics; Tailwind's explicit `0%`/`100%` gradient stops vs the implicit defaults; `rounded-full`'s `3.35e7px` vs `9999px`, both fully round; and the color of zero-width borders).
