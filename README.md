@@ -1,74 +1,94 @@
 # mirk
 
-A form-focused HTML/CSS UI kit. Fourteen components in plain Tailwind classes and one tiny shared script. No build step, no React, no web components. Published as `mirkui` on npm.
+A form-focused HTML/CSS UI kit. Fourteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirkui` on npm.
 
 Live showcase: open `index.html` in any browser or static server.
 
 ## Use mirk on your page
 
-1. Load **Tailwind v4** (CDN one-liner is fine).
-2. Paste the **font + tokens** block (defines `@font-face` + the four-tier theme cascade).
-3. Include **mirk.js** once at the bottom of your page.
-4. Copy any component snippet from the showcase, paste it where you need it.
+1. Add the **two tags** below (once).
+2. Copy any component snippet from the showcase, paste it where you need it.
+3. Use the semantic classes: `class="mirk-button mirk-button--round"`.
 
-All copy-pasteable. The kit follows the visitor's OS theme by default; `class="dark"` or `class="light"` on any wrapper forces a mode.
+The kit follows the visitor's OS theme by default; `class="dark"` / `class="light"` (or `data-theme="dark"` / `"light"`) on any wrapper forces a mode.
 
 ### Install paths
 
-**Recommended — Tailwind v4 + drop-in:**
+**Primary — drop-in, zero install, no Tailwind:**
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<style>
-  @font-face { font-family: 'Departure Mono'; src: url('https://cdn.jsdelivr.net/npm/mirkui@1.0.0/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2'); }
-  body { font-family: 'Departure Mono', ui-monospace, monospace; }
-  /* paste the :root / @media / .light / .dark token block from index.html */
-</style>
-<script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.css">
+<script src="https://cdn.jsdelivr.net/npm/mirkui@2/mirk.js"></script>
 ```
 
-**Alternative — precompiled CSS (no Tailwind required):**
+`mirk.css` ships the font, the 28 theme tokens, and all fourteen components. It renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page.
 
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.css">
-<script src="https://cdn.jsdelivr.net/npm/mirkui@1.0.0/mirk.js"></script>
+**Optional — Tailwind, to override mirk classes with utilities:**
+
+```css
+@import "tailwindcss";
+@import "mirkui/mirk.css";
 ```
 
-Trade-off: `mirk.css` ships a frozen Tailwind subset (only the classes the kit uses). You can't tweak component classes freely with arbitrary Tailwind utilities — the recommended path keeps that flexibility.
+Now `class="mirk-input mirk-input--large w-full font-sans"` works: utilities win over the component layer (mirk lives in `@layer components`), with zero `!important`. Tailwind is never required.
 
-## What ships in v1
+## How it works (two hinges)
 
-**Components (14):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable. Each in its supported variants (rect / round, sizes where applicable).
+1. **Components live in `@layer components`.** Tailwind v4 emits `@layer theme, base, components, utilities`, so utilities always win. `mirk.css` declares its own `@layer base, components;` up front, so it is self-sufficient without Tailwind and still slots into Tailwind's order when present. Override any mirk class with a utility, no specificity hacks.
+2. **`outerHTML` round-trips the visible state.** mirk targets malleable HTML (Hyperclay). Native elements hold their own state (`checked`, `value`), CSS-only state needs no JS (`:checked`, `:has()`, `:user-invalid`), and JS-built state lives in the DOM (tag chips are real elements, slider fill is an inline `--mirk-value`). A saved-and-reopened file is correct before any script runs.
 
-**Runtime (`mirk.js`):** number stepper, slider value bridge, file picker filename, image preview, tags add/remove, copy-button handler. Idempotent. Drop in once.
+See `mirk-ui-guide.md` for the full architecture.
 
-**Tokens (`mirk.css` or inline):** 28 per-mode CSS custom properties driving every color in the kit.
+## The class API
+
+BEM with a `mirk-` block prefix. **Block** = component, **`__part`** = element, **`--variant`** = modifier (shape `--round` / `--rounded`, size `--small` / `--large`; medium is the base).
+
+```
+mirk-button(__label)  mirk-button--round  mirk-button--small  mirk-button--large
+mirk-input  mirk-textarea  mirk-number(__input,__step)  mirk-select  mirk-date
+mirk-checkbox(__box,__mark,__label)  mirk-radio(__ring,__fill,__dot,__label)
+mirk-toggle(__track,__thumb,__label)  mirk-slider(__input,__track,__fill,__nub)
+mirk-file(__input,__button,__name)  mirk-image(__input,__preview,__placeholder)
+mirk-tags(__chip,__remove,__input)  mirk-sortable(__item)  mirk-sr-only
+
+[data-theme="dark"] / [data-theme="light"]   (.dark / .light aliased)
+:checked  :user-invalid                        (state via the platform)
+```
+
+**Class = appearance. `data-*` = behavior. Native attribute = native behavior.** Every token is namespaced `--mirk-*` so the kit never collides with a host page's custom properties.
+
+## What ships in v2
+
+**Components (14):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable. Each in its supported variants (rect / round / rounded, sizes where applicable).
+
+**`mirk.css`:** the product. Hand-written, no build. `@layer base, components`, 28 `light-dark()` tokens, the font, and every component class family.
+
+**`mirk.js`:** one delegated runtime for the six components native CSS can't finish — number stepper, slider value bridge, file picker filename, image preview, tags add/remove, copy button. One `document` listener per interaction, no `init()`, idempotent, safe to include twice.
 
 **Font:** Departure Mono (SIL OFL), served via jsDelivr.
 
-## What's NOT in v1
+## What's NOT in v2
 
-Time, datetime, date range. Markdown, rich text, code editor. Multi-select. Planned for v2 — see `PLAN.md`.
+Time, datetime, date range. Markdown, rich text, code editor. Multi-select. Planned later — see `PLAN.md`.
 
 ## Repo structure
 
 ```
 mirk-ui-kit/
 ├── README.md               # this file
-├── index.html              # the v1 showcase + the kit's drop-in instructions (one self-contained page)
-├── mirk.js                 # shared runtime (idempotent, native-only)
-├── mirk.css                # precompiled CSS (alternative to Tailwind v4)
-├── mirk-input.css          # source for mirk.css (run `npm run build:css` to regenerate)
+├── index.html              # the showcase + drop-in instructions (one self-contained page)
+├── mirk.css                # THE PRODUCT — hand-written semantic classes + tokens + font
+├── mirk.js                 # delegated runtime (idempotent, native-only)
+├── mirk-ui-guide.md        # the v2 architecture + conversion guide
 ├── fonts/DepartureMono-1.500/   # the kit's font (SIL OFL)
 ├── icons/svg/              # 800 SVG icons (referenced by the icons showcase; not part of the kit package)
-├── package.json            # npm publish config (name: mirkui)
-├── PLAN.md                 # task tracker (v1 done; v2 listed)
+├── package.json            # npm publish config (name: mirkui, 2.0.0)
+├── PLAN.md                 # task tracker
 ├── DECISIONS.md            # current accepted decisions per component/topic
 ├── HISTORY.md              # append-only log of every decision + why
 ├── UNDECIDED.md            # active brainstorming
-├── PLAN-V1-UI-KIT.md       # the v1 implementation plan (kept for reference)
-├── experiments/            # active UI experiments (now empty; experiments.html graduated to index.html)
-├── archive/                # graduated experiments + the pre-v1 index.html skeleton
+├── experiments/            # active UI experiments
+├── archive/                # graduated experiments
 └── refs/                   # read-only upstream sources (Primer, Carbon)
 ```
 
@@ -76,13 +96,27 @@ mirk-ui-kit/
 
 1. **`README.md`** (you are here)
 2. **`index.html`** — open it. The showcase IS the documentation.
-3. **`HISTORY.md`** — append-only log of every decision and *why*. Read for design context.
-4. **`DECISIONS.md`** — current accepted decisions per component/topic.
-5. **`PLAN.md`** — what's done, what's next.
+3. **`mirk-ui-guide.md`** — the architecture and the v1→v2 conversion rationale.
+4. **`HISTORY.md`** — append-only log of every decision and *why*. Read for design context.
+5. **`DECISIONS.md`** — current accepted decisions per component/topic.
 
-## Writing style
+## Locked technical choices
 
-Every md file: **concise, information-dense**. Bullets over paragraphs. Only the *why* that isn't derivable from code. Lead with the rule, then one line of context. See `DECISIONS.md` 0006.
+mirk components are **semantic BEM classes in `@layer components`**, fully overridable by utilities. Native form elements + CSS by default. Hard rule: `document.documentElement.outerHTML` must round-trip a component's current state.
+
+- **Default to native form elements** for a11y, keyboard handling, and serialization.
+- **CSS-only state** via `:checked`, `:focus-visible`, `:has()`, `:placeholder-shown`, `:user-invalid`.
+- **No DIY JavaScript by default.** Named exceptions in `DECISIONS.md` 0014 (number stepper, slider visual bridge, file picker filename, image preview, tags add/remove, copy button), all delegated from `document`.
+- **No web components. No build step required.** A consumer drops in `mirk.css` + `mirk.js` and it works.
+
+## Develop / publish
+
+```
+npm run build      # the "build" is a copy: mkdir -p dist && cp mirk.css mirk.js dist/
+npm publish        # publishes mirkui (only the "files" listed in package.json)
+```
+
+`mirk.css` is hand-written, not generated — there is nothing to compile.
 
 ## Reference systems (used during design)
 
@@ -91,28 +125,4 @@ Every md file: **concise, information-dense**. Bullets over paragraphs. Only the
 | Primer  | https://primer.style — `primer/react`           |
 | Carbon  | https://carbondesignsystem.com — `carbon-design-system/carbon` |
 
-Both repos are cloned under `refs/` (gitignored) and read while designing each component. They aren't part of the kit; the side-by-side `compare.html` dev tool that used to render mirk · Primer · Carbon together was removed once v1 locked.
-
-## Locked technical choices
-
-mirk components are **copy-pasteable plain HTML/CSS/Tailwind snippets**. Native form elements + CSS by default. Hard rule: `document.documentElement.outerHTML` must round-trip a component's current state.
-
-- **Default to native form elements** for a11y, keyboard handling, and serialization.
-- **CSS-only state** via `:checked`, `:focus`, `:focus-within`, `:has()`, `:placeholder-shown`, `:user-invalid`, etc.
-- **No DIY JavaScript by default.** Named exceptions in `DECISIONS.md` 0014 (number stepper, slider visual bridge, file picker filename, image preview, tags add/remove, copy button).
-- **No web components.**
-- **No build step required to use a mirk component.** A consumer pastes the HTML into any project, includes mirk.js + tokens, and it works.
-
-## Decision log — non-negotiable
-
-- **`DECISIONS.md`** — current accepted decision per component/topic. Edited freely as decisions evolve.
-- **`HISTORY.md`** — append-only log of every decision and *why*, chronological. **Nothing is ever removed or rewritten.** Even when a decision in `DECISIONS.md` changes, the original `HISTORY.md` entry stays and a new entry is added.
-- **`UNDECIDED.md`** — active brainstorming. Resolved items move to `DECISIONS.md` + `HISTORY.md`.
-
-## Develop / publish
-
-```
-npm install                # installs the Tailwind CLI used by build:css
-npm run build:css          # regenerates mirk.css from index.html + mirk-input.css
-npm publish                # publishes mirkui to npm (only the "files" listed in package.json)
-```
+Both repos are cloned under `refs/` (gitignored) and read while designing each component. They aren't part of the kit.

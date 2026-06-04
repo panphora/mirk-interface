@@ -43,6 +43,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0023 | [Image input: file picker plus FileReader preview](#0023--image-input-file-picker-plus-filereader-preview) |
 | 0024 | [Tags: input plus DOM chips plus JS add/remove](#0024--tags-input-plus-dom-chips-plus-js-addremove) |
 | 0025 | [Sortable: drag handle dots, dedicated per-panel tokens, L-shape border](#0025--sortable-drag-handle-dots-dedicated-per-panel-tokens-l-shape-border) |
+| 0026 | [Architecture (v2): semantic BEM classes in `@layer components`, hand-written `mirk.css`](#0026--architecture-v2-semantic-bem-classes-in-layer-components-hand-written-mirkcss) |
 
 ## Template
 
@@ -741,3 +742,28 @@ Earlier rounds (6 dots and 2px dots) read sparse or too small — the handle did
 ### Scope
 - Visual only. Reordering JS is out of scope; `cursor-grab` is the only affordance today. Wire drag/drop when a real consumer needs it.
 - Single variant. No rect/round axis yet: the wrapping container is rectangular. Follow `0013`'s pattern if a rounded version becomes useful.
+
+---
+
+## 0026 — Architecture (v2): semantic BEM classes in `@layer components`, hand-written `mirk.css`
+
+- **Date:** 2026-06-04
+
+### Context
+v1 shipped each component as a copy-paste block of Tailwind utility classes plus a `mirk.css` *compiled* from `mirk-input.css` against utilities scraped from `index.html`. That pipeline drifted (`mirk-input.css` held pre-resize toggle/slider colors while `index.html` moved on) and forced Tailwind on every consumer. v2 converts the *finalized, locked* styles into a maintainable form without changing how anything looks or behaves. See `mirk-ui-guide.md`.
+
+### Decision
+- **Components are semantic BEM classes** (`mirk-button`, `mirk-button--round`, `mirk-checkbox__box`) in `@layer components`. The block prefix is `mirk-`, `__part` only when structure requires it, `--variant` for shape/size (medium is the unmodified base).
+- **`mirk.css` is hand-written and is the product.** It declares `@layer base, components;` at the top, so it renders standalone and merges into Tailwind's order when present. No build step; the npm "build" is a copy.
+- **Utilities always win.** Because components sit in `@layer components`, `class="mirk-input w-full px-8"` overrides with zero `!important`. Tailwind is optional, never required.
+- **Theming via `light-dark()` + `color-scheme`.** The 28 tokens collapse from four duplicated blocks to one value each; `.light` / `.dark` / `[data-theme]` flip `color-scheme` (and paint their own canvas). Every token is namespaced `--mirk-*`, including the per-instance slider `--mirk-value`.
+- **`mirk.js` is delegated, not `init()`-based.** One `document` listener per interaction handles every current and future element, so injected / re-rendered / saved-and-reopened markup works with no setup. Initial state lives in the markup so `outerHTML` round-trips.
+- **`index.html` is rebuilt on the classes** and is the proof + the docs. `mirk-input.css` is retired.
+
+### Deviations from the guide (and why)
+- **`--mirk-focus-offset` keeps its 2px light / 3px dark split** (the guide unified to 2px). It is the one non-color token, so `light-dark()` can't carry it; we preserve exact v1 behavior with a one-line override under the dark selectors.
+- **`mirk-select` keeps `appearance: none` + a styled `__chevron`**, not `appearance: base-select` / `::picker(select)`. base-select would change the closed-control rendering and isn't cross-browser yet; the chevron approach renders identically everywhere today. base-select is a future enhancement.
+- **Tailwind path is `@import "mirkui/mirk.css"`, not a JS `@plugin`.** Tailwind v4 plugins inject CSS-*in-JS* objects, not raw CSS, so a `@plugin` would either duplicate `mirk.css` in JS (the exact drift this rework removes) or land components in the wrong layer. The CSS import delivers the same ergonomics — utilities override mirk — with zero duplication.
+
+### Verification
+The conversion changed *form*, not *pixels*. Confirmed by a computed-style + geometry diff (width, height, padding, border widths/colors, background, gradients, radius, font, transforms) across all 27 demos in both the light and dark columns: **zero meaningful differences** between the v1 utility markup and the v2 semantic classes. Remaining computed-string differences are non-visual (inline-block→inline-flex blockification with identical box metrics; Tailwind's explicit `0%`/`100%` gradient stops vs the implicit defaults; `rounded-full`'s `3.35e7px` vs `9999px`, both fully round; and the color of zero-width borders).
