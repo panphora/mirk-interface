@@ -19,13 +19,13 @@
   ],
   "author": "David Miranda",
   "license": "MIT",
-  "homepage": "https://github.com/davidmiranda/mirk-ui-kit",
+  "homepage": "https://github.com/panphora/mirk-ui-kit",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davidmiranda/mirk-ui-kit.git"
+    "url": "git+https://github.com/panphora/mirk-ui-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/davidmiranda/mirk-ui-kit/issues"
+    "url": "https://github.com/panphora/mirk-ui-kit/issues"
   },
   "main": "mirk.js",
   "style": "mirk.css",
