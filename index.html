@@ -495,9 +495,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--compact">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--small">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose</span>
+            <span class="mirk-button__label">Choose</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -510,9 +510,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--compact mirk-file--round">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--round mirk-button--small">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose</span>
+            <span class="mirk-button__label">Choose</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -525,9 +525,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--large">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose…</span>
+            <span class="mirk-button__label">Choose…</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -540,9 +540,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--round">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--round mirk-button--large">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose…</span>
+            <span class="mirk-button__label">Choose…</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -558,9 +558,9 @@
           <img class="mirk-image__preview" hidden alt="">
           <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="mirk-image__button">
+        <label class="mirk-button mirk-button--large">
           <input type="file" accept="image/*" class="mirk-image__input">
-          <span class="mirk-image__button-label">Upload image</span>
+          <span class="mirk-button__label">Upload image</span>
         </label>
       </div>
     </div>
@@ -574,9 +574,9 @@
           <img class="mirk-image__preview" hidden alt="">
           <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="mirk-image__button">
+        <label class="mirk-button mirk-button--round mirk-button--large">
           <input type="file" accept="image/*" class="mirk-image__input">
-          <span class="mirk-image__button-label">Upload image</span>
+          <span class="mirk-button__label">Upload image</span>
         </label>
       </div>
     </div>
@@ -656,6 +656,55 @@
           </div>
         </div>
       </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • ROUND — Compact — Filled ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Compact — Filled</h2>
+      <div data-copy class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="mirk-file mirk-file--compact mirk-file--round">
+          <label class="mirk-button mirk-button--round mirk-button--small">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-button__label">Choose</span>
+          </label>
+          <a class="mirk-file__name" data-filled href="#resume.pdf" target="_blank" rel="noopener">resume.pdf</a>
+          <button type="button" class="mirk-file__remove" aria-label="Remove file"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • Compact — Upload ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Compact — Upload (empty + filled)</h2>
+      <div class="flex flex-col gap-5 max-w-sm">
+        <div data-copy class="flex flex-col gap-2">
+          <label class="text-[18px] leading-normal">Avatar — empty</label>
+          <div class="mirk-image mirk-image--compact mirk-image--rounded">
+            <label class="mirk-button mirk-button--small mirk-image__upload">
+              <input type="file" accept="image/*" class="mirk-image__input">
+              <span class="mirk-button__label">Upload image</span>
+            </label>
+            <figure class="mirk-image__thumb" hidden>
+              <span class="mirk-image__frame"><img class="mirk-image__preview" alt=""></span>
+              <button type="button" class="mirk-image__remove" aria-label="Remove image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+            </figure>
+          </div>
+        </div>
+        <div data-copy class="flex flex-col gap-2">
+          <label class="text-[18px] leading-normal">Avatar — filled</label>
+          <div class="mirk-image mirk-image--compact mirk-image--rounded">
+            <label class="mirk-button mirk-button--small mirk-image__upload" hidden>
+              <input type="file" accept="image/*" class="mirk-image__input">
+              <span class="mirk-button__label">Upload image</span>
+            </label>
+            <figure class="mirk-image__thumb">
+              <span class="mirk-image__frame"><img class="mirk-image__preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180'%3E%3Crect width='320' height='180' fill='%237aa2c9'/%3E%3Ccircle cx='245' cy='52' r='30' fill='%23ffe08a'/%3E%3Crect y='120' width='320' height='60' fill='%234f7d52'/%3E%3C/svg%3E" alt=""></span>
+              <button type="button" class="mirk-image__remove" aria-label="Remove image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+            </figure>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1205,9 +1254,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--compact">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--small">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose</span>
+            <span class="mirk-button__label">Choose</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -1220,9 +1269,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--compact mirk-file--round">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--round mirk-button--small">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose</span>
+            <span class="mirk-button__label">Choose</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -1235,9 +1284,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--large">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose…</span>
+            <span class="mirk-button__label">Choose…</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -1250,9 +1299,9 @@
       <div data-copy class="flex flex-col gap-2 max-w-sm">
         <label class="text-[18px] leading-normal">Document</label>
         <div class="mirk-file mirk-file--round">
-          <label class="mirk-file__button">
+          <label class="mirk-button mirk-button--round mirk-button--large">
             <input type="file" class="mirk-file__input">
-            <span class="mirk-file__button-label">Choose…</span>
+            <span class="mirk-button__label">Choose…</span>
           </label>
           <span class="mirk-file__name">No file chosen</span>
         </div>
@@ -1268,9 +1317,9 @@
           <img class="mirk-image__preview" hidden alt="">
           <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="mirk-image__button">
+        <label class="mirk-button mirk-button--large">
           <input type="file" accept="image/*" class="mirk-image__input">
-          <span class="mirk-image__button-label">Upload image</span>
+          <span class="mirk-button__label">Upload image</span>
         </label>
       </div>
     </div>
@@ -1284,9 +1333,9 @@
           <img class="mirk-image__preview" hidden alt="">
           <span class="mirk-image__placeholder">No image</span>
         </div>
-        <label class="mirk-image__button">
+        <label class="mirk-button mirk-button--round mirk-button--large">
           <input type="file" accept="image/*" class="mirk-image__input">
-          <span class="mirk-image__button-label">Upload image</span>
+          <span class="mirk-button__label">Upload image</span>
         </label>
       </div>
     </div>
@@ -1366,6 +1415,55 @@
           </div>
         </div>
       </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── FILE • ROUND — Compact — Filled ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">File • Round — Compact — Filled</h2>
+      <div data-copy class="flex flex-col gap-2 max-w-sm">
+        <label class="text-[18px] leading-normal">Document</label>
+        <div class="mirk-file mirk-file--compact mirk-file--round">
+          <label class="mirk-button mirk-button--round mirk-button--small">
+            <input type="file" class="mirk-file__input">
+            <span class="mirk-button__label">Choose</span>
+          </label>
+          <a class="mirk-file__name" data-filled href="#resume.pdf" target="_blank" rel="noopener">resume.pdf</a>
+          <button type="button" class="mirk-file__remove" aria-label="Remove file"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── IMAGE • Compact — Upload ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Image • Compact — Upload (empty + filled)</h2>
+      <div class="flex flex-col gap-5 max-w-sm">
+        <div data-copy class="flex flex-col gap-2">
+          <label class="text-[18px] leading-normal">Avatar — empty</label>
+          <div class="mirk-image mirk-image--compact mirk-image--rounded">
+            <label class="mirk-button mirk-button--small mirk-image__upload">
+              <input type="file" accept="image/*" class="mirk-image__input">
+              <span class="mirk-button__label">Upload image</span>
+            </label>
+            <figure class="mirk-image__thumb" hidden>
+              <span class="mirk-image__frame"><img class="mirk-image__preview" alt=""></span>
+              <button type="button" class="mirk-image__remove" aria-label="Remove image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+            </figure>
+          </div>
+        </div>
+        <div data-copy class="flex flex-col gap-2">
+          <label class="text-[18px] leading-normal">Avatar — filled</label>
+          <div class="mirk-image mirk-image--compact mirk-image--rounded">
+            <label class="mirk-button mirk-button--small mirk-image__upload" hidden>
+              <input type="file" accept="image/*" class="mirk-image__input">
+              <span class="mirk-button__label">Upload image</span>
+            </label>
+            <figure class="mirk-image__thumb">
+              <span class="mirk-image__frame"><img class="mirk-image__preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180'%3E%3Crect width='320' height='180' fill='%237aa2c9'/%3E%3Ccircle cx='245' cy='52' r='30' fill='%23ffe08a'/%3E%3Crect y='120' width='320' height='60' fill='%234f7d52'/%3E%3C/svg%3E" alt=""></span>
+              <button type="button" class="mirk-image__remove" aria-label="Remove image"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4 12 12M12 4 4 12" stroke="currentColor" stroke-width="2" stroke-linecap="square" fill="none"/></svg></button>
+            </figure>
+          </div>
+        </div>
       </div>
     </div>
 

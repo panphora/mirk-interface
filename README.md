@@ -542,9 +542,9 @@ A styled wrapper around a native file input that hides the real control and show
 ```html
 <!-- Rect — Compact -->
 <div class="mirk-file mirk-file--compact">
-  <label class="mirk-file__button">
+  <label class="mirk-button mirk-button--small">
     <input type="file" class="mirk-file__input">
-    <span class="mirk-file__button-label">Choose</span>
+    <span class="mirk-button__label">Choose</span>
   </label>
   <span class="mirk-file__name">No file chosen</span>
 </div>
@@ -553,9 +553,9 @@ A styled wrapper around a native file input that hides the real control and show
 ```html
 <!-- Round — Compact -->
 <div class="mirk-file mirk-file--compact mirk-file--round">
-  <label class="mirk-file__button">
+  <label class="mirk-button mirk-button--round mirk-button--small">
     <input type="file" class="mirk-file__input">
-    <span class="mirk-file__button-label">Choose</span>
+    <span class="mirk-button__label">Choose</span>
   </label>
   <span class="mirk-file__name">No file chosen</span>
 </div>
@@ -564,9 +564,9 @@ A styled wrapper around a native file input that hides the real control and show
 ```html
 <!-- Rect — Button + Text (default) -->
 <div class="mirk-file">
-  <label class="mirk-file__button">
+  <label class="mirk-button mirk-button--large">
     <input type="file" class="mirk-file__input">
-    <span class="mirk-file__button-label">Choose…</span>
+    <span class="mirk-button__label">Choose…</span>
   </label>
   <span class="mirk-file__name">No file chosen</span>
 </div>
@@ -575,17 +575,17 @@ A styled wrapper around a native file input that hides the real control and show
 ```html
 <!-- Round — Button + Text -->
 <div class="mirk-file mirk-file--round">
-  <label class="mirk-file__button">
+  <label class="mirk-button mirk-button--round mirk-button--large">
     <input type="file" class="mirk-file__input">
-    <span class="mirk-file__button-label">Choose…</span>
+    <span class="mirk-button__label">Choose…</span>
   </label>
   <span class="mirk-file__name">No file chosen</span>
 </div>
 ```
 
-**Class API:** block `mirk-file` / parts `__input`, `__button`, `__button-label`, `__name` / modifiers `--compact`, `--round`.
+**Class API:** block `mirk-file` / parts `__input`, `__name` / modifiers `--compact`, `--round`. The "Choose" trigger is a [`mirk-button`](#button): `--small` for `--compact`, `--large` for button+text, plus `--round` to match the shape.
 
-**Needs mirk.js.** A delegated `change` listener on `document` watches `.mirk-file__input`, sets the sibling `.mirk-file__name` text to the chosen file's name (adding `data-filled`), or resets it to "No file chosen" otherwise. Without mirk.js the dialog still opens and the file is selected, but the name text never updates. The selected file itself does NOT round-trip via `outerHTML` (file inputs cannot have their value set programmatically), so a restored picker resets to empty. What persists is the displayed filename text plus its `data-filled` attribute (the CSS uses it to switch the name from placeholder to foreground color). The `__button-label` span is required for both round variants because the gradient pill chrome is painted on the label.
+**Needs mirk.js.** A delegated `change` listener on `document` watches `.mirk-file__input`, sets the sibling `.mirk-file__name` text to the chosen file's name (adding `data-filled`), or resets it to "No file chosen" otherwise. Without mirk.js the dialog still opens and the file is selected, but the name text never updates. The selected file itself does NOT round-trip via `outerHTML` (file inputs cannot have their value set programmatically), so a restored picker resets to empty. What persists is the displayed filename text plus its `data-filled` attribute (the CSS uses it to switch the name from placeholder to foreground color). The `mirk-button__label` span is required for the round variants because the gradient pill chrome is painted on the label.
 
 ---
 
@@ -601,9 +601,9 @@ A square 120x120 image-upload control: a preview frame with a placeholder, plus 
     <img class="mirk-image__preview" hidden alt="">
     <span class="mirk-image__placeholder">No image</span>
   </div>
-  <label class="mirk-image__button">
+  <label class="mirk-button mirk-button--large">
     <input type="file" accept="image/*" class="mirk-image__input">
-    <span class="mirk-image__button-label">Upload image</span>
+    <span class="mirk-button__label">Upload image</span>
   </label>
 </div>
 ```
@@ -616,14 +616,14 @@ A square 120x120 image-upload control: a preview frame with a placeholder, plus 
     <img class="mirk-image__preview" hidden alt="">
     <span class="mirk-image__placeholder">No image</span>
   </div>
-  <label class="mirk-image__button">
+  <label class="mirk-button mirk-button--round mirk-button--large">
     <input type="file" accept="image/*" class="mirk-image__input">
-    <span class="mirk-image__button-label">Upload image</span>
+    <span class="mirk-button__label">Upload image</span>
   </label>
 </div>
 ```
 
-**Class API:** block `mirk-image` / parts `__frame`, `__preview`, `__placeholder`, `__button`, `__button-label`, `__input` / modifier `--rounded`.
+**Class API:** block `mirk-image` / parts `__frame`, `__preview`, `__placeholder`, `__input` / modifier `--rounded`. The "Upload image" trigger is a [`mirk-button`](#button) (`--large`, plus `--round` for `--rounded`).
 
 **Needs mirk.js.** A delegated `change` listener on `document` catches `.mirk-image__input`, reads the first file with `FileReader.readAsDataURL`, sets the data URL on `.mirk-image__preview`, removes its `hidden` attribute, and hides the placeholder. Without mirk.js the chrome still renders but no thumbnail appears. State does not fully round-trip: before selection, a captured `outerHTML` still shows the hidden img plus visible placeholder. If you serialize after an upload, the data URL in `src` and the toggled `hidden` attributes are captured, making the thumbnail self-contained. The native file input's selected File is never serializable. Keep the `__placeholder` span and the hidden `__preview` img present, the JS toggles them.
 
