@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pixelarticons — action registry</title>
+<style>
+  @font-face {
+    font-family: 'Departure Mono';
+    src: url('/fonts/DepartureMono-1.500/DepartureMono-Regular.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    color-scheme: light dark;
+    --canvas:       light-dark(#F7F2EA, #0B0C13);
+    --bg:           light-dark(#F7F2EA, #1D1F2F);
+    --fg:           light-dark(#15120e, #F6F7F9);
+    --accent:       light-dark(#efefe5, #232639);
+    --bevel-tl:     light-dark(#f3ddc7, #474C65);
+    --bevel-br:     light-dark(#c2ad95, #131725);
+    --bevel-bg:     light-dark(#e9d3bd, #1D1F2F);
+    --bevel-hover:  light-dark(#dfc9b3, #232639);
+    --input-border: light-dark(#957E65, #6E738E);
+    --muted:        light-dark(#7F7366, #545973);
+    --focus:        light-dark(#BBA288, #5A607F);
+    --radius: 5px;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 28px;
+    background: var(--canvas); color: var(--fg);
+    font-family: 'Departure Mono', ui-monospace, Menlo, monospace;
+    font-size: 14px; line-height: 1.45;
+  }
+
+  header { max-width: 1240px; margin: 0 auto 24px; }
+  h1 { font-size: 18px; font-weight: 400; margin: 0 0 16px; }
+  h1 .dim { color: var(--muted); }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  #search {
+    flex: 1; min-width: 260px; max-width: 480px;
+    padding: 8px 12px; font: inherit; color: inherit;
+    background: var(--bg); border: 2px solid var(--input-border); border-radius: var(--radius);
+  }
+  #search:focus { outline: 2px solid var(--focus); outline-offset: 2px; }
+  #search::placeholder { color: var(--muted); }
+
+  .chip {
+    padding: 7px 12px; font: inherit; font-size: 13px; cursor: pointer;
+    color: var(--fg); background: var(--bevel-bg);
+    border: 2px solid; border-color: var(--bevel-tl) var(--bevel-br) var(--bevel-br) var(--bevel-tl);
+    border-radius: var(--radius);
+  }
+  .chip:hover { background: var(--bevel-hover); }
+  .chip.active {
+    background: var(--fg); color: var(--canvas);
+    border-color: var(--bevel-br) var(--bevel-tl) var(--bevel-tl) var(--bevel-br);
+  }
+
+  #count { margin-top: 10px; font-size: 12px; color: var(--muted); }
+
+  main { max-width: 1240px; margin: 0 auto; }
+  section h2 {
+    font-size: 13px; font-weight: 400; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin: 28px 0 10px;
+  }
+
+  .px {
+    display: inline-block; flex: none; background-color: currentColor;
+    -webkit-mask: var(--i) center / contain no-repeat;
+    mask: var(--i) center / contain no-repeat;
+  }
+  .px-48 { width: 48px; height: 48px; }
+  .px-40 { width: 40px; height: 40px; }
+  .px-20 { width: 20px; height: 20px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 12px; }
+  .card {
+    display: flex; gap: 14px; padding: 14px; background: var(--bg);
+    border: 2px solid; border-color: var(--bevel-tl) var(--bevel-br) var(--bevel-br) var(--bevel-tl);
+    border-radius: var(--radius);
+  }
+  .card.hole { border: 2px dashed var(--input-border); background: transparent; }
+  .card.new { border-color: #ff8a1e; box-shadow: 0 0 0 1px #ff8a1e inset; }
+  .tile.new { border-color: #ff8a1e; box-shadow: 0 0 0 1px #ff8a1e inset; }
+  .badge.new-badge { margin-left: auto; padding: 2px 7px; font-size: 11px; color: #1a1208; background: #ff8a1e; border-radius: var(--radius); }
+
+  .icon-btn {
+    width: 64px; height: 64px; flex: none; display: flex; align-items: center; justify-content: center;
+    padding: 0; font: inherit; color: inherit; cursor: pointer;
+    background: var(--accent); border: 0; border-radius: var(--radius);
+  }
+  .icon-btn:hover { background: var(--bevel-hover); }
+  .icon-btn.missing { cursor: default; color: var(--muted); font-size: 28px; background: transparent; border: 2px dashed var(--input-border); }
+  .icon-btn.missing:hover { background: transparent; }
+
+  .body { min-width: 0; flex: 1; }
+  .row { display: flex; align-items: baseline; gap: 8px; }
+  .row strong { font-weight: 400; font-size: 15px; }
+  .copies { margin-left: auto; display: flex; gap: 6px; }
+  .mini {
+    padding: 2px 8px; font: inherit; font-size: 11px; cursor: pointer;
+    color: var(--fg); background: var(--bevel-bg);
+    border: 2px solid; border-color: var(--bevel-tl) var(--bevel-br) var(--bevel-br) var(--bevel-tl);
+    border-radius: var(--radius);
+  }
+  .mini:hover { background: var(--bevel-hover); }
+
+  .syns { margin-top: 4px; font-size: 11px; color: var(--muted); overflow-wrap: break-word; }
+  .alts { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 11px; color: var(--muted); }
+  .alt {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 7px; font: inherit; font-size: 11px; cursor: pointer;
+    color: var(--fg); background: var(--accent); border: 0; border-radius: var(--radius);
+  }
+  .alt:hover { background: var(--bevel-hover); }
+
+  .badge { display: inline-block; margin-left: auto; font-size: 11px; color: var(--muted); }
+  .badge.hole-badge { color: var(--fg); border: 1px dashed var(--input-border); border-radius: var(--radius); padding: 2px 7px; }
+  .badge.drawn { margin: 6px 0 0; padding: 2px 7px; color: var(--canvas); background: var(--fg); border-radius: var(--radius); }
+  .also { margin-top: 6px; font-size: 11px; color: var(--muted); }
+  .note { margin-top: 6px; font-size: 11px; color: var(--muted); font-style: normal; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 8px; }
+  .tile {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 12px 6px 8px; background: var(--bg);
+    border: 2px solid; border-color: var(--bevel-tl) var(--bevel-br) var(--bevel-br) var(--bevel-tl);
+    border-radius: var(--radius);
+  }
+  .tile-icon { padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; border-radius: var(--radius); }
+  .tile-icon:hover { background: var(--bevel-hover); }
+  .tile-name {
+    padding: 0; border: 0; background: transparent; cursor: pointer;
+    font: inherit; font-size: 9px; color: var(--muted); text-align: center; word-break: break-all; line-height: 1.3;
+  }
+  .tile-name:hover { color: var(--fg); }
+  .tile-claim { font-size: 9px; color: var(--fg); border-top: 1px solid var(--input-border); padding-top: 3px; text-align: center; }
+
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px);
+    padding: 8px 14px; font-size: 12px; color: var(--canvas); background: var(--fg);
+    border-radius: var(--radius); opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { max-width: 1240px; margin: 36px auto 0; font-size: 11px; color: var(--muted); }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>pixelarticons <span class="dim">· action registry</span></h1>
+  <div class="controls">
+    <input id="search" type="search" placeholder="Search actions, synonyms, icon names…" autofocus>
+    <button id="view-actions" class="chip active">Actions</button>
+    <button id="view-icons" class="chip">All icons</button>
+    <button id="chip-holes" class="chip">Holes / New</button>
+    <button id="chip-sharp" class="chip">Sharp</button>
+  </div>
+  <div id="count"></div>
+</header>
+<main>
+  <div id="actions-view"></div>
+  <div id="icons-view" class="hidden"></div>
+</main>
+<footer>click any icon to copy its inline svg · "name" copies the filename · holes are actions that still need an icon drawn</footer>
+<div id="toast"></div>
+<script>
+const $ = s => document.querySelector(s);
+const state = { q: '', view: 'actions', holes: false, sharp: false };
+let DATA = null;
+let rawData = '';
+let ICONS = new Set();
+let NEW_ICONS = new Set();
+const CLAIMED = new Map();
+
+init();
+
+async function init() {
+  const [dataText, icons] = await Promise.all([
+    fetch('/actions.json').then(r => r.text()),
+    fetch('/api/icons').then(r => r.json()),
+  ]);
+  ICONS = new Set(icons);
+  rawData = dataText;
+  prepData(JSON.parse(dataText));
+  buildActions();
+  buildIcons();
+  applyFilter();
+}
+
+function prepData(data) {
+  DATA = data;
+  CLAIMED.clear();
+  for (const a of DATA.actions) {
+    a.haystack = [a.label, a.id, a.icon, a.proposedIcon, ...a.synonyms, ...a.alternates]
+      .filter(Boolean).join(' ').toLowerCase();
+    if (a.icon) CLAIMED.set(a.icon, [...(CLAIMED.get(a.icon) || []), a]);
+  }
+  NEW_ICONS = new Set(DATA.actions.filter(a => a.new && a.icon).map(a => a.icon));
+}
+
+function withSharp(name) {
+  return state.sharp && ICONS.has(name + '-sharp') ? name + '-sharp' : name;
+}
+
+function px(name, size) {
+  return `<span class="px px-${size}" style="--i:url('/svg/${name}.svg')"></span>`;
+}
+
+function buildActions() {
+  $('#actions-view').innerHTML = DATA.categories.map(cat => {
+    const acts = DATA.actions.filter(a => a.category === cat.key);
+    return `<section data-cat="${cat.key}">
+      <h2>${cat.title}</h2>
+      <div class="cards">${acts.map(card).join('')}</div>
+    </section>`;
+  }).join('');
+}
+
+function card(a) {
+  const drawn = !a.icon && a.proposedIcon && ICONS.has(a.proposedIcon);
+  const name = a.icon ? withSharp(a.icon) : (drawn ? a.proposedIcon : null);
+  const others = a.icon ? CLAIMED.get(a.icon).filter(x => x.id !== a.id) : [];
+  return `<article class="card ${a.icon ? '' : 'hole'} ${a.new ? 'new' : ''}" data-hay="${a.haystack}" data-hole="${a.icon ? '' : '1'}" data-new="${a.new ? '1' : ''}">
+    ${name
+      ? `<button class="icon-btn" data-svg="${name}" title="copy ${name}.svg markup">${px(name, 48)}</button>`
+      : `<div class="icon-btn missing">?</div>`}
+    <div class="body">
+      <div class="row">
+        <strong>${a.label}</strong>
+        ${a.new ? `<span class="badge new-badge">new · review</span>` : name
+          ? `<span class="copies"><button class="mini" data-svg="${name}">svg</button><button class="mini" data-name="${name}">name</button></span>`
+          : `<span class="badge hole-badge">needs icon: ${a.proposedIcon}.svg</span>`}
+      </div>
+      ${a.new ? `<div class="copies" style="margin-top:6px"><button class="mini" data-svg="${name}">svg</button><button class="mini" data-name="${name}">name</button></div>` : ''}
+      ${drawn ? `<div class="badge drawn">drawn! set "icon": "${a.proposedIcon}" in actions.json</div>` : ''}
+      <div class="syns">${a.id} · ${a.synonyms.join(' · ')}</div>
+      ${a.alternates.length ? `<div class="alts">alt${a.alternates.map(alt => {
+        const n = withSharp(alt);
+        return `<button class="alt" data-svg="${n}" title="copy ${n}.svg markup">${px(n, 20)}<span>${alt}</span></button>`;
+      }).join('')}</div>` : ''}
+      ${others.length ? `<div class="also">also: ${others.map(o => o.label).join(', ')}</div>` : ''}
+      ${a.note ? `<div class="note">${a.note}</div>` : ''}
+    </div>
+  </article>`;
+}
+
+function buildIcons() {
+  $('#icons-view').innerHTML = `<div class="tiles">${[...ICONS].map(n => {
+    const claimed = CLAIMED.get(n);
+    const hay = (n + ' ' + (claimed ? claimed.map(a => a.label + ' ' + a.id).join(' ') : '')).toLowerCase();
+    return `<div class="tile ${NEW_ICONS.has(n) ? 'new' : ''}" data-hay="${hay}">
+      <button class="tile-icon" data-svg="${n}" title="copy ${n}.svg markup">${px(n, 40)}</button>
+      <button class="tile-name" data-name="${n}" title="copy filename">${n}</button>
+      ${claimed ? `<span class="tile-claim">${claimed.map(a => a.label).join(', ')}</span>` : ''}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function applyFilter() {
+  const tokens = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+  const match = hay => tokens.every(t => hay.includes(t));
+
+  if (state.view === 'actions') {
+    let shown = 0, holes = 0;
+    for (const section of document.querySelectorAll('#actions-view section')) {
+      let visible = 0;
+      for (const el of section.querySelectorAll('.card')) {
+        const show = match(el.dataset.hay) && (!state.holes || el.dataset.hole || el.dataset.new);
+        el.classList.toggle('hidden', !show);
+        if (show) { visible++; if (el.dataset.hole) holes++; }
+      }
+      section.classList.toggle('hidden', !visible);
+      shown += visible;
+    }
+    $('#count').textContent = `${shown} of ${DATA.actions.length} actions · ${holes} hole${holes === 1 ? '' : 's'} shown`;
+  } else {
+    let shown = 0, claimed = 0;
+    for (const el of document.querySelectorAll('#icons-view .tile')) {
+      const show = match(el.dataset.hay);
+      el.classList.toggle('hidden', !show);
+      if (show) { shown++; if (el.querySelector('.tile-claim')) claimed++; }
+    }
+    $('#count').textContent = `${shown} of ${ICONS.size} icons · ${claimed} claimed by actions`;
+  }
+}
+
+function setView(view) {
+  state.view = view;
+  $('#view-actions').classList.toggle('active', view === 'actions');
+  $('#view-icons').classList.toggle('active', view === 'icons');
+  $('#actions-view').classList.toggle('hidden', view !== 'actions');
+  $('#icons-view').classList.toggle('hidden', view !== 'icons');
+  applyFilter();
+}
+
+$('#search').addEventListener('input', e => { state.q = e.target.value; applyFilter(); });
+$('#view-actions').addEventListener('click', () => setView('actions'));
+$('#view-icons').addEventListener('click', () => setView('icons'));
+$('#chip-holes').addEventListener('click', e => {
+  state.holes = !state.holes;
+  e.target.classList.toggle('active', state.holes);
+  if (state.holes && state.view !== 'actions') setView('actions'); else applyFilter();
+});
+$('#chip-sharp').addEventListener('click', e => {
+  state.sharp = !state.sharp;
+  e.target.classList.toggle('active', state.sharp);
+  buildActions();
+  applyFilter();
+});
+
+window.addEventListener('focus', async () => {
+  if (!DATA) return;
+  const [icons, dataText] = await Promise.all([
+    fetch('/api/icons').then(r => r.json()),
+    fetch('/actions.json').then(r => r.text()),
+  ]);
+  const iconsChanged = icons.length !== ICONS.size || !icons.every(n => ICONS.has(n));
+  const dataChanged = dataText !== rawData;
+  if (!iconsChanged && !dataChanged) return;
+  ICONS = new Set(icons);
+  if (dataChanged) { rawData = dataText; prepData(JSON.parse(dataText)); }
+  buildActions();
+  buildIcons();
+  applyFilter();
+});
+
+document.addEventListener('click', async e => {
+  const nameBtn = e.target.closest('[data-name]');
+  if (nameBtn) {
+    await copy(nameBtn.dataset.name + '.svg');
+    return toast(`copied "${nameBtn.dataset.name}.svg"`);
+  }
+  const svgBtn = e.target.closest('[data-svg]');
+  if (svgBtn) {
+    const markup = await fetch(`/svg/${svgBtn.dataset.svg}.svg`).then(r => r.text());
+    await copy(markup.trim());
+    toast(`copied ${svgBtn.dataset.svg} svg markup`);
+  }
+});
+
+async function copy(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+</script>
+</body>
+</html>

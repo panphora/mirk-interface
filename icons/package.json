@@ -15,6 +15,7 @@
     "prepublishOnly": "npm run generate:react",
     "validate": "node scripts/validate-icons.js",
     "browser": "node scripts/generate-browser.js && open icons.html",
+    "registry": "node server.js",
     "test": "echo \"Error: no test specified\""
   },
   "repository": {

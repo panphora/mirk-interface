@@ -1,0 +1,2198 @@
+{
+ "categories": [
+  {
+   "key": "core",
+   "title": "Core actions & history"
+  },
+  {
+   "key": "text",
+   "title": "Text formatting"
+  },
+  {
+   "key": "organize",
+   "title": "Create, edit & organize"
+  },
+  {
+   "key": "files",
+   "title": "Files & data"
+  },
+  {
+   "key": "nav",
+   "title": "Navigation & view"
+  },
+  {
+   "key": "find",
+   "title": "Find & arrange"
+  },
+  {
+   "key": "views",
+   "title": "View modes"
+  },
+  {
+   "key": "collab",
+   "title": "Sharing & collaboration"
+  },
+  {
+   "key": "workflow",
+   "title": "Workflow & status"
+  },
+  {
+   "key": "account",
+   "title": "Account & settings"
+  }
+ ],
+ "actions": [
+  {
+   "id": "undo",
+   "label": "Undo",
+   "category": "core",
+   "synonyms": [
+    "ctrl+z",
+    "cmd+z",
+    "step back",
+    "take back",
+    "reverse",
+    "rollback",
+    "undo change",
+    "revert last"
+   ],
+   "icon": "undo",
+   "alternates": [
+    "corner-up-left",
+    "arrow-left"
+   ],
+   "note": ""
+  },
+  {
+   "id": "redo",
+   "label": "Redo",
+   "category": "core",
+   "synonyms": [
+    "ctrl+y",
+    "ctrl+shift+z",
+    "cmd+shift+z",
+    "step forward",
+    "repeat",
+    "do again",
+    "restore action"
+   ],
+   "icon": "redo",
+   "alternates": [
+    "corner-up-right",
+    "arrow-right"
+   ],
+   "note": ""
+  },
+  {
+   "id": "save",
+   "label": "Save",
+   "category": "core",
+   "synonyms": [
+    "ctrl+s",
+    "cmd+s",
+    "floppy",
+    "persist",
+    "store",
+    "write",
+    "save changes",
+    "disk",
+    "save file",
+    "floppy disk"
+   ],
+   "icon": "save",
+   "alternates": [
+    "download",
+    "arrow-down-box",
+    "check"
+   ],
+   "note": "Custom-drawn: floppy disk (cut corner, shutter, label)."
+  },
+  {
+   "id": "edit",
+   "label": "Edit",
+   "category": "core",
+   "synonyms": [
+    "modify",
+    "pencil",
+    "change",
+    "update",
+    "rename",
+    "compose",
+    "write",
+    "pen"
+   ],
+   "icon": "pen-square",
+   "alternates": [
+    "magic-edit",
+    "text-cursor-input"
+   ],
+   "note": "pen-square is the classic pencil-in-square edit glyph; magic-edit reads as AI-assisted edit."
+  },
+  {
+   "id": "cut",
+   "label": "Cut",
+   "category": "core",
+   "synonyms": [
+    "ctrl+x",
+    "cmd+x",
+    "scissors",
+    "snip",
+    "clip",
+    "cut out",
+    "move to clipboard"
+   ],
+   "icon": "cut",
+   "alternates": [
+    "scissors",
+    "square-scissors"
+   ],
+   "note": "cut is scissors plus a dashed cut-line, more action-specific than plain scissors."
+  },
+  {
+   "id": "copy",
+   "label": "Copy",
+   "category": "core",
+   "synonyms": [
+    "ctrl+c",
+    "cmd+c",
+    "duplicate",
+    "clone",
+    "copy to clipboard",
+    "replicate"
+   ],
+   "icon": "copy",
+   "alternates": [
+    "files",
+    "section-copy"
+   ],
+   "note": ""
+  },
+  {
+   "id": "paste",
+   "label": "Paste",
+   "category": "core",
+   "synonyms": [
+    "ctrl+v",
+    "cmd+v",
+    "clipboard",
+    "insert",
+    "paste from clipboard",
+    "put"
+   ],
+   "icon": "clipboard",
+   "alternates": [
+    "clipboard-note"
+   ],
+   "note": "Clipboard is the standard paste metaphor but can also read as copy-to-clipboard or tasks; clipboard-note adds content lines."
+  },
+  {
+   "id": "select-all",
+   "label": "Select all",
+   "category": "core",
+   "synonyms": [
+    "ctrl+a",
+    "cmd+a",
+    "highlight all",
+    "mark all",
+    "choose all",
+    "selection",
+    "select everything",
+    "marquee"
+   ],
+   "icon": "square-dashed-cursor",
+   "alternates": [
+    "square-cursor",
+    "lasso",
+    "check-double"
+   ],
+   "note": "Dashed marquee with pointer reads as select; nothing distinguishes the all part."
+  },
+  {
+   "id": "clear-formatting",
+   "label": "Clear formatting",
+   "category": "core",
+   "synonyms": [
+    "remove formatting",
+    "plain text",
+    "strip styles",
+    "format clear",
+    "clean formatting",
+    "remove styles",
+    "tx",
+    "unformat",
+    "strip formatting"
+   ],
+   "icon": "format-clear",
+   "alternates": [
+    "text-start-t",
+    "delete",
+    "cancel"
+   ],
+   "note": "Custom-drawn: T with a small x, the remove-formatting Tx glyph."
+  },
+  {
+   "id": "revert",
+   "label": "Revert / Restore",
+   "category": "core",
+   "synonyms": [
+    "discard changes",
+    "revert to saved",
+    "rollback",
+    "reset",
+    "go back",
+    "abandon changes",
+    "revert changes",
+    "undo all",
+    "unarchive",
+    "recover",
+    "undelete",
+    "bring back",
+    "put back",
+    "untrash",
+    "restore version"
+   ],
+   "icon": "history",
+   "alternates": [
+    "undo",
+    "reload",
+    "clock",
+    "arrow-up-box",
+    "recycle"
+   ],
+   "note": "Custom-drawn: clock with counterclockwise arrow. One card for both revert (discard changes) and restore (unarchive, undelete)."
+  },
+  {
+   "id": "bold",
+   "label": "Bold",
+   "category": "text",
+   "synonyms": [
+    "strong",
+    "font weight",
+    "ctrl+b",
+    "cmd+b",
+    "emphasis",
+    "heavy",
+    "format bold",
+    "b",
+    "thick text"
+   ],
+   "icon": "bold",
+   "alternates": [
+    "text-start-t",
+    "a-arrow-up",
+    "heading"
+   ],
+   "note": "Custom-drawn: heavy B."
+  },
+  {
+   "id": "italic",
+   "label": "Italic",
+   "category": "text",
+   "synonyms": [
+    "em",
+    "emphasis",
+    "slant",
+    "oblique",
+    "ctrl+i",
+    "cmd+i",
+    "cursive",
+    "format italic",
+    "i",
+    "slanted"
+   ],
+   "icon": "italic",
+   "alternates": [
+    "feather",
+    "text-cursor"
+   ],
+   "note": "Custom-drawn: slanted serifed I."
+  },
+  {
+   "id": "underline",
+   "label": "Underline",
+   "category": "text",
+   "synonyms": [
+    "ctrl+u",
+    "cmd+u",
+    "underscore",
+    "format underline",
+    "text decoration",
+    "underscore text",
+    "u"
+   ],
+   "icon": "underline",
+   "alternates": [
+    "t-arrow-down",
+    "minus",
+    "flatten"
+   ],
+   "note": "Custom-drawn: U over a baseline."
+  },
+  {
+   "id": "strikethrough",
+   "label": "Strikethrough",
+   "category": "text",
+   "synonyms": [
+    "strike",
+    "line through",
+    "cross out",
+    "del",
+    "deleted text",
+    "ctrl+shift+x",
+    "s tag",
+    "strikeout"
+   ],
+   "icon": "strikethrough",
+   "alternates": [
+    "cancel",
+    "delete"
+   ],
+   "note": "Custom-drawn: rounded S struck by a line extending past it on both sides."
+  },
+  {
+   "id": "highlight",
+   "label": "Highlight",
+   "category": "text",
+   "synonyms": [
+    "highlighter",
+    "marker",
+    "text background",
+    "background color",
+    "mark",
+    "emphasize",
+    "highlight color"
+   ],
+   "icon": "highlight",
+   "alternates": [
+    "brush",
+    "spray-can",
+    "spotlight",
+    "pen-square"
+   ],
+   "note": "Custom-drawn: chisel-tip marker over a highlighted line."
+  },
+  {
+   "id": "heading",
+   "label": "Heading",
+   "category": "text",
+   "synonyms": [
+    "title",
+    "header",
+    "h1",
+    "h2",
+    "section title",
+    "heading level"
+   ],
+   "icon": "heading",
+   "alternates": [
+    "heading-1",
+    "heading-2"
+   ],
+   "note": "Exact match; heading-1 through heading-6 also exist for level pickers."
+  },
+  {
+   "id": "bullet-list",
+   "label": "Bullet list",
+   "category": "text",
+   "synonyms": [
+    "unordered list",
+    "ul",
+    "bullets",
+    "list",
+    "bullet points",
+    "ctrl+shift+8"
+   ],
+   "icon": "bulletlist",
+   "alternates": [
+    "list-box"
+   ],
+   "note": "Diamond pixel bullets with text lines; exact match."
+  },
+  {
+   "id": "numbered-list",
+   "label": "Numbered list",
+   "category": "text",
+   "synonyms": [
+    "ordered list",
+    "ol",
+    "numbers",
+    "enumerate",
+    "numbering",
+    "ctrl+shift+7",
+    "number list"
+   ],
+   "icon": "numberedlist",
+   "alternates": [
+    "bulletlist",
+    "list-box"
+   ],
+   "note": "Custom-drawn: digits 1 and 2 beside text lines; pairs with bulletlist."
+  },
+  {
+   "id": "checklist",
+   "label": "Checklist",
+   "category": "text",
+   "synonyms": [
+    "task list",
+    "todo list",
+    "checkboxes",
+    "to-do",
+    "checkbox list",
+    "tasks",
+    "ctrl+shift+9"
+   ],
+   "icon": "checkbox-on",
+   "alternates": [
+    "checkbox",
+    "check-double",
+    "list-box"
+   ],
+   "note": "Single checked box stands in; the set lacks a multi-row checkbox list icon."
+  },
+  {
+   "id": "blockquote",
+   "label": "Blockquote",
+   "category": "text",
+   "synonyms": [
+    "quote",
+    "citation",
+    "quotation",
+    "pull quote",
+    "cite",
+    "ctrl+shift+b"
+   ],
+   "icon": "quote-text-inline",
+   "alternates": [
+    "card-text"
+   ],
+   "note": "Quote mark beside indented text lines; reads cleanly as quote formatting."
+  },
+  {
+   "id": "code-block",
+   "label": "Code block",
+   "category": "text",
+   "synonyms": [
+    "code",
+    "preformatted",
+    "pre",
+    "monospace",
+    "code snippet",
+    "fenced code",
+    "syntax"
+   ],
+   "icon": "brackets-angle",
+   "alternates": [
+    "braces",
+    "terminal",
+    "script",
+    "braces-content"
+   ],
+   "note": "Angle brackets are the conventional code symbol."
+  },
+  {
+   "id": "insert-link",
+   "label": "Insert link",
+   "category": "text",
+   "synonyms": [
+    "hyperlink",
+    "url",
+    "add link",
+    "href",
+    "ctrl+k",
+    "cmd+k",
+    "anchor link"
+   ],
+   "icon": "link",
+   "alternates": [
+    "external-link",
+    "attachment"
+   ],
+   "note": ""
+  },
+  {
+   "id": "insert-image",
+   "label": "Insert image",
+   "category": "text",
+   "synonyms": [
+    "add image",
+    "picture",
+    "photo",
+    "upload image",
+    "media",
+    "img",
+    "embed image"
+   ],
+   "icon": "image-2-plus",
+   "alternates": [
+    "image",
+    "image-new",
+    "images"
+   ],
+   "note": "Image frame with a plus in the corner; image-new has sparkles and reads as AI-generate."
+  },
+  {
+   "id": "insert-table",
+   "label": "Insert table",
+   "category": "text",
+   "synonyms": [
+    "add table",
+    "grid",
+    "rows and columns",
+    "spreadsheet",
+    "table editor",
+    "cells"
+   ],
+   "icon": "grid-3x3",
+   "alternates": [
+    "grid-2x3",
+    "grid-3x2"
+   ],
+   "note": "Generic grid is the standard table stand-in but could be misread as grid view; a bordered-table icon would be a worthwhile new draw."
+  },
+  {
+   "id": "align",
+   "label": "Align",
+   "category": "text",
+   "synonyms": [
+    "alignment",
+    "text align",
+    "justify",
+    "left align",
+    "center align",
+    "right align",
+    "paragraph alignment"
+   ],
+   "icon": "text-align-left",
+   "alternates": [
+    "text-align-center",
+    "text-align-justify",
+    "text-align-right"
+   ],
+   "note": "Left-align is the conventional representative for a generic align dropdown; the text-align-* family covers each specific option."
+  },
+  {
+   "id": "create-new",
+   "label": "Create / New",
+   "category": "organize",
+   "synonyms": [
+    "compose",
+    "make",
+    "start",
+    "new item",
+    "new file",
+    "draft",
+    "ctrl+n",
+    "generate",
+    "add new"
+   ],
+   "icon": "plus",
+   "alternates": [
+    "plus-box",
+    "pen-square",
+    "file"
+   ],
+   "note": "Bare plus is the universal create affordance; pen-square works for compose-style creation."
+  },
+  {
+   "id": "add",
+   "label": "Add",
+   "category": "organize",
+   "synonyms": [
+    "insert",
+    "append",
+    "plus",
+    "include",
+    "new",
+    "create",
+    "attach item",
+    "add item"
+   ],
+   "icon": "plus",
+   "alternates": [
+    "plus-box"
+   ],
+   "note": "Shares plus with create-new (near-synonyms that rarely co-occur); use plus-box for add if both ever appear together."
+  },
+  {
+   "id": "rename",
+   "label": "Rename",
+   "category": "organize",
+   "synonyms": [
+    "edit name",
+    "change name",
+    "f2",
+    "retitle",
+    "edit title",
+    "relabel",
+    "name",
+    "rename file"
+   ],
+   "icon": "text-cursor-input",
+   "alternates": [
+    "pen-square",
+    "text-cursor"
+   ],
+   "note": "Input field with I-beam cursor is the closest rename glyph in the set; could also read as generic text editing."
+  },
+  {
+   "id": "duplicate",
+   "label": "Duplicate",
+   "category": "organize",
+   "synonyms": [
+    "copy",
+    "clone",
+    "make a copy",
+    "ctrl+d",
+    "replicate",
+    "fork",
+    "ctrl+c"
+   ],
+   "icon": "copy",
+   "alternates": [
+    "files",
+    "section-copy"
+   ],
+   "note": ""
+  },
+  {
+   "id": "delete",
+   "label": "Delete",
+   "category": "organize",
+   "synonyms": [
+    "trash",
+    "erase",
+    "del",
+    "bin",
+    "destroy",
+    "remove permanently",
+    "discard",
+    "backspace"
+   ],
+   "icon": "delete",
+   "alternates": [
+    "cancel",
+    "minus-box"
+   ],
+   "note": "Verified the SVG: a backspace-style delete key with an x; reads as delete, but the set has no trash can, which would be the stronger glyph to draw."
+  },
+  {
+   "id": "remove",
+   "label": "Remove",
+   "category": "organize",
+   "synonyms": [
+    "minus",
+    "take out",
+    "unassign",
+    "detach",
+    "exclude",
+    "subtract",
+    "remove from list"
+   ],
+   "icon": "minus",
+   "alternates": [
+    "minus-box",
+    "cancel"
+   ],
+   "note": "Minus reads as non-destructive removal from a list, keeping it distinct from delete."
+  },
+  {
+   "id": "archive",
+   "label": "Archive",
+   "category": "organize",
+   "synonyms": [
+    "store",
+    "stash",
+    "file away",
+    "put away",
+    "hide",
+    "box up",
+    "zip"
+   ],
+   "icon": "archive",
+   "alternates": [
+    "box",
+    "inbox"
+   ],
+   "note": "Verified the SVG: a lidded archive box with handle."
+  },
+  {
+   "id": "move",
+   "label": "Move",
+   "category": "organize",
+   "synonyms": [
+    "relocate",
+    "transfer",
+    "send to",
+    "move to folder",
+    "reorganize",
+    "migrate",
+    "change location",
+    "cut"
+   ],
+   "icon": "move",
+   "alternates": [
+    "arrow-right-box",
+    "forward",
+    "corner-up-right"
+   ],
+   "note": "Custom-drawn: four-way move arrows."
+  },
+  {
+   "id": "pin",
+   "label": "Pin",
+   "category": "organize",
+   "synonyms": [
+    "pushpin",
+    "stick to top",
+    "keep on top",
+    "sticky",
+    "affix",
+    "tack",
+    "pin to top",
+    "unpin"
+   ],
+   "icon": "pin",
+   "alternates": [
+    "map-pin",
+    "bookmark",
+    "anchor"
+   ],
+   "note": "Custom-drawn: pushpin with head, flange, and needle."
+  },
+  {
+   "id": "favorite",
+   "label": "Favorite / Star",
+   "category": "organize",
+   "synonyms": [
+    "like",
+    "heart",
+    "save",
+    "fave",
+    "starred",
+    "love",
+    "add to favorites",
+    "star",
+    "wishlist"
+   ],
+   "icon": "heart",
+   "alternates": [
+    "bookmark",
+    "sparkle"
+   ],
+   "note": "The set has no star (soft hole worth drawing); heart is the standard favorite stand-in but leans toward like."
+  },
+  {
+   "id": "tag",
+   "label": "Tag / Label",
+   "category": "organize",
+   "synonyms": [
+    "categorize",
+    "keyword",
+    "hashtag",
+    "classify",
+    "topic",
+    "taxonomy",
+    "label",
+    "add tag",
+    "tags"
+   ],
+   "icon": "hash",
+   "alternates": [
+    "bookmark",
+    "flag"
+   ],
+   "note": "Hole: no price-tag shape; hash would be misread as channel or number."
+  },
+  {
+   "id": "lock",
+   "label": "Lock",
+   "category": "organize",
+   "synonyms": [
+    "secure",
+    "padlock",
+    "protect",
+    "make private",
+    "restrict",
+    "read-only",
+    "password"
+   ],
+   "icon": "lock",
+   "alternates": [
+    "shield",
+    "unlock"
+   ],
+   "note": ""
+  },
+  {
+   "id": "mark-as-read",
+   "label": "Mark as read",
+   "category": "organize",
+   "synonyms": [
+    "read",
+    "seen",
+    "mark read",
+    "open message",
+    "dismiss unread",
+    "mark all read",
+    "read receipt"
+   ],
+   "icon": "mail-open",
+   "alternates": [
+    "check-double",
+    "eye"
+   ],
+   "note": "Open envelope (verified) is clear in mail/inbox contexts; check-double fits chat-style read state better."
+  },
+  {
+   "id": "mark-complete",
+   "label": "Mark complete",
+   "category": "organize",
+   "synonyms": [
+    "done",
+    "complete",
+    "finish",
+    "check off",
+    "resolve",
+    "tick",
+    "close task",
+    "task done",
+    "approve"
+   ],
+   "icon": "check",
+   "alternates": [
+    "checkbox-on",
+    "check-double"
+   ],
+   "note": "Checkbox-on is a good alternative in todo-list contexts."
+  },
+  {
+   "id": "upload",
+   "label": "Upload",
+   "category": "files",
+   "synonyms": [
+    "send",
+    "put",
+    "push",
+    "add file",
+    "drag and drop",
+    "transfer",
+    "publish file"
+   ],
+   "icon": "upload",
+   "alternates": [
+    "arrow-up-box",
+    "arrow-bar-up"
+   ],
+   "note": ""
+  },
+  {
+   "id": "download",
+   "label": "Download",
+   "category": "files",
+   "synonyms": [
+    "save",
+    "save as",
+    "get",
+    "pull",
+    "fetch",
+    "save to disk"
+   ],
+   "icon": "download",
+   "alternates": [
+    "arrow-down-box",
+    "arrow-bar-down"
+   ],
+   "note": ""
+  },
+  {
+   "id": "import",
+   "label": "Import",
+   "category": "files",
+   "synonyms": [
+    "load",
+    "ingest",
+    "bring in",
+    "load from file",
+    "upload csv",
+    "migrate",
+    "import csv",
+    "restore"
+   ],
+   "icon": "arrow-down-box",
+   "alternates": [
+    "login",
+    "inbox",
+    "arrow-bar-down"
+   ],
+   "note": "Arrow pointing down into a box reads as bringing data in, and stays distinct from the download tray icon."
+  },
+  {
+   "id": "export",
+   "label": "Export",
+   "category": "files",
+   "synonyms": [
+    "save as",
+    "extract",
+    "dump",
+    "download csv",
+    "backup",
+    "send out",
+    "export csv"
+   ],
+   "icon": "arrow-up-box",
+   "alternates": [
+    "logout",
+    "external-link",
+    "arrow-bar-up"
+   ],
+   "note": "Mirror of the import pick: arrow up out of a box, distinct from the upload icon."
+  },
+  {
+   "id": "attach",
+   "label": "Attach",
+   "category": "files",
+   "synonyms": [
+    "paperclip",
+    "attachment",
+    "add file",
+    "clip",
+    "insert file",
+    "enclosure"
+   ],
+   "icon": "attachment",
+   "alternates": [
+    "link"
+   ],
+   "note": ""
+  },
+  {
+   "id": "preview",
+   "label": "Preview",
+   "category": "files",
+   "synonyms": [
+    "view",
+    "show",
+    "quick look",
+    "peek",
+    "review",
+    "thumbnail",
+    "inspect"
+   ],
+   "icon": "eye",
+   "alternates": [
+    "search",
+    "spotlight",
+    "zoom-in"
+   ],
+   "note": ""
+  },
+  {
+   "id": "print",
+   "label": "Print",
+   "category": "files",
+   "synonyms": [
+    "printer",
+    "ctrl+p",
+    "cmd+p",
+    "hardcopy",
+    "paper",
+    "pdf"
+   ],
+   "icon": "printer",
+   "alternates": [
+    "printer-minimal-sharp"
+   ],
+   "note": ""
+  },
+  {
+   "id": "open",
+   "label": "Open",
+   "category": "files",
+   "synonyms": [
+    "launch",
+    "view",
+    "load",
+    "ctrl+o",
+    "cmd+o",
+    "browse",
+    "open file"
+   ],
+   "icon": "open",
+   "alternates": [
+    "folder",
+    "external-link",
+    "file"
+   ],
+   "note": "The open icon is a box with an arrow exiting top-right (open-in-new style), so it carries a slight external-link flavor."
+  },
+  {
+   "id": "sync",
+   "label": "Sync",
+   "category": "files",
+   "synonyms": [
+    "synchronize",
+    "refresh",
+    "reload",
+    "update",
+    "pull latest",
+    "f5",
+    "two-way sync",
+    "synchronise"
+   ],
+   "icon": "repeat",
+   "alternates": [
+    "reload",
+    "loader",
+    "arrows-horizontal"
+   ],
+   "note": "repeat is a two-arrow cycle, the closest match to the classic sync glyph; reload is a single refresh arrow and could collide with a separate Refresh action."
+  },
+  {
+   "id": "back",
+   "label": "Back",
+   "category": "nav",
+   "synonyms": [
+    "go back",
+    "return",
+    "navigate back",
+    "previous page",
+    "history back",
+    "backward",
+    "alt+left"
+   ],
+   "icon": "arrow-left",
+   "alternates": [
+    "chevron-left",
+    "arrow-left-box"
+   ],
+   "note": ""
+  },
+  {
+   "id": "forward",
+   "label": "Forward",
+   "category": "nav",
+   "synonyms": [
+    "go forward",
+    "navigate forward",
+    "history forward",
+    "advance",
+    "next page",
+    "alt+right"
+   ],
+   "icon": "arrow-right",
+   "alternates": [
+    "chevron-right",
+    "forward"
+   ],
+   "note": "The icon literally named 'forward' is a curved share/redo-style arrow, so plain arrow-right is clearer for navigation."
+  },
+  {
+   "id": "next",
+   "label": "Next",
+   "category": "nav",
+   "synonyms": [
+    "next item",
+    "next page",
+    "continue",
+    "advance",
+    "pagination",
+    "step forward"
+   ],
+   "icon": "chevron-right",
+   "alternates": [
+    "chevron-right-2",
+    "arrow-right"
+   ],
+   "note": "Chevron keeps next/previous visually distinct from back/forward arrows in the same UI."
+  },
+  {
+   "id": "previous",
+   "label": "Previous",
+   "category": "nav",
+   "synonyms": [
+    "prev",
+    "previous item",
+    "previous page",
+    "step back",
+    "pagination",
+    "earlier"
+   ],
+   "icon": "chevron-left",
+   "alternates": [
+    "chevron-left-2",
+    "arrow-left"
+   ],
+   "note": ""
+  },
+  {
+   "id": "external-link",
+   "label": "External link (open in new tab)",
+   "category": "nav",
+   "synonyms": [
+    "open in new tab",
+    "new window",
+    "open externally",
+    "outbound link",
+    "visit",
+    "pop out",
+    "launch"
+   ],
+   "icon": "external-link",
+   "alternates": [
+    "open"
+   ],
+   "note": "'open' is a near-identical box-with-outward-arrow if a second variant is ever needed."
+  },
+  {
+   "id": "refresh",
+   "label": "Refresh",
+   "category": "nav",
+   "synonyms": [
+    "reload",
+    "sync",
+    "update",
+    "refetch",
+    "reload page",
+    "f5",
+    "ctrl+r",
+    "resync"
+   ],
+   "icon": "reload",
+   "alternates": [
+    "repeat"
+   ],
+   "note": ""
+  },
+  {
+   "id": "close",
+   "label": "Close",
+   "category": "nav",
+   "synonyms": [
+    "dismiss",
+    "x",
+    "exit",
+    "close modal",
+    "close dialog",
+    "esc",
+    "escape",
+    "cancel",
+    "close tab",
+    "x button",
+    "times"
+   ],
+   "icon": "close",
+   "alternates": [
+    "cancel",
+    "delete"
+   ],
+   "note": "Custom-drawn: bare X."
+  },
+  {
+   "id": "expand",
+   "label": "Expand",
+   "category": "nav",
+   "synonyms": [
+    "unfold",
+    "open section",
+    "show more",
+    "grow",
+    "expand all",
+    "accordion open",
+    "maximize"
+   ],
+   "icon": "chevron-down",
+   "alternates": [
+    "expand",
+    "chevrons-vertical-2",
+    "chevrons-vertical"
+   ],
+   "note": "Symmetric accordion pair with collapse; expand (vertical out arrows) kept as alternate."
+  },
+  {
+   "id": "collapse",
+   "label": "Collapse",
+   "category": "nav",
+   "synonyms": [
+    "fold",
+    "minimize",
+    "show less",
+    "shrink",
+    "collapse all",
+    "accordion close",
+    "contract",
+    "fold up",
+    "minimise"
+   ],
+   "icon": "chevron-up",
+   "alternates": [
+    "flatten",
+    "minus"
+   ],
+   "note": "Symmetric accordion pair with expand."
+  },
+  {
+   "id": "show",
+   "label": "Show",
+   "category": "nav",
+   "synonyms": [
+    "reveal",
+    "unhide",
+    "make visible",
+    "display",
+    "view",
+    "show password",
+    "visibility on"
+   ],
+   "icon": "eye",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "hide",
+   "label": "Hide",
+   "category": "nav",
+   "synonyms": [
+    "conceal",
+    "mask",
+    "hide password",
+    "invisible",
+    "visibility off",
+    "obscure",
+    "unshow"
+   ],
+   "icon": "eye-off",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "zoom-in",
+   "label": "Zoom in",
+   "category": "nav",
+   "synonyms": [
+    "magnify",
+    "enlarge",
+    "increase zoom",
+    "scale up",
+    "closer",
+    "ctrl+plus"
+   ],
+   "icon": "zoom-in",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "zoom-out",
+   "label": "Zoom out",
+   "category": "nav",
+   "synonyms": [
+    "reduce zoom",
+    "decrease zoom",
+    "shrink view",
+    "scale down",
+    "wider view",
+    "ctrl+minus"
+   ],
+   "icon": "zoom-out",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "fullscreen",
+   "label": "Fullscreen",
+   "category": "nav",
+   "synonyms": [
+    "full screen",
+    "maximize",
+    "enter fullscreen",
+    "expand to fill",
+    "theater mode",
+    "immersive",
+    "f11",
+    "enter full screen",
+    "exit windowed"
+   ],
+   "icon": "scale",
+   "alternates": [
+    "expand",
+    "frame"
+   ],
+   "note": "HOLE: no corner-arrows maximize icon; 'scale' reads as diagonal resize, 'expand' is claimed by the expand action (and they can share a toolbar), 'frame' is a # glyph."
+  },
+  {
+   "id": "copy-link",
+   "label": "Copy link",
+   "category": "nav",
+   "synonyms": [
+    "share link",
+    "copy url",
+    "permalink",
+    "get link",
+    "link to clipboard",
+    "copy address"
+   ],
+   "icon": "link",
+   "alternates": [
+    "copy"
+   ],
+   "note": "Chain-link is the common copy-link metaphor, but it shows nothing of the copy half and would collide with a plain 'insert link' action."
+  },
+  {
+   "id": "drag-and-drop",
+   "label": "Drag and drop",
+   "category": "nav",
+   "synonyms": [
+    "drag",
+    "drop",
+    "reorder",
+    "move",
+    "drag handle",
+    "grab",
+    "rearrange",
+    "sort",
+    "grip",
+    "move item"
+   ],
+   "icon": "drag",
+   "alternates": [
+    "hand",
+    "square-dashed-cursor",
+    "more-vertical",
+    "arrows-vertical"
+   ],
+   "note": "Custom-drawn: 2x3 grip dots."
+  },
+  {
+   "id": "search",
+   "label": "Search",
+   "category": "find",
+   "synonyms": [
+    "find",
+    "lookup",
+    "query",
+    "magnifying glass",
+    "ctrl+f",
+    "cmd+k",
+    "locate",
+    "search bar"
+   ],
+   "icon": "search",
+   "alternates": [
+    "zoom-in",
+    "spotlight"
+   ],
+   "note": ""
+  },
+  {
+   "id": "filter",
+   "label": "Filter",
+   "category": "find",
+   "synonyms": [
+    "funnel",
+    "refine",
+    "narrow down",
+    "facet",
+    "filter by",
+    "criteria",
+    "where clause",
+    "sliders",
+    "adjust",
+    "filter options"
+   ],
+   "icon": "settings-2",
+   "alternates": [
+    "arrow-down-wide-narrow",
+    "sort-vertical",
+    "search"
+   ],
+   "note": "No funnel icon exists in the set; the nearest candidates all read as sort or search, which would mislead — draw a funnel."
+  },
+  {
+   "id": "sort",
+   "label": "Sort",
+   "category": "find",
+   "synonyms": [
+    "order by",
+    "arrange",
+    "ascending",
+    "descending",
+    "a-z",
+    "reorder",
+    "rank",
+    "sort by"
+   ],
+   "icon": "sort-vertical",
+   "alternates": [
+    "arrow-down-wide-narrow",
+    "arrow-up-z-a",
+    "arrow-down-z-a"
+   ],
+   "note": "sort-vertical is a paired up/down arrow, the standard generic sort glyph; the z-a variants suit explicit alphabetical sort."
+  },
+  {
+   "id": "group-by",
+   "label": "Group by",
+   "category": "find",
+   "synonyms": [
+    "categorize",
+    "bucket",
+    "cluster",
+    "segment",
+    "group rows",
+    "organize by",
+    "aggregate",
+    "group",
+    "grouping"
+   ],
+   "icon": "icon-category",
+   "alternates": [
+    "shapes",
+    "blocks",
+    "grid-2x2-2"
+   ],
+   "note": "icon-category (three squares plus a diamond) reads as sorting items into categories, the closest match to grouping; a bracketed-rows glyph would be clearer."
+  },
+  {
+   "id": "clear-filters",
+   "label": "Clear filters",
+   "category": "find",
+   "synonyms": [
+    "reset filters",
+    "remove filters",
+    "clear all",
+    "unfilter",
+    "show all",
+    "reset view",
+    "reset"
+   ],
+   "icon": "filter-x",
+   "alternates": [
+    "cancel",
+    "delete",
+    "reload"
+   ],
+   "note": "Custom-drawn: funnel with a small x."
+  },
+  {
+   "id": "list-view",
+   "label": "List view",
+   "category": "views",
+   "synonyms": [
+    "list",
+    "rows",
+    "list mode",
+    "list layout",
+    "show as list",
+    "table view",
+    "details view",
+    "compact view",
+    "rows view",
+    "list display"
+   ],
+   "icon": "bulletlist",
+   "alternates": [
+    "list-box",
+    "menu",
+    "text-align-left"
+   ],
+   "note": "Classic bullets-plus-lines list icon; list-box is the boxed variant if a framed look is needed."
+  },
+  {
+   "id": "grid-view",
+   "label": "Grid view",
+   "category": "views",
+   "synonyms": [
+    "grid",
+    "tiles",
+    "tile view",
+    "gallery view",
+    "thumbnail view",
+    "card view",
+    "grid layout",
+    "show as grid",
+    "mosaic",
+    "icon view"
+   ],
+   "icon": "grid-2x2-2",
+   "alternates": [
+    "grid-3x3",
+    "gallery-thumbnails",
+    "grid-2x3"
+   ],
+   "note": "Square divided into four panes, the standard grid-view toggle; grid-3x3 works for a denser look."
+  },
+  {
+   "id": "kanban-view",
+   "label": "Kanban view",
+   "category": "views",
+   "synonyms": [
+    "kanban",
+    "board view",
+    "board",
+    "columns view",
+    "swimlanes",
+    "pipeline view",
+    "trello view",
+    "card board",
+    "stages",
+    "lanes",
+    "project board"
+   ],
+   "icon": "kanban",
+   "alternates": [
+    "align-start-horizontal",
+    "grid-3x2"
+   ],
+   "note": "Custom-drawn: board frame with three top-aligned columns of varying height (Trello/Linear board glyph)."
+  },
+  {
+   "id": "calendar-view",
+   "label": "Calendar view",
+   "category": "views",
+   "synonyms": [
+    "calendar",
+    "month view",
+    "week view",
+    "schedule view",
+    "agenda view",
+    "date view",
+    "planner",
+    "events",
+    "timeline"
+   ],
+   "icon": "calendar",
+   "alternates": [
+    "calendar-weeks",
+    "calendar-range",
+    "calendar-2"
+   ],
+   "note": "calendar-weeks (calendar with row lines) is a good alternate if you want it to read as a week/agenda layout."
+  },
+  {
+   "id": "toggle-theme",
+   "label": "Toggle theme (dark/light)",
+   "category": "views",
+   "synonyms": [
+    "dark mode",
+    "light mode",
+    "night mode",
+    "theme switcher",
+    "appearance",
+    "color scheme",
+    "dark theme",
+    "day night",
+    "theme",
+    "toggle dark mode",
+    "switch theme"
+   ],
+   "icon": "moon",
+   "alternates": [
+    "invert",
+    "lightbulb"
+   ],
+   "note": "Moon is the universal dark-mode toggle; invert (half-filled square) is a contrast-style alternate, but there is no sun icon for the light-mode state."
+  },
+  {
+   "id": "share",
+   "label": "Share",
+   "category": "collab",
+   "synonyms": [
+    "send",
+    "forward",
+    "share link",
+    "export",
+    "publish",
+    "send to",
+    "social",
+    "share with",
+    "distribute"
+   ],
+   "icon": "forward",
+   "alternates": [
+    "external-link",
+    "send",
+    "link",
+    "upload"
+   ],
+   "note": "forward is the classic bent share arrow; the set has no node-graph (Android-style) share icon."
+  },
+  {
+   "id": "invite",
+   "label": "Invite",
+   "category": "collab",
+   "synonyms": [
+    "add member",
+    "add user",
+    "add people",
+    "invite teammate",
+    "send invitation",
+    "add collaborator",
+    "invite member"
+   ],
+   "icon": "user-plus",
+   "alternates": [
+    "avatar-circle-plus",
+    "mail-right",
+    "avatar-square-plus"
+   ],
+   "note": ""
+  },
+  {
+   "id": "email",
+   "label": "Email",
+   "category": "collab",
+   "synonyms": [
+    "envelope",
+    "letter",
+    "mail",
+    "e-mail",
+    "send email",
+    "compose",
+    "inbox",
+    "contact",
+    "newsletter",
+    "message"
+   ],
+   "icon": "mail",
+   "alternates": [
+    "mail-open",
+    "mail-right",
+    "mailbox",
+    "send"
+   ],
+   "note": "Existing icon, no drawing needed. mail-right (envelope with arrow) fits send-email specifically; mail-open for read/inbox states."
+  },
+  {
+   "id": "comment",
+   "label": "Comment",
+   "category": "collab",
+   "synonyms": [
+    "add comment",
+    "annotate",
+    "feedback",
+    "discussion",
+    "speech bubble",
+    "remark",
+    "note",
+    "chat"
+   ],
+   "icon": "comment",
+   "alternates": [
+    "comment-text",
+    "message-text",
+    "message"
+   ],
+   "note": "comment-text adds text lines if the empty bubble feels too bare."
+  },
+  {
+   "id": "reply",
+   "label": "Reply",
+   "category": "collab",
+   "synonyms": [
+    "respond",
+    "answer",
+    "reply all",
+    "write back",
+    "thread reply",
+    "respond to comment"
+   ],
+   "icon": "corner-up-left",
+   "alternates": [
+    "corner-down-left",
+    "undo"
+   ],
+   "note": "Bent-left arrow is the conventional mail/thread reply glyph; no dedicated reply-bubble icon exists."
+  },
+  {
+   "id": "resolve",
+   "label": "Resolve",
+   "category": "collab",
+   "synonyms": [
+    "mark resolved",
+    "close thread",
+    "mark as done",
+    "complete",
+    "close comment",
+    "dismiss",
+    "done",
+    "resolve thread"
+   ],
+   "icon": "check",
+   "alternates": [
+    "check-double",
+    "checkbox-on"
+   ],
+   "note": "Plain check matches GitHub/Figma resolve, but may read as generic confirm; a bubble-with-check would be a worthwhile new icon."
+  },
+  {
+   "id": "mention",
+   "label": "Mention",
+   "category": "collab",
+   "synonyms": [
+    "at mention",
+    "tag",
+    "ping",
+    "tag user",
+    "at sign",
+    "cc",
+    "@"
+   ],
+   "icon": "at-sign",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "assign",
+   "label": "Assign",
+   "category": "collab",
+   "synonyms": [
+    "assignee",
+    "delegate",
+    "assign to",
+    "set owner",
+    "hand off",
+    "allocate",
+    "give task",
+    "reassign",
+    "assign task"
+   ],
+   "icon": "user-check",
+   "alternates": [
+    "avatar-circle-plus",
+    "user-plus",
+    "contact"
+   ],
+   "note": "Custom-drawn: person with a check; same composition as user-plus."
+  },
+  {
+   "id": "react",
+   "label": "React / Like",
+   "category": "collab",
+   "synonyms": [
+    "thumbs up",
+    "upvote",
+    "emoji reaction",
+    "favorite",
+    "+1",
+    "applaud",
+    "kudos",
+    "like"
+   ],
+   "icon": "thumbs-up",
+   "alternates": [
+    "heart",
+    "smile",
+    "laugh"
+   ],
+   "note": "smile fits if the action is an emoji-reaction picker rather than a like button."
+  },
+  {
+   "id": "follow",
+   "label": "Follow / Subscribe",
+   "category": "collab",
+   "synonyms": [
+    "watch",
+    "track",
+    "get updates",
+    "watch thread",
+    "get notifications",
+    "feed",
+    "star",
+    "subscribe",
+    "follow thread"
+   ],
+   "icon": "rss",
+   "alternates": [
+    "subscriptions",
+    "bell",
+    "user-plus",
+    "eye"
+   ],
+   "note": "rss is the classic subscribe glyph but feels feed-specific; bell is reserved for notify, so a bell-plus icon would fill this better."
+  },
+  {
+   "id": "notify",
+   "label": "Notify",
+   "category": "collab",
+   "synonyms": [
+    "notification",
+    "alert",
+    "ping",
+    "send notification",
+    "remind",
+    "announce"
+   ],
+   "icon": "bell",
+   "alternates": [
+    "megaphone"
+   ],
+   "note": ""
+  },
+  {
+   "id": "mute",
+   "label": "Mute",
+   "category": "collab",
+   "synonyms": [
+    "silence",
+    "turn off notifications",
+    "do not disturb",
+    "snooze",
+    "dnd",
+    "quiet",
+    "mute thread"
+   ],
+   "icon": "bell-off",
+   "alternates": [
+    "mic-off"
+   ],
+   "note": "mic-off is the right pick only in an audio/call context."
+  },
+  {
+   "id": "submit",
+   "label": "Submit",
+   "category": "workflow",
+   "synonyms": [
+    "send form",
+    "submit form",
+    "post",
+    "apply",
+    "enter",
+    "go",
+    "file",
+    "send in",
+    "turn in",
+    "lodge"
+   ],
+   "icon": "send",
+   "alternates": [
+    "check",
+    "arrow-up-box",
+    "login"
+   ],
+   "note": "Shares the paper plane with Send; they are near-synonyms that don't co-occur in one toolbar, and no icon says 'submit form' specifically."
+  },
+  {
+   "id": "approve",
+   "label": "Approve",
+   "category": "workflow",
+   "synonyms": [
+    "accept",
+    "thumbs up",
+    "lgtm",
+    "sign off",
+    "grant",
+    "allow",
+    "ok",
+    "ratify",
+    "greenlight",
+    "authorize"
+   ],
+   "icon": "thumbs-up",
+   "alternates": [
+    "check",
+    "check-double"
+   ],
+   "note": ""
+  },
+  {
+   "id": "reject",
+   "label": "Reject",
+   "category": "workflow",
+   "synonyms": [
+    "decline",
+    "deny",
+    "refuse",
+    "thumbs down",
+    "disapprove",
+    "turn down",
+    "veto",
+    "block",
+    "dismiss request",
+    "nack"
+   ],
+   "icon": "thumbs-down",
+   "alternates": [
+    "cancel"
+   ],
+   "note": "Pairs naturally with thumbs-up for approve."
+  },
+  {
+   "id": "publish",
+   "label": "Publish",
+   "category": "workflow",
+   "synonyms": [
+    "go live",
+    "make public",
+    "release",
+    "push live",
+    "post",
+    "launch",
+    "deploy",
+    "make live",
+    "ship",
+    "unpublish opposite"
+   ],
+   "icon": "upload",
+   "alternates": [
+    "globe",
+    "megaphone",
+    "send"
+   ],
+   "note": "Up-arrow-out-of-tray is a common publish metaphor but can be misread as file upload; a globe-with-arrow icon would fill this hole better."
+  },
+  {
+   "id": "schedule",
+   "label": "Schedule",
+   "category": "workflow",
+   "synonyms": [
+    "set date",
+    "pick time",
+    "plan",
+    "schedule send",
+    "send later",
+    "defer",
+    "queue",
+    "book",
+    "reschedule",
+    "date and time",
+    "pick date"
+   ],
+   "icon": "date-time",
+   "alternates": [
+    "alarm-clock",
+    "calendar-range",
+    "clock",
+    "calendar"
+   ],
+   "note": "A calendar-with-clock combo icon would be even more specific if drawn later."
+  },
+  {
+   "id": "send",
+   "label": "Send",
+   "category": "workflow",
+   "synonyms": [
+    "paper plane",
+    "send message",
+    "dispatch",
+    "deliver",
+    "ctrl+enter",
+    "fire off",
+    "share",
+    "post"
+   ],
+   "icon": "send",
+   "alternates": [
+    "mail-right",
+    "forward"
+   ],
+   "note": "Verified: the glyph is a paper plane, the canonical send icon."
+  },
+  {
+   "id": "done",
+   "label": "Complete / Done",
+   "category": "workflow",
+   "synonyms": [
+    "finish",
+    "mark as done",
+    "resolve",
+    "check off",
+    "finished",
+    "checkmark",
+    "close task",
+    "mark complete",
+    "tick",
+    "task done"
+   ],
+   "icon": "check",
+   "alternates": [
+    "checkbox-on",
+    "check-double"
+   ],
+   "note": "checkbox-on (checked box) is a strong alternate for 'mark task complete' contexts."
+  },
+  {
+   "id": "cancel",
+   "label": "Cancel",
+   "category": "workflow",
+   "synonyms": [
+    "abort",
+    "dismiss",
+    "close",
+    "stop",
+    "never mind",
+    "discard",
+    "esc",
+    "back out",
+    "x",
+    "close dialog"
+   ],
+   "icon": "cancel",
+   "alternates": [
+    "delete"
+   ],
+   "note": "Glyph is a circle with a diagonal slash; the set has no plain X/close icon, which is itself a hole worth drawing."
+  },
+  {
+   "id": "confirm",
+   "label": "Confirm",
+   "category": "workflow",
+   "synonyms": [
+    "ok",
+    "yes",
+    "accept",
+    "verify",
+    "acknowledge",
+    "proceed",
+    "agree",
+    "validate",
+    "affirm",
+    "approve dialog"
+   ],
+   "icon": "check",
+   "alternates": [
+    "check-double",
+    "thumbs-up"
+   ],
+   "note": "Shares check with Done; they are near-synonyms that wouldn't appear in the same toolbar (dialog button vs flow-end action)."
+  },
+  {
+   "id": "sign-in",
+   "label": "Sign in",
+   "category": "account",
+   "synonyms": [
+    "login",
+    "log in",
+    "signin",
+    "authenticate",
+    "auth",
+    "enter",
+    "access account",
+    "session start",
+    "sign on",
+    "logon",
+    "sso"
+   ],
+   "icon": "login",
+   "alternates": [
+    "arrow-right-box"
+   ],
+   "note": "Direct name match; the conventional enter-the-door glyph."
+  },
+  {
+   "id": "sign-out",
+   "label": "Sign out",
+   "category": "account",
+   "synonyms": [
+    "logout",
+    "log out",
+    "signout",
+    "exit",
+    "leave",
+    "end session",
+    "log off",
+    "logoff",
+    "sign off"
+   ],
+   "icon": "logout",
+   "alternates": [
+    "power-off",
+    "door-closed"
+   ],
+   "note": "Direct name match, mirror of login."
+  },
+  {
+   "id": "sign-up",
+   "label": "Sign up",
+   "category": "account",
+   "synonyms": [
+    "register",
+    "create account",
+    "signup",
+    "join",
+    "registration",
+    "new account",
+    "onboard",
+    "get started",
+    "enroll",
+    "create profile"
+   ],
+   "icon": "user-plus",
+   "alternates": [
+    "avatar-circle-plus",
+    "avatar-square-plus"
+   ],
+   "note": "Standard add-user glyph for registration; also doubles as invite-user in other contexts."
+  },
+  {
+   "id": "profile",
+   "label": "Profile",
+   "category": "account",
+   "synonyms": [
+    "my profile",
+    "account",
+    "my account",
+    "user",
+    "person",
+    "member",
+    "view profile",
+    "avatar",
+    "who am i"
+   ],
+   "icon": "user",
+   "alternates": [
+    "avatar-circle",
+    "avatar-square",
+    "contact",
+    "human"
+   ],
+   "note": "Plain person. Assign (user-check) is this same figure plus a check."
+  },
+  {
+   "id": "settings",
+   "label": "Settings",
+   "category": "account",
+   "synonyms": [
+    "preferences",
+    "options",
+    "configuration",
+    "config",
+    "gear",
+    "customize",
+    "controls",
+    "account settings",
+    "cog",
+    "tune",
+    "setup"
+   ],
+   "icon": "settings-cog",
+   "alternates": [
+    "settings-2",
+    "settings-cog-2"
+   ],
+   "note": "settings-cog is the gear (verified SVG); settings-2 is the sliders variant if a preferences look is wanted."
+  },
+  {
+   "id": "connect",
+   "label": "Connect (integration)",
+   "category": "account",
+   "synonyms": [
+    "integration",
+    "link account",
+    "oauth",
+    "add integration",
+    "pair",
+    "plugin",
+    "hook up",
+    "third-party",
+    "connect account",
+    "webhook",
+    "api"
+   ],
+   "icon": "link",
+   "alternates": [
+    "zap",
+    "external-link"
+   ],
+   "note": "Chain-link reads as connect/link account, but the set has no plug/socket icon, which would be the ideal glyph to draw."
+  }
+ ]
+}
