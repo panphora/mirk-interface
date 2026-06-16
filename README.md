@@ -372,7 +372,7 @@ Built on a real native `<select>`, so state round-trips via the `selected` attri
 
 ### Checkbox
 
-A square checkbox built from a visually hidden native input plus a beveled box and a CSS-drawn checkmark. Single fixed shape and size, checked and unchecked are the only variants.
+A square checkbox built from a visually hidden native input plus a beveled box and a CSS-drawn checkmark. Single fixed shape; a medium base plus a `--small` size. Checked and unchecked are the only states.
 
 ```html
 <!-- Unchecked -->
@@ -394,13 +394,13 @@ A square checkbox built from a visually hidden native input plus a beveled box a
 
 **Class API:** block `mirk-checkbox` / parts `__box`, `__mark`, `__label` / no modifiers.
 
-The native input is wrapped in a `<label>` so the whole row toggles via implicit association. State round-trips entirely through the native `checked` attribute: `.mirk-checkbox:has(:checked)` flips the border and reveals `__mark`, so persisting `outerHTML` preserves the state with no JS. The `__mark` is a pure-CSS check, so it must exist as an empty span even when unchecked. Dimensions are fixed (22px box, 18px label), there are no size or shape modifiers. Keep the input on `mirk-sr-only` (not `display:none` or `hidden`) so the `:has(:checked)` and `:has(:focus-visible)` selectors keep working.
+The native input is wrapped in a `<label>` so the whole row toggles via implicit association. State round-trips entirely through the native `checked` attribute: `.mirk-checkbox:has(:checked)` flips the border and reveals `__mark`, so persisting `outerHTML` preserves the state with no JS. The `__mark` is a pure-CSS check, so it must exist as an empty span even when unchecked. Base dimensions are 22px box / 18px label; `--small` gives 18px box / 14px label. No shape modifiers. Keep the input on `mirk-sr-only` (not `display:none` or `hidden`) so the `:has(:checked)` and `:has(:focus-visible)` selectors keep working.
 
 ---
 
 ### Radio
 
-A beveled custom radio: a visually hidden native radio paired with a ring that swaps from a recessed fill to a centered dot when selected. Single round shape at one fixed size, no modifiers.
+A beveled custom radio: a visually hidden native radio paired with a ring that swaps from a recessed fill to a centered dot when selected. Single round shape; a medium base plus a `--small` size.
 
 ```html
 <!-- Round (default), single option -->
@@ -438,7 +438,7 @@ Pure CSS, no mirk.js. A shared `name` drives single-selection within a group and
 
 ### Toggle
 
-A switch-style toggle built from a hidden native checkbox plus a beveled track and sliding thumb. Two shapes (rect default, round pill), no size modifiers.
+A switch-style toggle built from a hidden native checkbox plus a beveled track and sliding thumb. Two shapes (rect default, round pill) and a `--small` size.
 
 ```html
 <!-- Rect (default) -->
@@ -484,7 +484,7 @@ Pure CSS, no mirk.js. The native checkbox carries `role="switch"` and is the rea
 
 ### Slider
 
-A range slider with a hidden native input overlaid on a styled track, fill, and beveled draggable nub. Two shapes (rect default, round pill), no size modifiers.
+A range slider with a hidden native input overlaid on a styled track, fill, and beveled draggable nub. Two shapes (rect default, round pill) and a `--small` size.
 
 ```html
 <!-- Rect (default) -->
@@ -532,13 +532,13 @@ A styled native date picker that wraps `input[type=date]`, overlays a decorative
 
 **Class API:** block `mirk-date` / parts `__field`, `__icon` / modifier `--rounded`.
 
-The native `input[type=date]` provides the real calendar popup and value parsing, and the selected date lives in its `value` attribute, so `outerHTML` preserves it (set `value="2026-06-04"` to seed a default). The overlay icon is `aria-hidden="true"`. The `.mirk-date` wrapper is `position: relative` and must contain both the field and the icon so the absolute icon and the invisible WebKit picker indicator (a clickable strip on the right edge) line up. The icon-hiding and custom icon are WebKit/Chromium-specific, in Firefox the native indicator is not suppressed, so the decorative icon may sit alongside the browser's own. Only `--rounded` exists, no size modifiers.
+The native `input[type=date]` provides the real calendar popup and value parsing, and the selected date lives in its `value` attribute, so `outerHTML` preserves it (set `value="2026-06-04"` to seed a default). The overlay icon is `aria-hidden="true"`. The `.mirk-date` wrapper is `position: relative` and must contain both the field and the icon so the absolute icon and the invisible WebKit picker indicator (a clickable strip on the right edge) line up. The icon-hiding and custom icon are WebKit/Chromium-specific, in Firefox the native indicator is not suppressed, so the decorative icon may sit alongside the browser's own. `--rounded` and `--small` are the available modifiers.
 
 ---
 
 ### File picker
 
-A styled wrapper around a native file input that hides the real control and shows a beveled "Choose" button plus the selected filename. Two shapes (rect default, round) and two layouts (large "button + text" default, bordered `--compact`), four combinations.
+A styled wrapper around a native file input that hides the real control and shows a beveled "Choose" button plus the selected filename. Two shapes (rect default, round) and two layouts (large "button + text" default, bordered `--compact`), four combinations. Each also takes a `--small` size (pair the trigger with `mirk-button--small`).
 
 ```html
 <!-- Rect — Compact -->
@@ -632,7 +632,7 @@ A square 120x120 image-upload control: a preview frame with a placeholder, plus 
 
 ### Tags
 
-A tag/token input where each entry renders as a removable chip alongside a free-text field. Two shapes: rectangular bevel-bordered chips (default) and a round variant whose chips become gradient pills via an extra inner wrapper. No size modifiers.
+A tag/token input where each entry renders as a removable chip alongside a free-text field. Two shapes: rectangular bevel-bordered chips (default) and a round variant whose chips become gradient pills via an extra inner wrapper. Plus a `--small` size.
 
 ```html
 <!-- Rect (default) -->

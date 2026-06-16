@@ -325,6 +325,14 @@
     outline: 1px solid var(--mirk-focus-color); outline-offset: var(--mirk-focus-offset);
   }
 
+  .mirk-checkbox--small { gap: 0.5rem; }
+  .mirk-checkbox--small .mirk-checkbox__box { width: 18px; height: 18px; }
+  .mirk-checkbox--small .mirk-checkbox__mark {
+    width: 5px; height: 10px;
+    border-right-width: 2px; border-bottom-width: 2px; translate: 0.5px -1px;
+  }
+  .mirk-checkbox--small .mirk-checkbox__label { font-size: 14px; }
+
   /* ============================ RADIO ============================ */
   .mirk-radio { display: inline-flex; align-items: center; gap: 0.75rem; cursor: pointer; width: fit-content; }
   .mirk-radio__ring {
@@ -350,6 +358,11 @@
   .mirk-radio:has(:focus-visible) .mirk-radio__ring {
     outline: 1px solid var(--mirk-focus-color); outline-offset: var(--mirk-focus-offset);
   }
+
+  .mirk-radio--small { gap: 0.5rem; }
+  .mirk-radio--small .mirk-radio__ring { width: 20px; height: 20px; }
+  .mirk-radio--small .mirk-radio__dot { width: 7px; height: 7px; }
+  .mirk-radio--small .mirk-radio__label { font-size: 14px; }
 
   /* ============================ TOGGLE ============================ */
   .mirk-toggle { display: inline-flex; align-items: center; gap: 0.75rem; cursor: pointer; width: fit-content; }
@@ -383,6 +396,15 @@
   }
   .mirk-toggle--round:has(:checked) .mirk-toggle__thumb { translate: 21px; }
 
+  .mirk-toggle--small { gap: 0.5rem; }
+  .mirk-toggle--small .mirk-toggle__track { width: 42px; height: 23px; }
+  .mirk-toggle--small .mirk-toggle__thumb { top: 2px; left: 2px; width: 17px; height: 17px; }
+  .mirk-toggle--small:has(:checked) .mirk-toggle__thumb { translate: 19px; }
+  .mirk-toggle--small .mirk-toggle__label { font-size: 14px; }
+  .mirk-toggle--round.mirk-toggle--small .mirk-toggle__track { width: 43px; height: 25px; }
+  .mirk-toggle--round.mirk-toggle--small .mirk-toggle__thumb { width: 19px; height: 19px; }
+  .mirk-toggle--round.mirk-toggle--small:has(:checked) .mirk-toggle__thumb { translate: 18px; }
+
   /* ============================ SLIDER ============================ */
   .mirk-slider { position: relative; height: 32px; width: 100%; --mirk-value: 0%; }
   .mirk-slider__input {
@@ -415,6 +437,12 @@
     content: ""; position: absolute; inset: 2px; border-radius: 9999px; background: var(--mirk-slider-nub-bg);
   }
 
+  .mirk-slider--small { height: 24px; }
+  .mirk-slider--small .mirk-slider__track { height: 8px; }
+  .mirk-slider--small .mirk-slider__nub { width: 16px; height: 16px; }
+  .mirk-slider--round.mirk-slider--small .mirk-slider__track { height: 7px; }
+  .mirk-slider--round.mirk-slider--small .mirk-slider__nub { width: 18px; height: 18px; }
+
   /* ============================ DATE ============================ */
   .mirk-date { position: relative; }
   .mirk-date__field {
@@ -435,6 +463,10 @@
     pointer-events: none; position: absolute; right: 16px; top: 50%; translate: 0 -50%;
   }
   .mirk-date--rounded .mirk-date__field { border-radius: var(--mirk-radius); }
+
+  .mirk-date--small .mirk-date__field { padding: 4px 36px 4px 12px; font-size: 14px; }
+  .mirk-date--small .mirk-date__field::-webkit-calendar-picker-indicator { width: 36px; }
+  .mirk-date--small .mirk-date__icon { right: 12px; }
 
   /* The native file/image inputs are visually hidden; their styled label drives
      them, and the focus ring rides :has(:focus-visible) on button or container. */
@@ -480,6 +512,14 @@
   }
   .mirk-file__remove svg { display: block; width: 66%; height: 66%; }
   .mirk-file__remove:hover { border-color: var(--mirk-destructive); color: var(--mirk-destructive); }
+
+  /* Small: tighter name + gap + remove ×; pair the trigger with mirk-button--small.
+     Composes with --compact (densest) and --round. */
+  .mirk-file--small { gap: 0.5rem; }
+  .mirk-file--small .mirk-file__name { font-size: 14px; }
+  .mirk-file--small .mirk-file__remove { width: 16px; height: 16px; }
+  .mirk-file--small.mirk-file--compact { padding: 3px 8px; }
+  .mirk-file--small.mirk-file--compact .mirk-file__name { font-size: 13px; }
 
   /* ============================ IMAGE ============================ */
   .mirk-image { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -562,6 +602,13 @@
     color: var(--mirk-bevel-fg); background-color: var(--mirk-bevel-bg);
     background-image: linear-gradient(to top in oklab, var(--mirk-bevel-bg), var(--mirk-pill-inner-top));
   }
+
+  .mirk-tags--small { gap: 0.375rem; padding: 0.375rem; }
+  .mirk-tags--small .mirk-tags__chip { padding: 1px 6px 1px 10px; font-size: 12px; }
+  .mirk-tags--small .mirk-tags__remove { font-size: 12px; }
+  .mirk-tags--small .mirk-tags__input { font-size: 14px; min-width: 90px; }
+  .mirk-tags--small.mirk-tags--round { border-radius: 12px; }
+  .mirk-tags--small.mirk-tags--round .mirk-tags__chip-inner { padding: 1px 6px 1px 10px; }
 
   /* ============================ SORTABLE ============================ */
   .mirk-sortable { display: flex; flex-direction: column; gap: 0.5rem; }
