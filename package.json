@@ -42,6 +42,10 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "mkdir -p dist && cp mirk.css mirk.js dist/"
+    "build": "mkdir -p dist && cp mirk.css mirk.js dist/",
+    "dev": "http-server -p 7382 -c-1 -o"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
