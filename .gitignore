@@ -1,8 +1,3 @@
 .DS_Store
 node_modules/
 dist/
-
-# Reference clones — not committed; each developer clones locally per refs/SOURCES.md
-refs/primer/
-refs/carbon/
-.DS_Store
