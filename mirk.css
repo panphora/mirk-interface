@@ -641,6 +641,11 @@
   .mirk-sortable__field:focus-visible {
     outline: 1px solid var(--mirk-focus-color); outline-offset: var(--mirk-focus-offset);
   }
+  .mirk-sortable--small { gap: 0.375rem; }
+  .mirk-sortable--small .mirk-sortable__grip { width: 24px; }
+  .mirk-sortable--small .mirk-sortable__row { padding: 5px 13px 6px; }
+  .mirk-sortable--small .mirk-sortable__label { font-size: 10px; margin-bottom: 1px; }
+  .mirk-sortable--small .mirk-sortable__field { font-size: 14px; }
 }
 
 /* Respect the machine — outside @layer components so it always wins. */

@@ -680,7 +680,7 @@ A tag/token input where each entry renders as a removable chip alongside a free-
 
 ### Sortable
 
-A draggable-looking list-item row: a dotted drag grip on the left and a stacked body of labeled fields on the right. Single shape, no size variants. Reordering must be wired to your own library, the kit only provides the grab-cursor cue.
+A draggable-looking list-item row: a dotted drag grip on the left and a stacked body of labeled fields on the right. Single shape, plus a `--small` size. Reordering must be wired to your own library, the kit only provides the grab-cursor cue.
 
 ```html
 <!-- Default sortable item -->
@@ -712,9 +712,9 @@ A draggable-looking list-item row: a dotted drag grip on the left and a stacked 
 </div>
 ```
 
-**Class API:** block `mirk-sortable` / parts `__item`, `__grip`, `__dots`, `__dot`, `__body`, `__row`, `__label`, `__field` / no modifiers.
+**Class API:** block `mirk-sortable` / parts `__item`, `__grip`, `__dots`, `__dot`, `__body`, `__row`, `__label`, `__field` / modifier `--small`.
 
-Reordering is NOT built in: the markup and CSS only render the look and the `cursor: grab` / `:active cursor: grabbing` cue on `.mirk-sortable__grip`. Wire a real reorder library (e.g. SortableJS) yourself, mirk.js does nothing for this component. The grip is a fixed 2-column grid of exactly 8 `__dot` spans, keep all 8 to preserve the pattern. `.mirk-sortable__row:not(:last-child)` draws the inter-row divider, so row order matters for borders. State that round-trips is just the native input values and attributes. Each `__item` is independent, repeat the item block inside `.mirk-sortable` for a multi-row list.
+Reordering is NOT built in: the markup and CSS only render the look and the `cursor: grab` / `:active cursor: grabbing` cue on `.mirk-sortable__grip`. Wire a real reorder library (e.g. SortableJS) yourself, mirk.js does nothing for this component. The grip is a fixed 2-column grid of exactly 8 `__dot` spans, keep all 8 to preserve the pattern. `.mirk-sortable__row:not(:last-child)` draws the inter-row divider, so row order matters for borders. State that round-trips is just the native input values and attributes. Each `__item` is independent, repeat the item block inside `.mirk-sortable` for a multi-row list. `--small` tightens the grip, row padding, and field/label type (still all 8 dots) for a denser list.
 
 ## The class API
 

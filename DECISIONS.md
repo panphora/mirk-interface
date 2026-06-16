@@ -45,7 +45,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0025 | [Sortable: drag handle dots, dedicated per-panel tokens, L-shape border](#0025--sortable-drag-handle-dots-dedicated-per-panel-tokens-l-shape-border) |
 | 0026 | [Architecture (v2): semantic BEM classes in `@layer components`, hand-written `mirk.css`](#0026--architecture-v2-semantic-bem-classes-in-layer-components-hand-written-mirkcss) |
 | 0027 | [Built-in brand variant: "Pixel Quiet" via `data-theme="pixel-quiet"`](#0027--built-in-brand-variant-pixel-quiet-via-data-themepixel-quiet) |
-| 0028 | [Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags](#0028--complete-the-small-size-family---small-on-checkbox-radio-toggle-slider-date-file-tags) |
+| 0028 | [Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags, sortable](#0028--complete-the-small-size-family---small-on-checkbox-radio-toggle-slider-date-file-tags-sortable) |
 
 ## Template
 
@@ -791,19 +791,23 @@ hypercms can later drop its duplicated token retune and just set `data-theme="pi
 
 ---
 
-## 0028 — Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags
+## 0028 — Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags, sortable
 
 - **Date:** 2026-06-16
 
 ### Context
 Only button, input, number, and select shipped size modifiers (`--small` / `--large`). The
-other seven form controls were single-size. That left the size axis incomplete: you could not
-build a dense form with small checkboxes, toggles, sliders, etc. to match small inputs.
+remaining form controls were single-size. That left the size axis incomplete: you could not
+build a dense form with small checkboxes, toggles, sliders, sortable rows, etc. to match small
+inputs.
 
 ### Decision
-- **Add `--small` to checkbox, radio, toggle, slider, date, file, and tags**, matching the
-  established small scale (14px text + proportionally scaled geometry, ~0.8×). Pure additions in
+- **Add `--small` to checkbox, radio, toggle, slider, date, file, tags, and sortable**, matching
+  the established small scale (14px text + proportionally scaled geometry, ~0.8×). Pure additions in
   `@layer components`; no base rule changed, so it is backward compatible.
+- **sortable `--small`** tightens the grip width (28→24px), row padding, and field/label type
+  (18→14px field, 11→10px label) while keeping all 8 grip dots at their base 4px — per `0025`,
+  smaller dots read as too sparse, so the texture stays put and only the surrounding geometry shrinks.
 - **Small only, not large.** button/input/number/select also have `--large`, but the request
   was small, and dense UIs are the real driver. `--large` for these seven stays a future ask.
 - **Composition holds.** `--small` combines with existing shape variants via higher-specificity
@@ -815,7 +819,12 @@ build a dense form with small checkboxes, toggles, sliders, etc. to match small 
   marginal. Left as an optional follow-up.
 
 ### Verification
-Browser-checked in the new "Sizes • Small" showcase gallery (both light and dark columns):
-computed metrics exact (checkbox box 18px, radio ring 20px, toggle track 42px, slider height 24px,
-date/tags text 14px, file compact name 13px), toggle thumbs and slider nubs seated within their
-tracks, 0 console errors. README per-component size notes updated from "no size modifiers".
+Browser-checked in both light and dark columns: computed metrics exact (checkbox box 18px, radio
+ring 20px, toggle track 42px, slider height 24px, date/tags text 14px, file compact name 13px,
+sortable field 14px / grip 24px), toggle thumbs and slider nubs seated within their tracks, 0
+console errors. README per-component size notes updated from "no size modifiers".
+
+The small variants are demonstrated **inline in each component's own section** as a `copy MD` /
+`copy SM` stack (mirroring how button/input/select show their sizes), not in a separate gallery —
+an initial standalone "Sizes • Small" gallery was folded into the per-section demos so each
+component documents its own size axis in place.
