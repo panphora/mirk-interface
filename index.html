@@ -14,6 +14,19 @@
 </head>
 <body>
 
+<!-- Theme switcher (demo chrome, NOT part of the kit). A real mirk small select,
+     pinned top-right. On change it flips data-theme on <html>, so every component
+     on the page — and this control itself — re-themes at once. -->
+<div class="light" style="position: fixed; top: 16px; right: 16px; z-index: 50;">
+  <div class="mirk-select mirk-select--small" style="min-width: 172px;">
+    <select id="theme-switcher" class="mirk-select__field" aria-label="Theme">
+      <option value="">Default theme</option>
+      <option value="pixel-quiet">Pixel Quiet</option>
+    </select>
+    <span aria-hidden="true" class="mirk-select__chevron">›</span>
+  </div>
+</div>
+
 <div class="grid grid-cols-2 min-h-screen">
 
   <!-- =============================================================
@@ -1538,6 +1551,15 @@
 
 <script src="mirk.js"></script>
 <script>
+  // Demo-only chrome (NOT part of the kit): theme switcher. Flip data-theme on
+  // <html> so the whole page (both columns + this control) re-themes at once.
+  const themeSwitcher = document.getElementById('theme-switcher');
+  themeSwitcher?.addEventListener('change', () => {
+    const value = themeSwitcher.value;
+    if (value) document.documentElement.setAttribute('data-theme', value);
+    else document.documentElement.removeAttribute('data-theme');
+  });
+
   // Demo-only chrome (NOT part of the kit): auto-add a copy button to any
   // [data-copy] block that doesn't already have one, and populate the icon grid.
   document.querySelectorAll('[data-copy]').forEach(el => {

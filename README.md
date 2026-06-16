@@ -62,6 +62,7 @@ mirk follows the visitor's OS theme by default and lets you force a mode per sub
 - **Force a mode globally:** put `class="dark"` or `class="light"` (or `data-theme="dark"` / `data-theme="light"`) on a wrapper near the root.
 - **Force a mode per subtree:** the same classes/attributes on any wrapper force that mode for just that subtree, so you can pin a panel to dark while the rest of the page follows the OS.
 - **Tokens:** 28 namespaced `--mirk-*` custom properties drive every color, bevel edge, and focus ring. Override them on a wrapper to retheme, rather than editing component classes. The namespace means mirk never collides with a host page's own custom properties.
+- **Built-in variant:** `data-theme="pixel-quiet"` ships a calmer, soft-bevel palette (warm cream / deep navy) with warmer ink and a terracotta destructive. It follows the OS like the default and composes with the `.dark` / `.light` aliases, so `data-theme="pixel-quiet" class="dark"` is Pixel Quiet forced dark. Add your own brand theme the same way, an explicit `[data-theme="..."]` block of token overrides.
 
 ```html
 <div class="dark">

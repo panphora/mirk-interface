@@ -44,6 +44,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0024 | [Tags: input plus DOM chips plus JS add/remove](#0024--tags-input-plus-dom-chips-plus-js-addremove) |
 | 0025 | [Sortable: drag handle dots, dedicated per-panel tokens, L-shape border](#0025--sortable-drag-handle-dots-dedicated-per-panel-tokens-l-shape-border) |
 | 0026 | [Architecture (v2): semantic BEM classes in `@layer components`, hand-written `mirk.css`](#0026--architecture-v2-semantic-bem-classes-in-layer-components-hand-written-mirkcss) |
+| 0027 | [Built-in brand variant: "Pixel Quiet" via `data-theme="pixel-quiet"`](#0027--built-in-brand-variant-pixel-quiet-via-data-themepixel-quiet) |
 
 ## Template
 
@@ -767,3 +768,22 @@ v1 shipped each component as a copy-paste block of Tailwind utility classes plus
 
 ### Verification
 The conversion changed *form*, not *pixels*. Confirmed by a computed-style + geometry diff (width, height, padding, border widths/colors, background, gradients, radius, font, transforms) across all 27 demos in both the light and dark columns: **zero meaningful differences** between the v1 utility markup and the v2 semantic classes. Remaining computed-string differences are non-visual (inline-block→inline-flex blockification with identical box metrics; Tailwind's explicit `0%`/`100%` gradient stops vs the implicit defaults; `rounded-full`'s `3.35e7px` vs `9999px`, both fully round; and the color of zero-width borders).
+
+---
+
+## 0027 — Built-in brand variant: "Pixel Quiet" via `data-theme="pixel-quiet"`
+
+- **Date:** 2026-06-15
+
+### Context
+"Pixel Quiet" began as a hypercms sidebar direction (`cms-sidebar/pixel-quiet/`, ported to `hypercms/src/theme/pixel-quiet.overrides.css`): the same warm cream + Departure Mono soul as mirk's default, with the bevel contrast turned way down — a calm, glanceable register. There it was scoped to the CMS shell and bundled with panel geometry. We promote the *palette half* into the kit as a first-class, opt-in brand variant.
+
+### Decision
+- **Ship Pixel Quiet built in**, as a single `[data-theme="pixel-quiet"]` token block in `mirk.css` (placed after `:root`, equal specificity, source order wins). This is the brand-theme escape hatch the guide already documents (§4), used for real rather than as a stub.
+- **Authored with `light-dark()` like `:root`**, so palette and mode stay orthogonal: the variant follows the OS by default and still flips with `.dark` / `.light` / `[data-theme="dark"|"light"]`. `<body data-theme="pixel-quiet" class="dark">` is pixel-quiet, forced dark.
+- **Only tokens, no component edits.** Soft near-equal bevel, warmer ink (`#2B241B`), terracotta destructive (`#C24A3A`), deeper navy-black dark. `--mirk-radius` / `--mirk-focus-offset` inherit unchanged; the unused `--mirk-ctrl-bg` is omitted.
+- **Slider tokens filled in.** The CMS form had no slider, so the source lacked `--mirk-slider-*`. The nub reuses the toggle family (identical pairing in `:root`); `--mirk-slider-fill` is the one newly-chosen value (a soft warm / muted navy track), tuned by eye.
+- **Showcase demonstrates it with a live switcher**, not a duplicated section: a `mirk-select--small` pinned top-right flips `data-theme` on `<html>`, re-theming both the dark and light columns (and the switcher itself) at once. Demo chrome, not part of the kit.
+
+### Follow-up (not done here)
+hypercms can later drop its duplicated token retune and just set `data-theme="pixel-quiet"` on the shell, keeping only its geometry, making the kit the single source of truth for the palette.

@@ -375,7 +375,18 @@ non-color token, `--mirk-focus-offset`, was `2px` light and `3px` dark, unified 
 `2px` here. If the 1px difference matters, keep a one-line override under
 `[data-theme="dark"]`.
 
-**Custom brand themes** stay an explicit block, the correct escape hatch:
+**Custom brand themes** are an explicit `[data-theme]` block, the correct escape hatch.
+mirk ships one built in, **Pixel Quiet** (`data-theme="pixel-quiet"`): the same warm soul
+with the bevel turned way down, warmer ink, and a terracotta destructive. It is authored
+with `light-dark()` like `:root`, so palette and mode stay orthogonal, it follows the OS by
+default and still flips with `.dark` / `.light`:
+
+```html
+<body data-theme="pixel-quiet">             <!-- pixel-quiet, follows the OS -->
+<body data-theme="pixel-quiet" class="dark"><!-- pixel-quiet, forced dark -->
+```
+
+Roll your own the same way:
 
 ```css
 [data-theme="sunset"] {

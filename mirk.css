@@ -84,7 +84,44 @@
     background: var(--mirk-canvas); color: var(--mirk-fg);
   }
 
-  /* Brand-theme escape hatch:
+  /* Built-in brand variant — "Pixel Quiet": mirk's warm soul with the volume
+     down. A softened, near-equal bevel, warmer ink, terracotta destructive, a
+     deeper navy-black dark. Authored with light-dark() like :root, so it follows
+     the OS and still flips with .dark / .light. Opt in: data-theme="pixel-quiet".
+     Sits after :root (equal specificity, source order wins). --mirk-radius /
+     --mirk-focus-offset are inherited unchanged; --mirk-ctrl-bg is unused. */
+  [data-theme="pixel-quiet"] {
+    --mirk-fg:            light-dark(#2B241B, #ECEAF2);
+    --mirk-bg:            light-dark(#F7F2EA, #11131E);
+    --mirk-canvas:        light-dark(#F7F2EA, #0B0C13);
+    --mirk-accent:        light-dark(#efefe5, #1D1F2F);
+    --mirk-destructive:   light-dark(#C24A3A, #ff5566);
+    --mirk-focus-color:   light-dark(#C7AE93, #4A506B);
+    --mirk-bevel-bg:      light-dark(#FCF8F1, #1A1D2C);
+    --mirk-bevel-fg:      light-dark(#2B241B, #ECEAF2);
+    --mirk-bevel-tl:      light-dark(#F0E7D8, #2A2E42);
+    --mirk-bevel-br:      light-dark(#E2D4BF, #14182A);
+    --mirk-bevel-hover-bg: light-dark(#F4ECDF, #202436);
+    --mirk-pill-inner-top: light-dark(#FBF6EE, #202436);
+    --mirk-input-border:  light-dark(#D8C8AF, #353B52);
+    --mirk-placeholder-color: light-dark(#A8987F, #6A7090);
+    --mirk-mark-fg:       light-dark(#6B5942, #C9CDE0);
+    --mirk-toggle-bg:     light-dark(#EFDBBD, #3E4660);
+    --mirk-toggle-hi:     light-dark(#F4EADA, #4E567A);
+    --mirk-toggle-lo:     light-dark(#C2A87E, #262B42);
+    --mirk-sortable-dot:  light-dark(#DDCBB0, #353B52);
+    --mirk-sortable-shadow:    light-dark(#C9B493, #0E1120);
+    --mirk-sortable-label:     light-dark(#8C7B62, #8A90AB);
+    --mirk-sortable-placeholder: light-dark(#A8987F, #6A7090);
+    /* slider nub reuses the toggle family (identical pairing in :root); the fill
+       is the one value with no CMS precedent — a soft warm / muted navy track. */
+    --mirk-slider-fill:   light-dark(#E2D4BF, #2A2E42);
+    --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
+    --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
+    --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
+  }
+
+  /* Roll your own the same way — an explicit [data-theme] block is the escape hatch:
      [data-theme="sunset"] { color-scheme: light; --mirk-accent: #f0a868; … } */
 }
 
