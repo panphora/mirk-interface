@@ -115,7 +115,7 @@
     --mirk-sortable-placeholder: light-dark(#A8987F, #6A7090);
     /* slider nub reuses the toggle family (identical pairing in :root); the fill
        is the one value with no CMS precedent — a soft warm / muted navy track. */
-    --mirk-slider-fill:   light-dark(#E2D4BF, #2A2E42);
+    --mirk-slider-fill:   light-dark(#F2E0BD, #2A2E42);
     --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
     --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
     --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
