@@ -6,7 +6,7 @@ Every component is built on native HTML elements with a pixel-bevel look set in 
 
 ## Live showcase
 
-Open `index.html` from the [GitHub repo](https://github.com/panphora/mirk-ui-kit) in any browser or static server. The showcase IS the documentation: every component, every variant, with the exact markup you copy.
+Open `index.html` from the [GitHub repo](https://github.com/panphora/mirk-interface) in any browser or static server. The showcase IS the documentation: every component, every variant, with the exact markup you copy.
 
 ## Quick start
 
@@ -762,10 +762,10 @@ npm publish        # publishes mirk-interface (only the "files" listed in packag
 
 ## Repo structure
 
-The npm package (`mirk-interface`) ships a lean subset: `mirk.css`, `mirk.js`, the Departure Mono font (woff2 plus its LICENSE), `README.md`, and `LICENSE`. Everything else, the showcase, the icons, the design docs, lives in the [GitHub repo](https://github.com/panphora/mirk-ui-kit).
+The npm package (`mirk-interface`) ships a lean subset: `mirk.css`, `mirk.js`, the Departure Mono font (woff2 plus its LICENSE), `README.md`, and `LICENSE`. Everything else, the showcase, the icons, the design docs, lives in the [GitHub repo](https://github.com/panphora/mirk-interface).
 
 ```
-mirk-ui-kit/
+mirk-interface/
 ├── README.md               # this file (ships in the package)
 ├── LICENSE                 # MIT (ships in the package)
 ├── mirk.css                # THE PRODUCT — classes + tokens + font (ships)
