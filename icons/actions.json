@@ -2055,6 +2055,102 @@
    "note": "Shares check with Done; they are near-synonyms that wouldn't appear in the same toolbar (dialog button vs flow-end action)."
   },
   {
+   "id": "warning",
+   "label": "Warning",
+   "category": "workflow",
+   "synonyms": [
+    "caution",
+    "alert",
+    "attention",
+    "danger",
+    "careful",
+    "heads up",
+    "warn"
+   ],
+   "icon": "triangle-alert",
+   "alternates": [
+    "square-alert",
+    "warning-diamond"
+   ],
+   "note": ""
+  },
+  {
+   "id": "error",
+   "label": "Error",
+   "category": "workflow",
+   "synonyms": [
+    "failed",
+    "failure",
+    "fail",
+    "problem",
+    "invalid",
+    "rejected",
+    "x in circle"
+   ],
+   "icon": "circle-x",
+   "alternates": [
+    "close",
+    "cancel"
+   ],
+   "note": ""
+  },
+  {
+   "id": "success",
+   "label": "Success",
+   "category": "workflow",
+   "synonyms": [
+    "done",
+    "complete",
+    "completed",
+    "confirmed",
+    "passed",
+    "valid",
+    "ok"
+   ],
+   "icon": "circle-check",
+   "alternates": [
+    "check",
+    "check-double"
+   ],
+   "note": ""
+  },
+  {
+   "id": "info",
+   "label": "Info",
+   "category": "workflow",
+   "synonyms": [
+    "information",
+    "details",
+    "note",
+    "notice",
+    "about",
+    "tip",
+    "more info"
+   ],
+   "icon": "circle-info",
+   "alternates": [
+    "info-box"
+   ],
+   "note": ""
+  },
+  {
+   "id": "help",
+   "label": "Help",
+   "category": "workflow",
+   "synonyms": [
+    "question",
+    "support",
+    "faq",
+    "how to",
+    "unknown",
+    "assistance",
+    "what is"
+   ],
+   "icon": "circle-question",
+   "alternates": [],
+   "note": ""
+  },
+  {
    "id": "sign-in",
    "label": "Sign in",
    "category": "account",
