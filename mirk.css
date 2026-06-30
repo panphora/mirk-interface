@@ -62,6 +62,17 @@
     --mirk-slider-nub-hi: light-dark(#E9D6C3, #7F87AD);
     --mirk-slider-nub-lo: light-dark(#C7A88A, #505677);
 
+    /* Chip — the recovery/notification component reads from the kit's own tokens
+       via 5 slim hooks, so it matches the kit by default and reskins by overriding
+       a hook (not a rule). Each follows the theme (incl. Pixel Quiet) and OS
+       light/dark with no per-theme repaint; the one exception is the primary fill,
+       tinted a warm brown in the default theme's light mode (see below). */
+    --mirk-chip-surface:     var(--mirk-bg);            /* raised panel face */
+    --mirk-chip-edge:        var(--mirk-input-border);  /* panel + recess outline */
+    --mirk-chip-primary-bg:  light-dark(#1C170E, var(--mirk-fg));  /* primary action fill — warm brown in light, fg ink in dark */
+    --mirk-chip-primary-fg:  var(--mirk-bg);
+    --mirk-chip-alert:       var(--mirk-destructive);   /* icon + struck "now" value */
+
     --mirk-radius: 5px;                        /* the "rounded" corner */
     --mirk-focus-offset: 2px;                  /* non-color → can't ride light-dark() */
 
@@ -92,8 +103,8 @@
      --mirk-focus-offset are inherited unchanged; --mirk-ctrl-bg is unused. */
   [data-theme="pixel-quiet"] {
     --mirk-fg:            light-dark(#2B241B, #ECEAF2);
-    --mirk-bg:            light-dark(#F7F2EA, #11131E);
-    --mirk-canvas:        light-dark(#F7F2EA, #0B0C13);
+    --mirk-bg:            light-dark(#FDF8F0, #11131E);
+    --mirk-canvas:        light-dark(#FDF8F0, #0B0C13);
     --mirk-accent:        light-dark(#efefe5, #1D1F2F);
     --mirk-destructive:   light-dark(#C24A3A, #ff5566);
     --mirk-focus-color:   light-dark(#C7AE93, #4A506B);
@@ -119,6 +130,11 @@
     --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
     --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
     --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
+    /* Chip needs almost no repaint here: its slim tokens point at --mirk-bg / --mirk-fg
+       / --mirk-input-border / --mirk-destructive, which this block already overrides.
+       The one exception is the primary fill, which :root tints brown in light for the
+       default theme only — reset it to this theme's fg ink so Pixel Quiet stays warm. */
+    --mirk-chip-primary-bg: var(--mirk-fg);
   }
 
   /* Roll your own the same way — an explicit [data-theme] block is the escape hatch:
@@ -189,6 +205,25 @@
   .mirk-button--round.mirk-button--small .mirk-button__label { padding: 2px 14px; border-radius: 10px; }
   .mirk-button--round.mirk-button--large { border-radius: 16px; }
   .mirk-button--round.mirk-button--large .mirk-button__label { padding: 7px 24px 9px; border-radius: 14px; }
+
+  /* Solid: the kit's one filled button — ink fill, canvas text, border = fill (no
+     bevel). For a primary action that must read as the strongest control. */
+  .mirk-button--solid {
+    background-image: none;
+    background-color: var(--mirk-fg); color: var(--mirk-bg);
+    border-color: var(--mirk-fg);
+  }
+  .mirk-button--solid:hover { background-color: var(--mirk-fg); opacity: 0.88; }
+  .mirk-button--solid:active { border-color: var(--mirk-fg); }
+
+  /* Quiet: a borderless text button (transparent border keeps the hit area + the
+     baseline aligned with neighbouring bevel buttons). For tertiary actions. */
+  .mirk-button--quiet {
+    background: none; background-image: none;
+    border-color: transparent; color: var(--mirk-placeholder-color);
+  }
+  .mirk-button--quiet:hover { background: none; color: var(--mirk-fg); }
+  .mirk-button--quiet:active { border-color: transparent; }
 
   /* ============================ TEXT INPUT ============================ */
   .mirk-input {
@@ -646,6 +681,108 @@
   .mirk-sortable--small .mirk-sortable__row { padding: 5px 13px 6px; }
   .mirk-sortable--small .mirk-sortable__label { font-size: 10px; margin-bottom: 1px; }
   .mirk-sortable--small .mirk-sortable__field { font-size: 14px; }
+
+  /* ============================ CHIP ============================ */
+  /* A collapsible recovery/notification: a round pill that expands into a RAISED
+     panel — the kit's one elevated surface (a distinct --mirk-bg face, a hairline
+     outline, and a soft drop shadow, the only shadow in the kit, reserved for this
+     raised tier). State lives in classes (--open, is-changes) so it round-trips via
+     outerHTML; mirk.js only flips them on click. Color reads from generic kit
+     tokens through 5 slim --mirk-chip-* hooks, so it matches the kit and reskins by
+     overriding a hook, not a rule. In a Hyperclay app, add `save-remove` to the
+     block so a transient prompt never persists into the saved file. */
+  .mirk-chip { display: inline-flex; flex-direction: column; align-items: flex-start; }
+  .mirk-chip__panel { display: none; }
+  .mirk-chip--open .mirk-chip__trigger { display: none; }
+  .mirk-chip--open .mirk-chip__panel { display: flex; }
+
+  /* Collapsed chip — a round mirk-button pill (mirk-button--round in the markup),
+     the alert glyph seated in the label, so it reads as a distinct affordance, not
+     a flat button. A soft, tight lift sets it above the page; deeper on a dark
+     canvas (same media + forced-mode pattern as the panel shadow below). */
+  .mirk-chip__trigger .mirk-button__label { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; }
+  .mirk-chip__trigger { box-shadow: 0 6px 14px -8px rgba(43, 36, 27, 0.5), 0 2px 5px -3px rgba(43, 36, 27, 0.32); }
+  @media (prefers-color-scheme: dark) { .mirk-chip__trigger { box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.6), 0 2px 6px -3px rgba(0, 0, 0, 0.5); } }
+  .light .mirk-chip__trigger, [data-theme="light"] .mirk-chip__trigger { box-shadow: 0 6px 14px -8px rgba(43, 36, 27, 0.5), 0 2px 5px -3px rgba(43, 36, 27, 0.32); }
+  .dark .mirk-chip__trigger, [data-theme="dark"] .mirk-chip__trigger { box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.6), 0 2px 6px -3px rgba(0, 0, 0, 0.5); }
+  /* Drive the warning fill from CSS, not an SVG fill="var(...)" presentation
+     attribute (var() is not reliably honored there). */
+  .mirk-chip__warn { fill: var(--mirk-chip-alert); }
+  .mirk-chip__trigger .mirk-chip__warn { vertical-align: -2px; }
+
+  /* The panel — the raised surface: a --mirk-bg face over the page, a hairline
+     outline, a soft drop shadow. */
+  .mirk-chip__panel {
+    width: 300px; max-width: calc(100vw - 44px);
+    background: var(--mirk-chip-surface); color: var(--mirk-fg);
+    border: 1px solid var(--mirk-chip-edge); border-radius: var(--mirk-radius);
+    box-shadow: 0 20px 50px -30px rgba(43, 36, 27, 0.6);
+    padding: 14px 15px 13px; flex-direction: column; gap: 12px;
+  }
+  /* The panel's larger drop (the collapsed pill above carries a tighter one); deepen
+     both on a dark canvas. Mirrors the --focus-offset pattern: a media default for
+     the OS, plus explicit forced-mode overrides. */
+  @media (prefers-color-scheme: dark) { .mirk-chip__panel { box-shadow: 0 20px 52px -26px rgba(0, 0, 0, 0.78); } }
+  .light .mirk-chip__panel, [data-theme="light"] .mirk-chip__panel { box-shadow: 0 20px 50px -30px rgba(43, 36, 27, 0.6); }
+  .dark .mirk-chip__panel, [data-theme="dark"] .mirk-chip__panel { box-shadow: 0 20px 52px -26px rgba(0, 0, 0, 0.78); }
+
+  /* Head — icon, text, collapse glyph. */
+  .mirk-chip__head { display: flex; gap: 10px; align-items: flex-start; }
+  .mirk-chip__icon { flex-shrink: 0; line-height: 0; margin-top: 1px; }
+  .mirk-chip__headtext { min-width: 0; }
+  .mirk-chip__eyebrow {
+    font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--mirk-placeholder-color); margin-bottom: 3px;
+  }
+  .mirk-chip__title { margin: 0; font-size: 13px; font-weight: 400; line-height: 1.3; color: var(--mirk-fg); }
+  .mirk-chip__collapse {
+    margin-left: auto; flex-shrink: 0; width: 24px; height: 24px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: none; border: 0; cursor: pointer; padding: 0;
+    color: var(--mirk-placeholder-color);
+  }
+  .mirk-chip__collapse:hover { color: var(--mirk-fg); }
+  .mirk-chip__collapse svg { display: block; }
+
+  /* Meta line. */
+  .mirk-chip__meta { font-size: 11px; letter-spacing: 0.04em; color: var(--mirk-placeholder-color); }
+  .mirk-chip__changes-toggle {
+    background: none; border: 0; cursor: pointer; font: inherit; font-size: 11px; padding: 0 0 0 4px;
+    color: var(--mirk-placeholder-color); text-decoration: underline; text-underline-offset: 2px;
+  }
+  .mirk-chip__changes-toggle:hover { color: var(--mirk-fg); }
+
+  /* Before/after field table — a recessed stack, revealed by the changes toggle. */
+  .mirk-chip__preview {
+    display: none; flex-direction: column; gap: 11px;
+    background: var(--mirk-bevel-bg); border: 1px solid var(--mirk-chip-edge);
+    padding: 10px 11px;
+  }
+  .mirk-chip__panel.is-changes .mirk-chip__preview { display: flex; }
+  .mirk-chip__row { display: flex; flex-direction: column; gap: 2px; }
+  .mirk-chip__key {
+    font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--mirk-placeholder-color);
+  }
+  .mirk-chip__old, .mirk-chip__new { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mirk-chip__old { font-size: 11px; color: var(--mirk-chip-alert); text-decoration: line-through; opacity: 0.85; }
+  .mirk-chip__new { font-size: 12px; color: var(--mirk-fg); }
+
+  /* Action stack — full-width buttons by weight: an embossed primary, a plain bevel
+     revert, a quiet (--quiet) dismiss. */
+  .mirk-chip__actions { display: flex; flex-direction: column; gap: 8px; margin-top: 1px; }
+  .mirk-chip__actions .mirk-button { width: 100%; }
+  /* Primary action — a genuine kit bevel button whose bevel palette is derived from
+     the chip's primary fill (lighter top-left, darker bottom-right), so it embosses
+     on any color. The base .mirk-button rules then drive its border, hover, and the
+     :active flip, identical to the kit's other buttons. */
+  .mirk-chip__actions .mirk-chip__action--primary {
+    --mirk-bevel-bg:       var(--mirk-chip-primary-bg);
+    --mirk-bevel-fg:       var(--mirk-chip-primary-fg);
+    --mirk-bevel-tl:       color-mix(in srgb, var(--mirk-chip-primary-bg), white 24%);
+    --mirk-bevel-br:       color-mix(in srgb, var(--mirk-chip-primary-bg), black 32%);
+    --mirk-bevel-hover-bg: color-mix(in srgb, var(--mirk-chip-primary-bg), white 10%);
+  }
 }
 
 /* Respect the machine — outside @layer components so it always wins. */

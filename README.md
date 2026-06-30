@@ -1,6 +1,6 @@
 # mirk
 
-A form-focused HTML/CSS UI kit. Fourteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
+A form-focused HTML/CSS UI kit. Fifteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
 
 Every component is built on native HTML elements with a pixel-bevel look set in Departure Mono. State lives where the platform already keeps it: in native attributes, in CSS state selectors, and in real DOM nodes. That means a component's visible state round-trips through `outerHTML`, so a saved-and-reopened file renders correctly before any script runs. mirk targets malleable HTML (Hyperclay), but nothing in it is Hyperclay-specific: it is plain CSS and one small delegated runtime that work on any page.
 
@@ -21,7 +21,7 @@ Add these two tags once, then paste any component snippet where you need it.
 <script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"></script>
 ```
 
-`mirk.css` ships the font, the 28 theme tokens, and all fourteen components, and it renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page, anywhere you just want components without a toolchain.
+`mirk.css` ships the font, the 28 theme tokens, and all fifteen components, and it renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page, anywhere you just want components without a toolchain.
 
 Those URLs are served straight from npm by jsDelivr, no setup. The `@2` pin tracks the latest 2.x release, so you get patches and minor updates but never a breaking major. Pin exactly with `mirk-interface@2.0.0` to freeze a version, or drop the pin (`.../npm/mirk-interface/mirk.css`) to ride the newest major. The same files are on unpkg too: `https://unpkg.com/mirk-interface@2/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirk-interface@2/fonts/...` on the CDN.
 
@@ -76,7 +76,7 @@ mirk follows the visitor's OS theme by default and lets you force a mode per sub
 
 ## Components
 
-In order: button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable.
+In order: button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip.
 
 A note on conventions used below:
 
@@ -120,9 +120,21 @@ A pixel-bevel push button rendered from a native `<button>` wrapping a `<span>` 
 <button class="mirk-button mirk-button--round mirk-button--large"><span class="mirk-button__label">Play Game</span></button>
 ```
 
-**Class API:** block `mirk-button` / part `__label` / modifiers `--small`, `--large`, `--round`.
+```html
+<!-- Solid — the kit's one flat-filled button, for the strongest action -->
+<button class="mirk-button mirk-button--solid"><span class="mirk-button__label">Publish</span></button>
+```
+
+```html
+<!-- Quiet — a borderless text button, for tertiary actions -->
+<button class="mirk-button mirk-button--quiet"><span class="mirk-button__label">Dismiss</span></button>
+```
+
+**Class API:** block `mirk-button` / part `__label` / modifiers `--small`, `--large`, `--round`, `--solid`, `--quiet`.
 
 The inner `__label` span is mandatory for both shapes: rect uses it to nudge the text on `:active`, and round renders it as the inner pill fill (the `--round` element is just the gradient frame, so without the label there is no visible face). Pair the round modifier with a size modifier, each pairing re-homes padding and radius onto the label. Honors the native `disabled` attribute and shows a focus ring on `:focus-visible`. Theme via the bevel/pill/canvas tokens, do not set a flat `border` or `border-radius` on `.mirk-button` directly or you flatten the bevel.
+
+Two weight modifiers drop the bevel for a flatter read: `--solid` is the kit's lone flat-filled button (ink fill, canvas text, border = fill) for a primary action that must read as the strongest control; `--quiet` is a borderless text button (a transparent border keeps the hit area and baseline aligned with neighbouring bevel buttons) for tertiary actions. Both compose with the size modifiers. (The [Chip](#chip)'s action stack uses a related set: an embossed primary, a bevel secondary, and a `--quiet` dismiss.)
 
 ---
 
@@ -716,6 +728,55 @@ A draggable-looking list-item row: a dotted drag grip on the left and a stacked 
 
 Reordering is NOT built in: the markup and CSS only render the look and the `cursor: grab` / `:active cursor: grabbing` cue on `.mirk-sortable__grip`. Wire a real reorder library (e.g. SortableJS) yourself, mirk.js does nothing for this component. The grip is a fixed 2-column grid of exactly 8 `__dot` spans, keep all 8 to preserve the pattern. `.mirk-sortable__row:not(:last-child)` draws the inter-row divider, so row order matters for borders. State that round-trips is just the native input values and attributes. Each `__item` is independent, repeat the item block inside `.mirk-sortable` for a multi-row list. `--small` tightens the grip, row padding, and field/label type (still all 8 dots) for a denser list.
 
+---
+
+### Chip
+
+A collapsible recovery/notification: a round pill (with a soft lift) that expands into a raised panel with a header, an optional before/after field table, and a stacked set of actions. Three display states (collapsed, expanded, expanded + details), one shape. The pill and the panel are the kit's elevated surfaces, each a distinct face over the page with a drop shadow (the panel a larger drop, the pill a tighter one), so the prompt reads as raised, not as part of the page. The primary action is an embossed kit button in the chip's primary color (a warm brown in the default theme's light mode). Color reads from the kit's own tokens through 5 slim `--mirk-chip-*` hooks (`-surface`, `-edge`, `-primary-bg`, `-primary-fg`, `-alert`), so the chip matches the kit and follows Pixel Quiet + light/dark with no per-theme repaint; reskin it by overriding a hook, not a rule. Built for the "saved data was overwritten" prompt, but the copy and actions are yours to swap.
+
+```html
+<!-- Collapsed (the resting state) — the complete component; clicking the chip expands it -->
+<div class="mirk-chip">
+  <button type="button" class="mirk-chip__trigger mirk-button mirk-button--small mirk-button--round" data-mirk-chip="open" title="Click to expand">
+    <span class="mirk-button__label"><svg class="mirk-chip__warn" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h2v2h-2zM12 2h2v2h-2zM8 4h2v2h-2zM8 6h2v2h-2zM6 8h2v2h-2zM6 10h2v2h-2zM4 12h2v2h-2zM4 14h2v2h-2zM2 16h2v2h-2zM2 18h2v2h-2zM14 4h2v2h-2zM14 6h2v2h-2zM16 8h2v2h-2zM16 10h2v2h-2zM18 12h2v2h-2zM18 14h2v2h-2zM20 16h2v2h-2zM20 18h2v2h-2zM2 20h2v2h-2zM4 20h2v2h-2zM6 20h2v2h-2zM8 20h2v2h-2zM10 20h2v2h-2zM12 20h2v2h-2zM14 20h2v2h-2zM16 20h2v2h-2zM18 20h2v2h-2zM20 20h2v2h-2z"/><path d="M11 8h2v6h-2zM11 16h2v2h-2z"/></svg> Saved data overwritten</span>
+  </button>
+  <section class="mirk-chip__panel" role="dialog" aria-label="Data recovery">
+    <div class="mirk-chip__head">
+      <span class="mirk-chip__icon"><svg class="mirk-chip__warn" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2h2v2h-2zM12 2h2v2h-2zM8 4h2v2h-2zM8 6h2v2h-2zM6 8h2v2h-2zM6 10h2v2h-2zM4 12h2v2h-2zM4 14h2v2h-2zM2 16h2v2h-2zM2 18h2v2h-2zM14 4h2v2h-2zM14 6h2v2h-2zM16 8h2v2h-2zM16 10h2v2h-2zM18 12h2v2h-2zM18 14h2v2h-2zM20 16h2v2h-2zM20 18h2v2h-2zM2 20h2v2h-2zM4 20h2v2h-2zM6 20h2v2h-2zM8 20h2v2h-2zM10 20h2v2h-2zM12 20h2v2h-2zM14 20h2v2h-2zM16 20h2v2h-2zM18 20h2v2h-2zM20 20h2v2h-2z"/><path d="M11 8h2v6h-2zM11 16h2v2h-2z"/></svg></span>
+      <div class="mirk-chip__headtext">
+        <div class="mirk-chip__eyebrow">Data guard</div>
+        <h3 class="mirk-chip__title">Saved data overwritten</h3>
+      </div>
+      <button type="button" class="mirk-chip__collapse" data-mirk-chip="collapse" aria-label="Collapse to chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 8h-2v2h2V8Zm-2 2H9v2h2v-2Zm4 0h-2v2h2v-2Zm-6 2H7v2h2v-2Zm8 0h-2v2h2v-2ZM7 14H5v2h2v-2Zm12 0h-2v2h2v-2Z"/></svg></button>
+    </div>
+    <div class="mirk-chip__meta">3 fields <button type="button" class="mirk-chip__changes-toggle" data-mirk-chip="changes">(view changes)</button></div>
+    <div class="mirk-chip__preview">
+      <div class="mirk-chip__row">
+        <span class="mirk-chip__key">title</span>
+        <span class="mirk-chip__old" title="Untitled draft copy that keeps going">Untitled draft copy that keeps going</span>
+        <span class="mirk-chip__new" title="Q3 launch checklist — investor demo, pricing">Q3 launch checklist — investor demo, pricing</span>
+      </div>
+    </div>
+    <div class="mirk-chip__actions">
+      <button type="button" class="mirk-button mirk-button--small mirk-chip__action--primary"><span class="mirk-button__label">Restore my data</span></button>
+      <button type="button" class="mirk-button mirk-button--small"><span class="mirk-button__label">Revert entire page</span></button>
+      <button type="button" class="mirk-button mirk-button--small mirk-button--quiet"><span class="mirk-button__label">Dismiss</span></button>
+    </div>
+  </section>
+</div>
+```
+
+For the two expanded states, start the same markup with the state baked into the classes: add `mirk-chip--open` on the block to open the panel, and `is-changes` on `.mirk-chip__panel` (with the toggle reading `(hide changes)`) to reveal the field table.
+
+```html
+<!-- Expanded -->            <div class="mirk-chip mirk-chip--open"> … </div>
+<!-- Expanded + details -->  <section class="mirk-chip__panel is-changes"> … </section>
+```
+
+**Class API:** block `mirk-chip` / parts `__trigger`, `__warn`, `__panel`, `__head`, `__icon`, `__headtext`, `__eyebrow`, `__title`, `__collapse`, `__meta`, `__changes-toggle`, `__preview`, `__row`, `__key`, `__old`, `__new`, `__actions`, `__action--primary` / modifier `--open` (plus the panel's `is-changes` state). Every control is a [`mirk-button`](#button): the trigger is a [`mirk-button--round`](#button) pill, the primary action a `__action--primary` (a genuine kit bevel button whose `--mirk-bevel-*` palette is derived from `--mirk-chip-primary-bg` via `color-mix`, so it embosses in the primary color on any theme), the secondary a plain bevel button, the dismiss a [`mirk-button--quiet`](#button) text button.
+
+**Needs mirk.js.** A single delegated `click` handler reads `data-mirk-chip` on the clicked control: `open` adds `mirk-chip--open` to the block, `collapse` removes it, and `changes` toggles `is-changes` on the panel and flips the toggle label between `(view changes)` and `(hide changes)`. Without mirk.js the component renders in whatever state its markup carries but the toggles do nothing. All three states round-trip through `outerHTML` because they live in classes (`mirk-chip--open`, `is-changes`), not in JS state. Every color is token-driven, so the chip renders correctly in the default theme and Pixel Quiet, light and dark, with no edits. The warning glyph's color comes from `.mirk-chip__warn { fill: var(--mirk-chip-alert) }`, not an inline `fill`, because `var()` is not reliably honored in an SVG `fill=` presentation attribute. In a Hyperclay app, add `save-remove` to the `.mirk-chip` block so a transient recovery prompt never persists into the saved file. Long field values truncate with an ellipsis (give each a `title` for the full text).
+
 ## The class API
 
 mirk uses BEM with a `mirk-` block prefix.
@@ -740,9 +801,9 @@ mirk-sr-only                                  (visually hidden, still focusable)
 
 ## What ships in v2
 
-- **Components (14):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable. Each in its supported variants (rect / round / rounded, sizes where applicable).
+- **Components (15):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip. Each in its supported variants (rect / round / rounded, sizes where applicable).
 - **`mirk.css`:** the product. Hand-written, no build. Declares `@layer base, components`, 28 `light-dark()` tokens, the font, and every component class family.
-- **`mirk.js`:** one delegated runtime for the components native CSS can't finish (number stepper, slider value bridge, file picker filename, image preview, tags add/remove). One `document` listener per interaction, no `init()`, idempotent and safe to include twice. Listeners live on `document`.
+- **`mirk.js`:** one delegated runtime for the components native CSS can't finish (number stepper, slider value bridge, file picker filename, image preview, tags add/remove, chip open/collapse/changes). One `document` listener per interaction, no `init()`, idempotent and safe to include twice. Listeners live on `document`.
 - **Font:** Departure Mono (SIL OFL), shipped in the package and referenced by a relative URL in `mirk.css`, so it resolves correctly when loaded from jsDelivr.
 
 ## What's NOT in v2

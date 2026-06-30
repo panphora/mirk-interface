@@ -504,11 +504,11 @@ BEM with a `mirk-` block prefix.
 register, `--rounded` is a rectangular control with a `--mirk-radius` corner. Shape
 defaults follow decision 0013.
 
-The fourteen, with structure and where to lift values:
+The fifteen, with structure and where to lift values:
 
 | Component   | Block            | Parts (`__`)                          | Modifiers                         | Structure        | Values from (`index.html`) |
 |-------------|------------------|----------------------------------------|-----------------------------------|------------------|----------------------------|
-| Button      | `mirk-button`    | `__label`                               | `--round`, `--small`, `--large`   | block + label             | Button • Rect / Round       |
+| Button      | `mirk-button`    | `__label`                               | `--round`, `--small`, `--large`, `--solid`, `--quiet` | block + label | Button • Rect / Round       |
 | Text input  | `mirk-input`     | none                                    | `--rounded`, `--small`, `--large` | single                    | Text Input • Rect / Rounded |
 | Textarea    | `mirk-textarea`  | none                                    | `--rounded`                       | single                    | Textarea                    |
 | Number      | `mirk-number`    | `__input`, `__step`                     | `--rounded`, `--small`, `--large` | wrapper + parts           | Number                      |
@@ -522,6 +522,7 @@ The fourteen, with structure and where to lift values:
 | Image input | `mirk-image`     | `__input`, `__preview`, `__placeholder` | `--rounded`                       | wrapper + parts           | Image                       |
 | Tags        | `mirk-tags`      | `__chip`, `__remove`, `__input`         | `--round`                         | wrapper + parts           | Tags • Rect / Round         |
 | Sortable    | `mirk-sortable`  | `__item`                                | none                              | wrapper + parts           | Sortable                    |
+| Chip        | `mirk-chip`      | `__trigger`, `__panel`, `__preview`, `__actions`, `__action--primary` (+ head/meta parts) | `--open` (+ panel `is-changes`) | wrapper + parts, `data-mirk-chip` | Chip                        |
 
 Conversion tasks, in order:
 
@@ -558,12 +559,13 @@ per-instance slider state var is namespaced the same way (`--mirk-value`); the
 private variant hook stays `--_bg` by the underscore-means-local convention.
 
 ```
-mirk-button(__label)  mirk-button--round  mirk-button--small  mirk-button--large
+mirk-button(__label)  mirk-button--round  mirk-button--small  mirk-button--large  mirk-button--solid  mirk-button--quiet
 mirk-input  mirk-textarea  mirk-number(__input,__step)  mirk-select  mirk-date
 mirk-checkbox(__box,__mark,__label)  mirk-radio(__ring,__fill,__dot,__label)
 mirk-toggle(__track,__thumb,__label)  mirk-slider(__input,__track,__fill,__nub)
 mirk-file(__input,__button,__name)  mirk-image(__input,__preview,__placeholder)
 mirk-tags(__chip,__remove,__input)  mirk-sortable(__item)  mirk-sr-only
+mirk-chip(__trigger,__panel,__preview,__actions,__action--primary)  mirk-chip--open  data-mirk-chip
 
 [data-theme="dark"] / [data-theme="light"]   (theme override, .dark / .light aliased)
 :checked  :user-invalid  appearance:base-select   (state and behavior via the platform)
