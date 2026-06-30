@@ -46,6 +46,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0026 | [Architecture (v2): semantic BEM classes in `@layer components`, hand-written `mirk.css`](#0026--architecture-v2-semantic-bem-classes-in-layer-components-hand-written-mirkcss) |
 | 0027 | [Built-in brand variant: "Pixel Quiet" via `data-theme="pixel-quiet"`](#0027--built-in-brand-variant-pixel-quiet-via-data-themepixel-quiet) |
 | 0028 | [Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags, sortable](#0028--complete-the-small-size-family---small-on-checkbox-radio-toggle-slider-date-file-tags-sortable) |
+| 0029 | [Chip: elevated recovery treatment as the default; remove `--solid`](#0029--chip-elevated-recovery-treatment-as-the-default-remove---solid) |
 
 ## Template
 
@@ -828,3 +829,72 @@ The small variants are demonstrated **inline in each component's own section** a
 `copy SM` stack (mirroring how button/input/select show their sizes), not in a separate gallery —
 an initial standalone "Sizes • Small" gallery was folded into the per-section demos so each
 component documents its own size axis in place.
+
+---
+
+## 0029 — Chip: elevated recovery treatment as the default; remove `--solid`
+
+- **Date:** 2026-06-30
+
+### Context
+The `mirk-chip` is a collapsible data-recovery prompt (used in hyperclayjs's clobber-watch: a pill
+that expands into a before/after of work about to be lost). It originally sat flush with the page in
+flat surfaces. We had two candidate looks side by side, prototyped the elevated "reference"
+treatment against the flat one, then folded in three refinements as a Phase-2 variant before
+promoting the whole package to the chip's shipped default.
+
+### Decision
+- **The chip ships as an elevated object.** The expanded state is a raised panel (its own
+  `--mirk-bg` surface, hairline outline, soft drop shadow); the collapsed state is a round pill with
+  its own lighter lift. Both elevation tiers are themed light/dark via `@media (prefers-color-scheme)`
+  plus `.light`/`.dark` overrides (the `light-dark()` function can't take a box-shadow, so this
+  mirrors the established `--focus-offset` pattern).
+- **The primary action is a real kit bevel button** (new `mirk-chip__action--primary` part). Its
+  `--mirk-bevel-*` palette is derived from the chip's primary fill via `color-mix` (lighter
+  top-left, darker bottom-right, brighter hover), so it embosses *in the primary color* on any theme
+  rather than showing a flat one-sided border.
+- **The primary fill is a bold accent in the default theme** (`--mirk-chip-primary-bg:
+  light-dark(#1C170E, var(--mirk-fg))` — warm brown in light, fg ink in dark). Pixel Quiet resets it
+  to its own fg, no brown.
+- **The chip exposes 5 override hooks** (`--mirk-chip-surface`, `-edge`, `-primary-bg`, `-primary-fg`,
+  `-alert`); four point at generic kit tokens, only `-primary-bg` carries a chip-specific value
+  (reinforces `0010`, per-component vars defaulting to generic tokens).
+- **`--mirk-button--solid` is removed from the kit.** It was a flat ink-fill variant added
+  speculatively for a "strongest control" register; nothing ever used it, and it contradicts the
+  kit's core affordance. `--quiet` stays (the dismiss uses it; a deliberately recessive tertiary,
+  not a flat primary). The alert glyph also moved from an inline SVG `fill="var(...)"` attribute to
+  a CSS rule (`.mirk-chip__warn { fill: var(--mirk-chip-alert) }`), keeping color in the stylesheet.
+
+### Why this over the alternatives
+The chip is not a page element, it is a **meta-layer addressed to the user on top of the page**, so
+it must read as separate from the page. That separation is the job of the elevation: the floating
+panel and the lifted pill say "this is above your content, deal with me." The boldness of the
+styling is then tuned to the **stakes of the message**. This particular chip is an *alarm* (recover
+your data or lose it), so it earns the loudest register the kit allows: a raised surface, a bold
+accent fill on the primary action, an embossed call-to-action. A calmer notice would dial the same
+vocabulary down (a quieter accent, a softer lift). The rule that keeps this from fracturing a
+neutral kit: **every one of these opinions is expressed through kit tokens and kit button
+vocabulary, never through one-off styling.** The primary's bold color is a token; the embossed CTA
+is a real `mirk-button` bevel derived from that token, not a bespoke shape. So the chip is allowed
+to be loud, but it is loud *in the kit's own language*, which is why it still belongs in a neutral
+kit.
+
+Removing `--solid` follows from the same logic in reverse: in mirk a button looks clickable
+*because it is embossed* — the bevel is the affordance. A flat-filled button reads as a block, not a
+control, so the kit has no "solid" register; the strongest action is a brighter bevel.
+
+### Verification
+Browser-checked (agent-browser, isolated local session) in both light and dark columns across all
+three chip states. Nested `light-dark(#1C170E, var(--mirk-fg))` resolves correctly: default light
+primary = rgb(28,23,14) = #1C170E; default dark = fg-derived rgb(246,247,249); Pixel Quiet light =
+its own fg, not brown. Embossed primary shows a genuine bevel (light column tl=rgb(82,79,72),
+br=rgb(19,16,10) derived from the brown; dark column br=rgb(167,168,169)), not a flat border.
+Showcase reduced to 6 clean chips (3 states × dark/light columns), comparison scaffold removed, 0
+console errors. After removing `--solid`: zero rendered usages anywhere, no visual change.
+
+### Record-keeping note
+The exact hex (`#1C170E`) and shadow values are tuning details that live in code, not here — per the
+DECISIONS scope rule that excludes individual CSS values. What's recorded is the *principle*
+(treatment matches the stakes; loudness expressed in kit vocabulary). Per-step history is in
+`HISTORY.md` (2026-06-30); the full conversation shape is in
+`plans/mirk-interface/chip-elevation-conversation-shape.md`.

@@ -508,7 +508,7 @@ The fifteen, with structure and where to lift values:
 
 | Component   | Block            | Parts (`__`)                          | Modifiers                         | Structure        | Values from (`index.html`) |
 |-------------|------------------|----------------------------------------|-----------------------------------|------------------|----------------------------|
-| Button      | `mirk-button`    | `__label`                               | `--round`, `--small`, `--large`, `--solid`, `--quiet` | block + label | Button • Rect / Round       |
+| Button      | `mirk-button`    | `__label`                               | `--round`, `--small`, `--large`, `--quiet` | block + label | Button • Rect / Round       |
 | Text input  | `mirk-input`     | none                                    | `--rounded`, `--small`, `--large` | single                    | Text Input • Rect / Rounded |
 | Textarea    | `mirk-textarea`  | none                                    | `--rounded`                       | single                    | Textarea                    |
 | Number      | `mirk-number`    | `__input`, `__step`                     | `--rounded`, `--small`, `--large` | wrapper + parts           | Number                      |
@@ -559,7 +559,7 @@ per-instance slider state var is namespaced the same way (`--mirk-value`); the
 private variant hook stays `--_bg` by the underscore-means-local convention.
 
 ```
-mirk-button(__label)  mirk-button--round  mirk-button--small  mirk-button--large  mirk-button--solid  mirk-button--quiet
+mirk-button(__label)  mirk-button--round  mirk-button--small  mirk-button--large  mirk-button--quiet
 mirk-input  mirk-textarea  mirk-number(__input,__step)  mirk-select  mirk-date
 mirk-checkbox(__box,__mark,__label)  mirk-radio(__ring,__fill,__dot,__label)
 mirk-toggle(__track,__thumb,__label)  mirk-slider(__input,__track,__fill,__nub)

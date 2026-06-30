@@ -206,16 +206,6 @@
   .mirk-button--round.mirk-button--large { border-radius: 16px; }
   .mirk-button--round.mirk-button--large .mirk-button__label { padding: 7px 24px 9px; border-radius: 14px; }
 
-  /* Solid: the kit's one filled button — ink fill, canvas text, border = fill (no
-     bevel). For a primary action that must read as the strongest control. */
-  .mirk-button--solid {
-    background-image: none;
-    background-color: var(--mirk-fg); color: var(--mirk-bg);
-    border-color: var(--mirk-fg);
-  }
-  .mirk-button--solid:hover { background-color: var(--mirk-fg); opacity: 0.88; }
-  .mirk-button--solid:active { border-color: var(--mirk-fg); }
-
   /* Quiet: a borderless text button (transparent border keeps the hit area + the
      baseline aligned with neighbouring bevel buttons). For tertiary actions. */
   .mirk-button--quiet {

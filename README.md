@@ -121,20 +121,15 @@ A pixel-bevel push button rendered from a native `<button>` wrapping a `<span>` 
 ```
 
 ```html
-<!-- Solid — the kit's one flat-filled button, for the strongest action -->
-<button class="mirk-button mirk-button--solid"><span class="mirk-button__label">Publish</span></button>
-```
-
-```html
 <!-- Quiet — a borderless text button, for tertiary actions -->
 <button class="mirk-button mirk-button--quiet"><span class="mirk-button__label">Dismiss</span></button>
 ```
 
-**Class API:** block `mirk-button` / part `__label` / modifiers `--small`, `--large`, `--round`, `--solid`, `--quiet`.
+**Class API:** block `mirk-button` / part `__label` / modifiers `--small`, `--large`, `--round`, `--quiet`.
 
 The inner `__label` span is mandatory for both shapes: rect uses it to nudge the text on `:active`, and round renders it as the inner pill fill (the `--round` element is just the gradient frame, so without the label there is no visible face). Pair the round modifier with a size modifier, each pairing re-homes padding and radius onto the label. Honors the native `disabled` attribute and shows a focus ring on `:focus-visible`. Theme via the bevel/pill/canvas tokens, do not set a flat `border` or `border-radius` on `.mirk-button` directly or you flatten the bevel.
 
-Two weight modifiers drop the bevel for a flatter read: `--solid` is the kit's lone flat-filled button (ink fill, canvas text, border = fill) for a primary action that must read as the strongest control; `--quiet` is a borderless text button (a transparent border keeps the hit area and baseline aligned with neighbouring bevel buttons) for tertiary actions. Both compose with the size modifiers. (The [Chip](#chip)'s action stack uses a related set: an embossed primary, a bevel secondary, and a `--quiet` dismiss.)
+`--quiet` drops the bevel for a flatter read: a borderless text button (a transparent border keeps the hit area and baseline aligned with neighbouring bevel buttons) for tertiary actions. It composes with the size modifiers. Note the kit has no flat "solid" fill: a button reads as clickable *because* it is embossed, so the strongest action is a brighter bevel, not a flat block. (The [Chip](#chip)'s action stack follows this: an embossed primary, a bevel secondary, and a `--quiet` dismiss.)
 
 ---
 
