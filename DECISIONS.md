@@ -47,6 +47,7 @@ Decisions capture **major UX choices**: what a component is, how it behaves, wha
 | 0027 | [Built-in brand variant: "Pixel Quiet" via `data-theme="pixel-quiet"`](#0027--built-in-brand-variant-pixel-quiet-via-data-themepixel-quiet) |
 | 0028 | [Complete the small-size family: `--small` on checkbox, radio, toggle, slider, date, file, tags, sortable](#0028--complete-the-small-size-family---small-on-checkbox-radio-toggle-slider-date-file-tags-sortable) |
 | 0029 | [Chip: elevated recovery treatment as the default; remove `--solid`](#0029--chip-elevated-recovery-treatment-as-the-default-remove---solid) |
+| 0030 | [Default theme swap: Pixel Quiet is the base, Full Volume the opt-in](#0030--default-theme-swap-pixel-quiet-is-the-base-full-volume-the-opt-in) |
 
 ## Template
 
@@ -777,6 +778,8 @@ The conversion changed *form*, not *pixels*. Confirmed by a computed-style + geo
 
 - **Date:** 2026-06-15
 
+> **Superseded in part by `0030`:** Pixel Quiet is now the **default** theme (`:root`, no attribute); the `data-theme="pixel-quiet"` slug no longer exists, and the opt-in `data-theme` mechanics below now describe the **Full Volume** variant (`data-theme="full-volume"`). The hypercms follow-up now means "inherit the default" rather than "set `data-theme='pixel-quiet'`."
+
 ### Context
 "Pixel Quiet" began as a hypercms sidebar direction (`cms-sidebar/pixel-quiet/`, ported to `hypercms/src/theme/pixel-quiet.overrides.css`): the same warm cream + Departure Mono soul as mirk's default, with the bevel contrast turned way down — a calm, glanceable register. There it was scoped to the CMS shell and bundled with panel geometry. We promote the *palette half* into the kit as a first-class, opt-in brand variant.
 
@@ -835,6 +838,8 @@ component documents its own size axis in place.
 ## 0029 — Chip: elevated recovery treatment as the default; remove `--solid`
 
 - **Date:** 2026-06-30
+
+> **Superseded in part by `0030`:** the chip primary's warm-brown fill (`light-dark(#1C170E, var(--mirk-fg))`) now belongs to the **Full Volume** variant's light mode, not the default. Under the new default (Pixel Quiet) the chip primary is the theme's fg ink. The chip design principle below is unchanged.
 
 ### Context
 The `mirk-chip` is a collapsible data-recovery prompt (used in hyperclayjs's clobber-watch: a pill
@@ -898,3 +903,31 @@ DECISIONS scope rule that excludes individual CSS values. What's recorded is the
 (treatment matches the stakes; loudness expressed in kit vocabulary). Per-step history is in
 `HISTORY.md` (2026-06-30); the full conversation shape is in
 `plans/mirk-interface/chip-elevation-conversation-shape.md`.
+
+---
+
+## 0030 — Default theme swap: Pixel Quiet is the base, Full Volume the opt-in
+
+- **Date:** 2026-07-02
+
+### Context
+`0027` shipped **Pixel Quiet** as an opt-in `[data-theme="pixel-quiet"]` block sitting after `:root`, while `:root` held mirk's original full-strength palette (high-contrast bevel, warm cream / deep navy, crimson destructive). We flip which one is the default. This is a **relocation + re-default only** — not one token value changes, no component rule changes, `light-dark()` orthogonality is untouched.
+
+### Decision
+- **`:root` now paints Pixel Quiet.** Its 26 palette values (verbatim from the `0027` block) move into `:root`, still authored with `light-dark()`, so palette and mode stay orthogonal (OS light/dark by default; `.light` / `.dark` / `[data-theme="dark"|"light"]` still force a mode).
+- **The original palette demotes to `[data-theme="full-volume"]`**, still placed after `:root` (equal specificity, source order wins) — the same escape-hatch shape Pixel Quiet used to occupy. Display name **Full Volume**, slug `full-volume`.
+- **The chip-primary asymmetry flips.** `0029` gave `:root` a warm-brown primary fill (`light-dark(#1C170E, var(--mirk-fg))`) that Pixel Quiet reset to its own fg. Now `:root` (Pixel Quiet) carries `--mirk-chip-primary-bg: var(--mirk-fg)` and Full Volume re-declares the brown. The brown is now the opt-in accent, not the default.
+- **Shared / structural tokens stay in `:root`, not duplicated:** `color-scheme`, `--mirk-radius`, `--mirk-focus-offset` (and its `@media (prefers-color-scheme: dark)` override), `background`, `color`, the unused-but-shared `--mirk-ctrl-bg`, and the four chip hooks that alias generic tokens (`-surface`, `-edge`, `-primary-fg`, `-alert`). Only the tokens that actually differ between the two palettes live in the demoted block.
+- **`data-theme="pixel-quiet"` still renders Pixel Quiet.** With `:root` now Pixel Quiet, a legacy consumer that sets that attribute on the root matches no block and inherits the Pixel Quiet base. No redundant empty alias block is added. Caveat: because a pure palette block only re-tokens (it does not re-paint `background`/`color`), the old slug can no longer *reset a subtree back to Pixel Quiet inside a `data-theme="full-volume"` ancestor*. Pixel Quiet is the no-attribute base, not a selectable override; that reversibility was never used in the kit and is out of scope.
+
+### Why flip rather than leave it opt-in
+A drop-in kit's default is what every no-config consumer sees. Pixel Quiet is the calmer, more legible resting register, so making it the default means the kit lands gently and turns *up* on request — the friendlier direction for an embeddable component set. The two palettes are one volume dial (`0027` called Pixel Quiet "the volume turned way down"); this makes *quiet* the default and *loud* the opt-in. The loud palette loses nothing: one attribute away, fully documented.
+
+### Relationship to 0027 / 0029
+`0027` (Pixel Quiet as a variant) and `0029` (chip elevation + the brown primary) stand as the record of how those pieces were designed and why. This entry **amends the default-palette assumption** in both — `0027`'s opt-in/default framing (Pixel Quiet is now the default) and `0029`'s statement that the warm-brown chip primary is "in the default theme" (it now belongs to Full Volume). It supersedes neither's design rationale; a one-line pointer sits at the top of each. No token value is repainted.
+
+### Naming
+`full-volume` over `mirk-classic` / `original` / `legacy`: the kit already frames the pair on a volume axis (`0027`: Pixel Quiet is "the volume turned way down"), and the loud palette is its full-volume pole, so "Full Volume" names it in the project's own vocabulary and pairs self-explaining with "Pixel Quiet." "classic" / "original" / "legacy" would falsely imply the palette is deprecated; it is a first-class opt-in.
+
+### Verification
+Browser-checked (agent-browser, isolated local session), both columns. Default (no attribute) renders Pixel Quiet: light canvas `#FDF8F0` / dark `#0B0C13`, warm ink `#2B241B`, terracotta destructive `#C24A3A`, chip primary light = its own fg `#2B241B` (not brown). The Full Volume option sets `data-theme="full-volume"` and restores the original palette: canvas `#F7F2EA` / `#0B0C13`, crimson `#d4183d`, chip primary light = warm brown `#1C170E`. `--mirk-ctrl-bg` resolves to `#8C7660` / `#5F6582` under both. `.light` / `.dark` still force modes on either palette. 0 console errors.

@@ -30,46 +30,50 @@
   /* Preflight sets these to ui-monospace; keep them in Departure Mono. */
   pre, code, kbd, samp { font-family: inherit; }
 
-  /* 28 tokens, one value each. light-dark() picks the side from color-scheme. */
+  /* 28 tokens, one value each. light-dark() picks the side from color-scheme.
+     :root paints the DEFAULT theme — "Pixel Quiet" (see 0030): mirk's warm soul
+     with the volume down. The louder original palette is the opt-in
+     [data-theme="full-volume"] block below. */
   :root {
     color-scheme: light dark;                 /* default: follow the OS */
 
-    --mirk-canvas:        light-dark(#F7F2EA, #0B0C13);
-    --mirk-bg:            light-dark(#F7F2EA, #1D1F2F);
-    --mirk-fg:            light-dark(#15120e, #F6F7F9);
-    --mirk-accent:        light-dark(#efefe5, #232639);
-    --mirk-destructive:   light-dark(#d4183d, #ff5566);
-    --mirk-focus-color:   light-dark(#BBA288, #5A607F);
-    --mirk-bevel-bg:      light-dark(#e9d3bd, #1D1F2F);
-    --mirk-bevel-fg:      light-dark(#15120e, #F6F7F9);
-    --mirk-bevel-tl:      light-dark(#f3ddc7, #474C65);
-    --mirk-bevel-br:      light-dark(#c2ad95, #131725);
-    --mirk-bevel-hover-bg: light-dark(#dfc9b3, #232639);
-    --mirk-pill-inner-top: light-dark(#efdac7, #232639);
-    --mirk-input-border:  light-dark(#957E65, #6E738E);
-    --mirk-placeholder-color: light-dark(#7F7366, #545973);
+    --mirk-canvas:        light-dark(#FDF8F0, #0B0C13);
+    --mirk-bg:            light-dark(#FDF8F0, #11131E);
+    --mirk-fg:            light-dark(#2B241B, #ECEAF2);
+    --mirk-accent:        light-dark(#efefe5, #1D1F2F);
+    --mirk-destructive:   light-dark(#C24A3A, #ff5566);
+    --mirk-focus-color:   light-dark(#C7AE93, #4A506B);
+    --mirk-bevel-bg:      light-dark(#FCF8F1, #1A1D2C);
+    --mirk-bevel-fg:      light-dark(#2B241B, #ECEAF2);
+    --mirk-bevel-tl:      light-dark(#F0E7D8, #2A2E42);
+    --mirk-bevel-br:      light-dark(#E2D4BF, #14182A);
+    --mirk-bevel-hover-bg: light-dark(#F4ECDF, #202436);
+    --mirk-pill-inner-top: light-dark(#FBF6EE, #202436);
+    --mirk-input-border:  light-dark(#D8C8AF, #353B52);
+    --mirk-placeholder-color: light-dark(#A8987F, #6A7090);
     --mirk-ctrl-bg:       light-dark(#8C7660, #5F6582);
-    --mirk-toggle-bg:     light-dark(#DFC9AF, #656D95);
-    --mirk-toggle-hi:     light-dark(#E9D6C3, #7F87AD);
-    --mirk-toggle-lo:     light-dark(#C7A88A, #505677);
-    --mirk-mark-fg:       light-dark(#3F3225, #E1E3EA);
-    --mirk-sortable-dot:  light-dark(#e2c5a6, #393f5b);
-    --mirk-sortable-shadow:    light-dark(#c7a47f, #111527);
-    --mirk-sortable-label:     light-dark(#231e18, #edeef2);
-    --mirk-sortable-placeholder: light-dark(#99826c, #6f7695);
-    --mirk-slider-fill:   light-dark(#e9d3bd, #232639);
-    --mirk-slider-nub-bg: light-dark(#DFC9AF, #656D95);
-    --mirk-slider-nub-hi: light-dark(#E9D6C3, #7F87AD);
-    --mirk-slider-nub-lo: light-dark(#C7A88A, #505677);
+    --mirk-toggle-bg:     light-dark(#EFDBBD, #3E4660);
+    --mirk-toggle-hi:     light-dark(#F4EADA, #4E567A);
+    --mirk-toggle-lo:     light-dark(#C2A87E, #262B42);
+    --mirk-mark-fg:       light-dark(#6B5942, #C9CDE0);
+    --mirk-sortable-dot:  light-dark(#DDCBB0, #353B52);
+    --mirk-sortable-shadow:    light-dark(#C9B493, #0E1120);
+    --mirk-sortable-label:     light-dark(#8C7B62, #8A90AB);
+    --mirk-sortable-placeholder: light-dark(#A8987F, #6A7090);
+    --mirk-slider-fill:   light-dark(#F2E0BD, #2A2E42);
+    --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
+    --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
+    --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
 
     /* Chip — the recovery/notification component reads from the kit's own tokens
        via 5 slim hooks, so it matches the kit by default and reskins by overriding
-       a hook (not a rule). Each follows the theme (incl. Pixel Quiet) and OS
-       light/dark with no per-theme repaint; the one exception is the primary fill,
-       tinted a warm brown in the default theme's light mode (see below). */
+       a hook (not a rule). Each follows the theme (incl. the Full Volume variant)
+       and OS light/dark with no per-theme repaint; the one exception is the primary
+       fill, which the default (Pixel Quiet) leaves as the theme's fg ink while the
+       Full Volume variant tints it a warm brown in light (see below). */
     --mirk-chip-surface:     var(--mirk-bg);            /* raised panel face */
     --mirk-chip-edge:        var(--mirk-input-border);  /* panel + recess outline */
-    --mirk-chip-primary-bg:  light-dark(#1C170E, var(--mirk-fg));  /* primary action fill — warm brown in light, fg ink in dark */
+    --mirk-chip-primary-bg:  var(--mirk-fg);            /* primary action fill — the theme's fg ink (Full Volume tints it warm brown in light) */
     --mirk-chip-primary-fg:  var(--mirk-bg);
     --mirk-chip-alert:       var(--mirk-destructive);   /* icon + struck "now" value */
 
@@ -95,46 +99,44 @@
     background: var(--mirk-canvas); color: var(--mirk-fg);
   }
 
-  /* Built-in brand variant — "Pixel Quiet": mirk's warm soul with the volume
-     down. A softened, near-equal bevel, warmer ink, terracotta destructive, a
-     deeper navy-black dark. Authored with light-dark() like :root, so it follows
-     the OS and still flips with .dark / .light. Opt in: data-theme="pixel-quiet".
-     Sits after :root (equal specificity, source order wins). --mirk-radius /
-     --mirk-focus-offset are inherited unchanged; --mirk-ctrl-bg is unused. */
-  [data-theme="pixel-quiet"] {
-    --mirk-fg:            light-dark(#2B241B, #ECEAF2);
-    --mirk-bg:            light-dark(#FDF8F0, #11131E);
-    --mirk-canvas:        light-dark(#FDF8F0, #0B0C13);
-    --mirk-accent:        light-dark(#efefe5, #1D1F2F);
-    --mirk-destructive:   light-dark(#C24A3A, #ff5566);
-    --mirk-focus-color:   light-dark(#C7AE93, #4A506B);
-    --mirk-bevel-bg:      light-dark(#FCF8F1, #1A1D2C);
-    --mirk-bevel-fg:      light-dark(#2B241B, #ECEAF2);
-    --mirk-bevel-tl:      light-dark(#F0E7D8, #2A2E42);
-    --mirk-bevel-br:      light-dark(#E2D4BF, #14182A);
-    --mirk-bevel-hover-bg: light-dark(#F4ECDF, #202436);
-    --mirk-pill-inner-top: light-dark(#FBF6EE, #202436);
-    --mirk-input-border:  light-dark(#D8C8AF, #353B52);
-    --mirk-placeholder-color: light-dark(#A8987F, #6A7090);
-    --mirk-mark-fg:       light-dark(#6B5942, #C9CDE0);
-    --mirk-toggle-bg:     light-dark(#EFDBBD, #3E4660);
-    --mirk-toggle-hi:     light-dark(#F4EADA, #4E567A);
-    --mirk-toggle-lo:     light-dark(#C2A87E, #262B42);
-    --mirk-sortable-dot:  light-dark(#DDCBB0, #353B52);
-    --mirk-sortable-shadow:    light-dark(#C9B493, #0E1120);
-    --mirk-sortable-label:     light-dark(#8C7B62, #8A90AB);
-    --mirk-sortable-placeholder: light-dark(#A8987F, #6A7090);
-    /* slider nub reuses the toggle family (identical pairing in :root); the fill
-       is the one value with no CMS precedent — a soft warm / muted navy track. */
-    --mirk-slider-fill:   light-dark(#F2E0BD, #2A2E42);
-    --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
-    --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
-    --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
-    /* Chip needs almost no repaint here: its slim tokens point at --mirk-bg / --mirk-fg
-       / --mirk-input-border / --mirk-destructive, which this block already overrides.
-       The one exception is the primary fill, which :root tints brown in light for the
-       default theme only — reset it to this theme's fg ink so Pixel Quiet stays warm. */
-    --mirk-chip-primary-bg: var(--mirk-fg);
+  /* Built-in brand variant — "Full Volume": mirk's original full-strength palette,
+     the loud pole of the volume axis (Pixel Quiet, now the default, is the quiet
+     end). Full-contrast bevel, warm cream / deep navy, crimson destructive.
+     Authored with light-dark() like :root, so it follows the OS and still flips
+     with .dark / .light. Opt in: data-theme="full-volume". Sits after :root
+     (equal specificity, source order wins). --mirk-radius / --mirk-focus-offset /
+     --mirk-ctrl-bg and the four shared --mirk-chip-* hooks inherit from :root
+     unchanged; only the tokens that differ from the default are re-declared here. */
+  [data-theme="full-volume"] {
+    --mirk-canvas:        light-dark(#F7F2EA, #0B0C13);
+    --mirk-bg:            light-dark(#F7F2EA, #1D1F2F);
+    --mirk-fg:            light-dark(#15120e, #F6F7F9);
+    --mirk-accent:        light-dark(#efefe5, #232639);
+    --mirk-destructive:   light-dark(#d4183d, #ff5566);
+    --mirk-focus-color:   light-dark(#BBA288, #5A607F);
+    --mirk-bevel-bg:      light-dark(#e9d3bd, #1D1F2F);
+    --mirk-bevel-fg:      light-dark(#15120e, #F6F7F9);
+    --mirk-bevel-tl:      light-dark(#f3ddc7, #474C65);
+    --mirk-bevel-br:      light-dark(#c2ad95, #131725);
+    --mirk-bevel-hover-bg: light-dark(#dfc9b3, #232639);
+    --mirk-pill-inner-top: light-dark(#efdac7, #232639);
+    --mirk-input-border:  light-dark(#957E65, #6E738E);
+    --mirk-placeholder-color: light-dark(#7F7366, #545973);
+    --mirk-toggle-bg:     light-dark(#DFC9AF, #656D95);
+    --mirk-toggle-hi:     light-dark(#E9D6C3, #7F87AD);
+    --mirk-toggle-lo:     light-dark(#C7A88A, #505677);
+    --mirk-mark-fg:       light-dark(#3F3225, #E1E3EA);
+    --mirk-sortable-dot:  light-dark(#e2c5a6, #393f5b);
+    --mirk-sortable-shadow:    light-dark(#c7a47f, #111527);
+    --mirk-sortable-label:     light-dark(#231e18, #edeef2);
+    --mirk-sortable-placeholder: light-dark(#99826c, #6f7695);
+    --mirk-slider-fill:   light-dark(#e9d3bd, #232639);
+    --mirk-slider-nub-bg: light-dark(#DFC9AF, #656D95);
+    --mirk-slider-nub-hi: light-dark(#E9D6C3, #7F87AD);
+    --mirk-slider-nub-lo: light-dark(#C7A88A, #505677);
+    /* :root (Pixel Quiet) leaves the chip primary as its own fg ink; the original
+       default tinted it a warm brown in light — restore that here. */
+    --mirk-chip-primary-bg: light-dark(#1C170E, var(--mirk-fg));
   }
 
   /* Roll your own the same way — an explicit [data-theme] block is the escape hatch:

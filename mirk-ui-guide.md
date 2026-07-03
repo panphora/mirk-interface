@@ -314,33 +314,33 @@ that to one value per token. The browser picks the side from `color-scheme`.
   :root {
     color-scheme: light dark;            /* default: follow the OS, and theme native controls too */
 
-    --mirk-canvas:        light-dark(#F7F2EA, #0B0C13);
-    --mirk-bg:            light-dark(#F7F2EA, #1D1F2F);
-    --mirk-fg:            light-dark(#15120e, #F6F7F9);
-    --mirk-accent:        light-dark(#efefe5, #232639);
-    --mirk-destructive:   light-dark(#d4183d, #ff5566);
-    --mirk-focus-color:   light-dark(#BBA288, #5A607F);
-    --mirk-bevel-bg:      light-dark(#e9d3bd, #1D1F2F);
-    --mirk-bevel-fg:      light-dark(#15120e, #F6F7F9);
-    --mirk-bevel-tl:      light-dark(#f3ddc7, #474C65);
-    --mirk-bevel-br:      light-dark(#c2ad95, #131725);
-    --mirk-bevel-hover-bg: light-dark(#dfc9b3, #232639);
-    --mirk-pill-inner-top: light-dark(#efdac7, #232639);
-    --mirk-input-border:  light-dark(#957E65, #6E738E);
-    --mirk-placeholder-color: light-dark(#7F7366, #545973);
+    --mirk-canvas:        light-dark(#FDF8F0, #0B0C13);
+    --mirk-bg:            light-dark(#FDF8F0, #11131E);
+    --mirk-fg:            light-dark(#2B241B, #ECEAF2);
+    --mirk-accent:        light-dark(#efefe5, #1D1F2F);
+    --mirk-destructive:   light-dark(#C24A3A, #ff5566);
+    --mirk-focus-color:   light-dark(#C7AE93, #4A506B);
+    --mirk-bevel-bg:      light-dark(#FCF8F1, #1A1D2C);
+    --mirk-bevel-fg:      light-dark(#2B241B, #ECEAF2);
+    --mirk-bevel-tl:      light-dark(#F0E7D8, #2A2E42);
+    --mirk-bevel-br:      light-dark(#E2D4BF, #14182A);
+    --mirk-bevel-hover-bg: light-dark(#F4ECDF, #202436);
+    --mirk-pill-inner-top: light-dark(#FBF6EE, #202436);
+    --mirk-input-border:  light-dark(#D8C8AF, #353B52);
+    --mirk-placeholder-color: light-dark(#A8987F, #6A7090);
     --mirk-ctrl-bg:       light-dark(#8C7660, #5F6582);
-    --mirk-toggle-bg:     light-dark(#DFC9AF, #656D95);
-    --mirk-toggle-hi:     light-dark(#E9D6C3, #7F87AD);
-    --mirk-toggle-lo:     light-dark(#C7A88A, #505677);
-    --mirk-mark-fg:       light-dark(#3F3225, #E1E3EA);
-    --mirk-sortable-dot:  light-dark(#e2c5a6, #393f5b);
-    --mirk-sortable-shadow:    light-dark(#c7a47f, #111527);
-    --mirk-sortable-label:     light-dark(#231e18, #edeef2);
-    --mirk-sortable-placeholder: light-dark(#99826c, #6f7695);
-    --mirk-slider-fill:   light-dark(#e9d3bd, #232639);
-    --mirk-slider-nub-bg: light-dark(#DFC9AF, #656D95);
-    --mirk-slider-nub-hi: light-dark(#E9D6C3, #7F87AD);
-    --mirk-slider-nub-lo: light-dark(#C7A88A, #505677);
+    --mirk-toggle-bg:     light-dark(#EFDBBD, #3E4660);
+    --mirk-toggle-hi:     light-dark(#F4EADA, #4E567A);
+    --mirk-toggle-lo:     light-dark(#C2A87E, #262B42);
+    --mirk-mark-fg:       light-dark(#6B5942, #C9CDE0);
+    --mirk-sortable-dot:  light-dark(#DDCBB0, #353B52);
+    --mirk-sortable-shadow:    light-dark(#C9B493, #0E1120);
+    --mirk-sortable-label:     light-dark(#8C7B62, #8A90AB);
+    --mirk-sortable-placeholder: light-dark(#A8987F, #6A7090);
+    --mirk-slider-fill:   light-dark(#F2E0BD, #2A2E42);
+    --mirk-slider-nub-bg: light-dark(#EFDBBD, #3E4660);
+    --mirk-slider-nub-hi: light-dark(#F4EADA, #4E567A);
+    --mirk-slider-nub-lo: light-dark(#C2A87E, #262B42);
 
     --mirk-focus-offset: 2px;                 /* non-color token, unified across themes (was 2px / 3px) */
     --mirk-radius: 5px;                        /* the "rounded" corner */
@@ -375,15 +375,23 @@ non-color token, `--mirk-focus-offset`, was `2px` light and `3px` dark, unified 
 `2px` here. If the 1px difference matters, keep a one-line override under
 `[data-theme="dark"]`.
 
+**The default palette is Pixel Quiet** — mirk's warm soul with the bevel turned way down,
+warmer ink, a terracotta destructive. It is what `:root` paints, so a drop-in with no
+attribute is Pixel Quiet, following the OS.
+
 **Custom brand themes** are an explicit `[data-theme]` block, the correct escape hatch.
-mirk ships one built in, **Pixel Quiet** (`data-theme="pixel-quiet"`): the same warm soul
-with the bevel turned way down, warmer ink, and a terracotta destructive. It is authored
-with `light-dark()` like `:root`, so palette and mode stay orthogonal, it follows the OS by
-default and still flips with `.dark` / `.light`:
+mirk ships one built in, **Full Volume** (`data-theme="full-volume"`): the original
+full-strength palette, a high-contrast bevel over warm cream / deep navy. Like the default
+it is authored with `light-dark()`, so palette and mode stay orthogonal — it follows the OS
+by default and still flips with `.dark` / `.light`. It carries only the tokens that differ
+from `:root`. Because only `:root` (and the `.light` / `.dark` mode blocks) paint the page
+canvas, set a whole-page palette on `<html>` (which is what the showcase switcher does),
+not on `<body>`:
 
 ```html
-<body data-theme="pixel-quiet">             <!-- pixel-quiet, follows the OS -->
-<body data-theme="pixel-quiet" class="dark"><!-- pixel-quiet, forced dark -->
+<html>                                        <!-- Pixel Quiet (default), follows the OS -->
+<html data-theme="full-volume">               <!-- Full Volume, follows the OS -->
+<html data-theme="full-volume" class="dark">  <!-- Full Volume, forced dark -->
 ```
 
 Roll your own the same way:
@@ -567,7 +575,8 @@ mirk-file(__input,__button,__name)  mirk-image(__input,__preview,__placeholder)
 mirk-tags(__chip,__remove,__input)  mirk-sortable(__item)  mirk-sr-only
 mirk-chip(__trigger,__panel,__preview,__actions,__action--primary)  mirk-chip--open  data-mirk-chip
 
-[data-theme="dark"] / [data-theme="light"]   (theme override, .dark / .light aliased)
+[data-theme="full-volume"]                        (opt-in secondary palette)
+[data-theme="dark"] / [data-theme="light"]        (mode override, .dark / .light aliased)
 :checked  :user-invalid  appearance:base-select   (state and behavior via the platform)
 ```
 
@@ -629,7 +638,8 @@ delegated listeners. Ship one file.
    `__part`, its utilities move into one component rule, the DOM stays identical.
    Read state once on the block with `:has()`.
 6. **Theme with `light-dark()` and `color-scheme`.** One value per token, follow
-   the OS by default, force a mode with one `data-theme` attribute.
+   the OS by default. Force a mode with `.light` / `.dark` (or `[data-theme="light"|"dark"]`);
+   select a palette with a named `[data-theme]` block — Pixel Quiet is the default, Full Volume the opt-in.
 7. **Reach for the platform first.** `<select>`, `:checked`, `:user-invalid`,
    `<input type=date>`. Script only the six documented gaps.
 8. **When you must script, delegate.** One `document` listener, no `init()`,

@@ -24,11 +24,14 @@
   html.dbg-bg section.dark,
   html.dbg-bg section.light { background: var(--dbg-bg) !important; }
 
-  /* --- lever: Pixel Quiet page canvas lighten (debug only) ---
-     Re-declares the PQ canvas via color-mix toward white. 0% is identity, so
-     this is inert until the slider moves. Page background only; component
-     surfaces (--mirk-bg, chip panel) are intentionally left alone. */
-  html[data-theme="pixel-quiet"] {
+  /* --- lever: default (Pixel Quiet) page canvas lighten (debug only) ---
+     Pixel Quiet is the default theme (no attribute), so this targets the
+     no-attribute state. The switcher only ever sets a palette slug on <html>
+     (mode is forced per column), so :not([data-theme]) covers every default
+     state this demo reaches. Re-declares the default canvas via color-mix
+     toward white; 0% is identity, so it is inert until the slider moves. Page
+     background only; component surfaces (--mirk-bg, chip panel) are left alone. */
+  html:not([data-theme]) {
     --mirk-canvas: light-dark(
       color-mix(in srgb, #FDF8F0, white var(--dbg-pq-lighten, 0%)),
       color-mix(in srgb, #0B0C13, white var(--dbg-pq-lighten, 0%))
@@ -109,8 +112,8 @@
 <body>
 
 <!-- Debug panel (demo chrome, NOT part of the kit). A scratchpad for the
-     interface-concerns brainstorm: theme, a foreign page background, the Pixel
-     Quiet canvas-lighten preview, and popover boundary experiments. Every lever
+     interface-concerns brainstorm: theme, a foreign page background, the default
+     (Pixel Quiet) canvas-lighten preview, and popover boundary experiments. Every lever
      is scoped to this page; nothing here touches mirk.css.
      Plan: plans/mirk-interface/interface-concerns-brainstorm.md -->
 <div id="mirk-debug">
@@ -120,8 +123,8 @@
     <div class="dbg-group">
       <div class="dbg-label">Theme</div>
       <select id="theme-switcher" aria-label="Theme">
-        <option value="">Default theme</option>
-        <option value="pixel-quiet">Pixel Quiet</option>
+        <option value="">Pixel Quiet (default)</option>
+        <option value="full-volume">Full Volume</option>
       </select>
     </div>
 
@@ -143,11 +146,11 @@
 
     <div class="dbg-group">
       <div class="dbg-rowbetween">
-        <div class="dbg-label">Pixel Quiet bg lighten</div>
+        <div class="dbg-label">Default bg lighten</div>
         <span class="dbg-val" id="dbg-pq-val">0%</span>
       </div>
       <input type="range" id="dbg-pq-lighten" min="0" max="70" step="5" value="0">
-      <div class="dbg-note">Debug only · Pixel Quiet page canvas only · ~50% is the proposal.</div>
+      <div class="dbg-note">Debug only · default page canvas only · ~50% is the proposal.</div>
     </div>
 
     <div class="dbg-group">
@@ -963,7 +966,7 @@
     <!-- ─────────────── CHIP ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Chip</h2>
-      <p class="text-[12px] leading-normal opacity-70 mb-6 max-w-sm">A collapsible recovery prompt: a round pill (with a soft lift) that expands into a raised panel; <b>(view changes)</b> reveals a before/after table. State lives in classes, so it round-trips. Reads from the kit's tokens, with a raised surface and an embossed primary button (a warm brown in the default theme's light mode) so it stands apart from the page.</p>
+      <p class="text-[12px] leading-normal opacity-70 mb-6 max-w-sm">A collapsible recovery prompt: a round pill (with a soft lift) that expands into a raised panel; <b>(view changes)</b> reveals a before/after table. State lives in classes, so it round-trips. Reads from the kit's tokens, with a raised surface and an embossed primary button (a warm brown in the Full Volume variant's light mode) so it stands apart from the page.</p>
       <div class="flex flex-col gap-6 items-start">
 
         <!-- Collapsed -->
@@ -2013,7 +2016,7 @@
     <!-- ─────────────── CHIP ─────────────── -->
     <div>
       <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Chip</h2>
-      <p class="text-[12px] leading-normal opacity-70 mb-6 max-w-sm">A collapsible recovery prompt: a round pill (with a soft lift) that expands into a raised panel; <b>(view changes)</b> reveals a before/after table. State lives in classes, so it round-trips. Reads from the kit's tokens, with a raised surface and an embossed primary button (a warm brown in the default theme's light mode) so it stands apart from the page.</p>
+      <p class="text-[12px] leading-normal opacity-70 mb-6 max-w-sm">A collapsible recovery prompt: a round pill (with a soft lift) that expands into a raised panel; <b>(view changes)</b> reveals a before/after table. State lives in classes, so it round-trips. Reads from the kit's tokens, with a raised surface and an embossed primary button (a warm brown in the Full Volume variant's light mode) so it stands apart from the page.</p>
       <div class="flex flex-col gap-6 items-start">
 
         <!-- Collapsed -->
@@ -2354,7 +2357,7 @@
     });
   });
 
-  // Pixel Quiet canvas lighten.
+  // Default canvas lighten.
   const pq = document.getElementById('dbg-pq-lighten');
   const pqVal = document.getElementById('dbg-pq-val');
   pq?.addEventListener('input', () => {
