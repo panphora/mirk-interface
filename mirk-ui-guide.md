@@ -532,6 +532,22 @@ The fifteen, with structure and where to lift values:
 | Sortable    | `mirk-sortable`  | `__item`                                | none                              | wrapper + parts           | Sortable                    |
 | Chip        | `mirk-chip`      | `__trigger`, `__panel`, `__preview`, `__actions`, `__action--primary` (+ head/meta parts) | `--open` (+ panel `is-changes`) | wrapper + parts, `data-mirk-chip` | Chip                        |
 
+The 2.3 additions (authored directly rather than lifted — pure CSS, no runtime):
+
+| Component   | Block            | Parts (`__`)                          | Modifiers                         | Structure        |
+|-------------|------------------|----------------------------------------|-----------------------------------|------------------|
+| Field       | `mirk-field`     | `__label`                              | `--small`                         | wrapper + parts  |
+| Progress    | `mirk-progress`  | none (`::-webkit/-moz` pseudos)        | `--blocks`, `--round`, `--small`  | single + pseudo  |
+| Note        | `mirk-note`      | `__title` (optional), `__body`         | `--alert`, `--rounded`            | block + parts    |
+| Hint        | `mirk-hint`      | none                                   | `--alert`                         | single           |
+| List        | `mirk-list`      | none (bare `<li>` by descent)          | `--small`                         | `<ul>`/`<ol>` + `::before` |
+| Badge       | `mirk-badge`     | none                                   | `--accent`, `--round`, `--alert`  | single           |
+| Table       | `mirk-table`     | none (bare `th`/`td` by descent)       | `--striped`, `--small`            | `<table>` by descent |
+| Page        | `mirk-page`      | none (`:where()` element rules)        | `--wide`                          | wrapper          |
+| Eyebrow     | `mirk-eyebrow`   | none                                   | none                              | single           |
+
+Plus **invalid states**: `:user-invalid` (and `:has(:user-invalid)` on wrapped controls) paints the destructive border on input, textarea, date, select, number, checkbox, toggle, and radio — the §5 validation row, finally shipped. An alert hint inside a `mirk-field` auto-reveals via `:has(:user-invalid)`.
+
 Conversion tasks, in order:
 
 - [ ] Write `mirk.css`: `@layer base, components;`, the `light-dark()` token block, the font.
@@ -574,6 +590,11 @@ mirk-toggle(__track,__thumb,__label)  mirk-slider(__input,__track,__fill,__nub)
 mirk-file(__input,__button,__name)  mirk-image(__input,__preview,__placeholder)
 mirk-tags(__chip,__remove,__input)  mirk-sortable(__item)  mirk-sr-only
 mirk-chip(__trigger,__panel,__preview,__actions,__action--primary)  mirk-chip--open  data-mirk-chip
+mirk-note(__title,__body)  mirk-note--alert  mirk-hint  mirk-hint--alert
+mirk-list  mirk-list--small  mirk-badge(--accent,--round,--alert)
+mirk-field(__label)  mirk-progress(--blocks,--round,--small)  mirk-table(--striped,--small)
+mirk-page  mirk-page--wide  mirk-eyebrow
+:user-invalid  :has(:user-invalid)               (invalid states via the platform)
 
 [data-theme="full-volume"]                        (opt-in secondary palette)
 [data-theme="dark"] / [data-theme="light"]        (mode override, .dark / .light aliased)

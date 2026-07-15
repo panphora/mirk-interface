@@ -509,6 +509,8 @@ Removed. Radio now ships as a circle only (no rect variant). The original "fill 
 
 ## 0017 — Toggle: transparent track, darker thumb via per-panel control vars
 
+> **Superseded in part by `0033`:** the track is no longer transparent — it carries its own `--mirk-bevel-bg` face, like an input, so the toggle survives embedding on any host page background. The control-palette thumb and everything else below stand.
+
 - **Date:** 2026-05-14 (revised same day; see `HISTORY.md`)
 
 ### Decision
@@ -931,3 +933,96 @@ A drop-in kit's default is what every no-config consumer sees. Pixel Quiet is th
 
 ### Verification
 Browser-checked (agent-browser, isolated local session), both columns. Default (no attribute) renders Pixel Quiet: light canvas `#FDF8F0` / dark `#0B0C13`, warm ink `#2B241B`, terracotta destructive `#C24A3A`, chip primary light = its own fg `#2B241B` (not brown). The Full Volume option sets `data-theme="full-volume"` and restores the original palette: canvas `#F7F2EA` / `#0B0C13`, crimson `#d4183d`, chip primary light = warm brown `#1C170E`. `--mirk-ctrl-bg` resolves to `#8C7660` / `#5F6582` under both. `.light` / `.dark` still force modes on either palette. 0 console errors.
+
+## 0031 — Content tier: note, hint, list, badge — flat, token-only, one status color
+
+- **Date:** 2026-07-15
+
+### Context
+mirk was fifteen *form* components; a real page also needs the content around the form: an informational callout, field help/validation text, styled lists, and static tag labels. Added in 2.3.0 as `mirk-note` (`__title`, `__body`, `--alert`, `--rounded`), `mirk-hint` (`--alert`), `mirk-list` (`--small`, on `<ul>` or `<ol>`), and `mirk-badge` (`--accent`, `--round`, `--alert`).
+
+### Decision
+- **Flat, never bevel.** In mirk, bevel means pressable (`0012`; the guide: a button reads as clickable *because* it is embossed). Notes, badges, and lists are content, so they use the established flat content-surface idiom — `--mirk-bevel-bg` face + 1px `--mirk-input-border` (the sortable item / chip preview recipe) — and the raised shadow tier stays reserved for the chip (`0029`).
+- **No new tokens, no new hues.** The kit keeps exactly one status color, `--mirk-destructive`. Info = neutral ink (`--mirk-mark-fg` accents), alert = destructive. A success/warning palette, if ever wanted, is a token decision that composes onto these components' accent slots later; it is not smuggled in as component-local hexes.
+- **Note anatomy:** a 4px left edge carries the status; the optional `__title` uses the kit's eyebrow register tinted to match the edge. `role="note"` / `role="alert"` documented in the snippets, not enforced. Icons are composable, not part of the contract.
+- **List anatomy:** `<ul>` bullets are a 6px square with the kit's 1px offset pixel shadow (the sortable dot grown one step); nested `<ul>` hollows the square; `<ol>` gets `decimal-leading-zero` counters in the muted label ink. Bare `<li>` is styled by descent — no per-item class, matching "lean on native".
+- **Badge is a separate block from the tags input.** `mirk-badge`, not `mirk-tag`: one letter away from `mirk-tags` is a trap in docs, autocomplete, and grep, and the two are different things (interactive removable chips vs a static label).
+- **Zero JS.** The whole tier is pure CSS, so mirk.js is untouched and `outerHTML` round-trip is trivially satisfied.
+
+### Why
+The kit's promise is "paste components, get a page." Without a content tier every consumer hand-rolls the same callout and list styles next to mirk's forms, off-palette and off-register. Doing it in-kit keeps the pixel language coherent and costs no runtime.
+
+## 0032 — Page scaffold: opt-in `mirk-page` + `mirk-eyebrow`, `:where()` zero-specificity, direct-children rhythm
+
+- **Date:** 2026-07-15
+
+### Context
+Booting a full mirk page previously meant hand-writing layout and typography around the components (the showcase does it with Tailwind utilities). Added in 2.3.0: `mirk-page` (+ `--wide`) as a one-class page shell, and `mirk-eyebrow` as the kit's signature section label, shippable at last.
+
+### Decision
+- **Opt-in class, not global element styles.** Typographic defaults (headings, links, `code`/`pre`, `hr`, paragraph sizing) live under `.mirk-page`, never on bare elements in `@layer base`. Global element styles would silently restyle every page already linking `mirk.css` inside a minor release. One class on `<body>` keeps the quickstart a one-liner and the kit inert by default.
+- **Every typographic rule rides `:where()`** — zero specificity, so any utility, component class, or plain consumer rule beats it, with no `!important` and no layer tricks needed beyond the existing architecture.
+- **Flow rhythm targets direct children only** (`.mirk-page > * + *`), never a descendant owl, so margins can never leak inside component internals. Headings open sections (larger space above); `.mirk-eyebrow + *` and `* + .mirk-hint` hug (6px), encoding label-hugs-field without new markup.
+- **Single-weight typography.** Departure Mono ships one weight, so all headings are `font-weight: 400` (browser bold would faux-bold the pixel face) and hierarchy comes from size alone: 40/26/20/16.
+- **`mirk-eyebrow` is `display: block`** so it behaves identically on `<p>`, `<label>`, or `<div>`, and flow margins always apply.
+- **`starter.html`** at the repo root is the copy-paste template (repo + docs artifact, not in the npm `files` list); the showcase and README carry a condensed copy block.
+
+### Why
+"Two CDN tags and one class" is the shortest honest quickstart a no-build kit can offer, and opt-in scoping means it costs existing consumers nothing. Zero-specificity rules keep the kit's core promise intact: mirk provides defaults, the consumer always wins.
+
+## 0033 — Toggle track: own `--mirk-canvas` face, no longer transparent
+
+- **Date:** 2026-07-15 (revised same day, `--mirk-bevel-bg` → `--mirk-canvas`; see `HISTORY.md`)
+
+### Context
+`0017` made the toggle track transparent — "the panel canvas shows through" — because the then-current `--bevel-bg` fill looked pasty against the then-current thumb. That decision baked in an assumption: the page behind the toggle is mirk's canvas. On a foreign host background (any real embed) the track filled with the host's color while every other control kept its own face, and the toggle read as broken.
+
+### Decision
+The track gets `background: var(--mirk-canvas)` — its own recessed channel, exactly the slider track's recipe. One declaration; the border, thumb, sizes, and round variant are untouched. No fill change on state: thumb position still encodes state, per `0017`.
+
+First cut used `--mirk-bevel-bg` ("like a text input"), which read fine in Pixel Quiet but went muddy in Full Volume light: there the bevel face is the saturated button tan (`#e9d3bd`), nearly the thumb's own tone (`#DFC9AF`) — `0017`'s pasty problem reborn. `--mirk-canvas` stays well lighter than the thumb in every palette's light mode and well darker in dark mode, because the thumb palette is a mid-tone by design. On the kit's own canvas the track blends with the page (border-defined, the historical look); on a foreign page it paints its own solid channel.
+
+### Why the "pasty" concern from 0017 no longer applies
+The thumb rides the dedicated `--mirk-toggle-bg/hi/lo` tokens (a mid tan / blue-gray with its own bevel edges), and the canvas channel keeps maximum tonal distance from it. Verified in the browser on all five surfaces: Pixel Quiet light + dark, Full Volume light + dark, and a hot-magenta foreign background — the thumb reads clearly and the track never inherits the host color.
+
+### The principle it adds
+A control must own every pixel of its face. Nothing inside a component may rely on the host page's background being canvas-colored; painting the canvas *token* as your own face is fine (it is a solid color you own), transparency is for deliberately borderless variants only (`mirk-button--quiet`). The toggle track and slider track now share the same recessed-channel recipe.
+
+## 0034 — Round out the form story: `:user-invalid` styling + `mirk-field`
+
+- **Date:** 2026-07-15
+
+### Context
+The guide's §5 table has always listed "Validation: native constraints + `:user-invalid` styling" as a platform primitive, but the kit never shipped the styling. And composing a labeled field without Tailwind meant hand-rolling margins unless you were inside `mirk-page`. Both close in 2.3.0.
+
+### Decision
+- **Invalid states are attribute-driven, zero-class, zero-JS.** `required` / `type=email` / `pattern` / `min` do the deciding; the kit paints `border-color: var(--mirk-destructive)` on `:user-invalid` (input, textarea, date, select) and `:has(:user-invalid)` (number wrapper, checkbox box, toggle track, radio ring). `:user-invalid` over `:invalid` because it fires only after user interaction — a freshly loaded form with required fields must not open covered in red.
+- **Flat destructive border = the `0012` stateful read.** On bevel controls (select) the four-sided flat repaint deliberately flattens the bevel: flat is how mirk renders state. The unchecked radio ring (a borderless gradient pill) swaps to a flat destructive ring. The focus ring stays the focus signal; border is the error signal — the two never merge.
+- **`mirk-field`** (`__label`, `--small`): label + control + hint in a 6px column (the same hug as the page scaffold's rhythm), consecutive fields self-space with `.mirk-field + .mirk-field`.
+- **The auto-revealing error message.** A `mirk-hint--alert` inside a field is `display: none` until `.mirk-field:has(:user-invalid)` flips it on — a complete native-validation message pattern with no JS. Unconditional errors (server-side) sit outside the field or override `display`.
+
+### Why
+This is the kit's whole thesis applied to validation: the platform already has the machinery (constraint attributes, validity states), mirk only dresses it. Browsers without `:user-invalid` degrade to unpainted-but-working validation.
+
+## 0035 — Table: flat data surface, styled by descent, tints via color-mix
+
+- **Date:** 2026-07-15
+
+### Decision
+`mirk-table` on a semantic `<table>`: content face (`--mirk-bevel-bg`) in a 1px frame, `th` in the eyebrow register, hairline row dividers, last row unbordered. Bare `th`/`td` styled by descent — no per-cell classes, same posture as `mirk-list`. Modifiers `--striped`, `--small`.
+
+- **Header/stripe tints ride `color-mix` toward the ink** (4% / 3%) instead of a token: Pixel Quiet's canvas and face are nearly the same value, so any single-token tint would vanish in one palette or shout in another. Mixing toward `--mirk-fg` guarantees quiet-but-visible in every palette, including brand themes the kit has never seen.
+- **No row hover on purpose:** hover feedback means pressable (`0012`'s spirit); a data table is content. Clickable-row apps add their own hover.
+- **No `--rounded`:** `border-collapse: collapse` and corner radius don't compose; revisit only if genuinely wanted (separate borders + overflow clipping).
+- Horizontal overflow is the consumer's wrapper (`overflow-x: auto` div), documented, not a class.
+
+## 0036 — Progress: native `<progress>` in the slider's clothes
+
+- **Date:** 2026-07-15
+
+### Decision
+`mirk-progress` styles the native `<progress>` element: the toggle/slider recessed-channel recipe (`--mirk-canvas` + 1px `--mirk-input-border`) with the slider-fill value bar, via `::-webkit-progress-value` / `::-moz-progress-bar`. Modifiers: `--blocks` (a repeating-gradient segmented fill, the classic pixel loading bar), `--round`, `--small`.
+
+- The `-webkit-` and `-moz-` rules stay in **separate rule blocks**: an unrecognized pseudo-element invalidates an entire selector list, so combining them would kill the rule in every browser.
+- The indeterminate state (no `value`) is not styled; snippets always carry a `value`.
+- Reuses `--mirk-slider-fill` rather than adding a token: the progress bar and the slider's filled portion are the same idea at rest, and `0019` already routed the slider fill through its own token.

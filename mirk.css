@@ -395,6 +395,7 @@
   .mirk-toggle { display: inline-flex; align-items: center; gap: 0.75rem; cursor: pointer; width: fit-content; }
   .mirk-toggle__track {
     position: relative; flex-shrink: 0; width: 49px; height: 27px; border-radius: 0;
+    background: var(--mirk-canvas);            /* own recessed channel, like the slider track — never the host page (0033) */
     border: 1px solid var(--mirk-input-border);
   }
   .mirk-toggle__thumb {
@@ -774,6 +775,229 @@
     --mirk-bevel-tl:       color-mix(in srgb, var(--mirk-chip-primary-bg), white 24%);
     --mirk-bevel-br:       color-mix(in srgb, var(--mirk-chip-primary-bg), black 32%);
     --mirk-bevel-hover-bg: color-mix(in srgb, var(--mirk-chip-primary-bg), white 10%);
+  }
+
+  /* ============================ FIELD ============================ */
+  /* Label + control + hint as one unit, so a form composes without utilities
+     (and without needing the mirk-page rhythm). Any control drops in; the gap
+     matches the page scaffold's label/hint hug. Consecutive fields space
+     themselves. */
+  .mirk-field { display: flex; flex-direction: column; gap: 6px; }
+  .mirk-field__label { font-size: 16px; line-height: 1.5; }
+  .mirk-field + .mirk-field { margin-block-start: 18px; }
+  .mirk-field--small .mirk-field__label { font-size: 14px; }
+
+  /* An alert hint inside a field stays hidden until a control in the field
+     goes :user-invalid — a zero-JS native-validation message. Show one
+     unconditionally (a server-side error) by placing it outside the field or
+     overriding display. */
+  .mirk-field .mirk-hint--alert { display: none; }
+  .mirk-field:has(:user-invalid) .mirk-hint--alert { display: block; }
+
+  /* ============================ INVALID ============================ */
+  /* Native constraint validation, styled. :user-invalid fires only after the
+     user interacts (unlike :invalid, which would paint required fields red on
+     load). A flat destructive border is the 0012 stateful read; the focus ring
+     stays the focus signal. Pair the message with mirk-hint--alert. */
+  .mirk-input:user-invalid,
+  .mirk-textarea:user-invalid,
+  .mirk-date__field:user-invalid,
+  .mirk-select__field:user-invalid,
+  .mirk-number:has(.mirk-number__input:user-invalid) {
+    border-color: var(--mirk-destructive);
+  }
+  .mirk-checkbox:has(:user-invalid) .mirk-checkbox__box,
+  .mirk-toggle:has(:user-invalid) .mirk-toggle__track {
+    border-color: var(--mirk-destructive);
+  }
+  /* The unchecked ring is a borderless gradient pill; invalid swaps it for a
+     flat destructive ring (the fill pill still seats inside). */
+  .mirk-radio:has(:user-invalid) .mirk-radio__ring {
+    background-image: none;
+    border: 2px solid var(--mirk-destructive);
+  }
+
+  /* ============================ PROGRESS ============================ */
+  /* A native <progress> in the slider's clothes: the canvas channel, the
+     slider-fill value bar. --blocks segments the fill into pixel blocks.
+     Keep the -webkit and -moz rules separate — an unrecognized pseudo-element
+     invalidates the whole selector list. */
+  .mirk-progress {
+    appearance: none; -webkit-appearance: none;
+    display: block; width: 100%; height: 12px;
+    border: 1px solid var(--mirk-input-border);
+    background: var(--mirk-canvas);
+  }
+  .mirk-progress::-webkit-progress-bar { background: transparent; }
+  .mirk-progress::-webkit-progress-value { background: var(--mirk-slider-fill); }
+  .mirk-progress::-moz-progress-bar { background: var(--mirk-slider-fill); }
+  .mirk-progress--small { height: 8px; }
+  .mirk-progress--round { border-radius: 9999px; overflow: hidden; }
+  .mirk-progress--blocks::-webkit-progress-value {
+    background: repeating-linear-gradient(to right,
+      var(--mirk-slider-fill) 0 8px, transparent 8px 11px);
+  }
+  .mirk-progress--blocks::-moz-progress-bar {
+    background: repeating-linear-gradient(to right,
+      var(--mirk-slider-fill) 0 8px, transparent 8px 11px);
+  }
+
+  /* ============================ NOTE ============================ */
+  /* An informational callout. Flat on purpose: bevel means pressable in this
+     kit (0012) and a note is content, so it gets the 1px content border over
+     the recessed face, never the raised edge. The 4px left edge carries the
+     status: neutral ink by default, destructive on --alert. */
+  .mirk-note {
+    display: flex; flex-direction: column; gap: 4px;
+    background: var(--mirk-bevel-bg);
+    border: 1px solid var(--mirk-input-border);
+    border-left: 4px solid var(--mirk-mark-fg);
+    padding: 10px 14px 11px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .mirk-note__title {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--mirk-mark-fg);
+  }
+  .mirk-note__body { color: var(--mirk-fg); }
+  .mirk-note--alert { border-left-color: var(--mirk-destructive); }
+  .mirk-note--alert .mirk-note__title { color: var(--mirk-destructive); }
+  .mirk-note--rounded { border-radius: var(--mirk-radius); }
+
+  /* ============================ HINT ============================ */
+  /* Small print under a field: neutral help text, or --alert validation text. */
+  .mirk-hint { margin: 0; font-size: 13px; line-height: 1.5; color: var(--mirk-placeholder-color); }
+  .mirk-hint--alert { color: var(--mirk-destructive); }
+
+  /* ============================ LIST ============================ */
+  /* Content bullets. <ul> gets a square pixel dot (the sortable dot's idiom,
+     one step larger); a nested <ul> hollows it. <ol> gets zero-padded counters
+     in the muted label ink. Styles the bare <li> by descent, like the platform. */
+  .mirk-list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 16px; line-height: 1.5;
+  }
+  .mirk-list li { position: relative; padding-left: 22px; }
+  ul.mirk-list > li::before {
+    content: ""; position: absolute; left: 2px; top: 0.55em;
+    width: 6px; height: 6px; background: var(--mirk-mark-fg);
+    box-shadow: 1px 1px 0 0 var(--mirk-sortable-shadow);
+  }
+  ol.mirk-list { counter-reset: mirk-li; }
+  ol.mirk-list > li { counter-increment: mirk-li; padding-left: 38px; }
+  ol.mirk-list > li::before {
+    content: counter(mirk-li, decimal-leading-zero) ".";
+    position: absolute; left: 0; top: 0;
+    color: var(--mirk-sortable-label);
+  }
+
+  /* One nested level: hollow square, same stack. */
+  .mirk-list ul {
+    list-style: none; margin: 6px 0 0; padding: 0;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .mirk-list ul > li::before {
+    content: ""; position: absolute; left: 2px; top: 0.55em;
+    width: 6px; height: 6px; background: transparent;
+    border: 1.5px solid var(--mirk-mark-fg); box-shadow: none;
+  }
+
+  .mirk-list--small { font-size: 14px; gap: 4px; }
+  .mirk-list--small li { padding-left: 18px; }
+  ul.mirk-list--small > li::before, .mirk-list--small ul > li::before { width: 5px; height: 5px; }
+  ol.mirk-list--small > li { padding-left: 32px; }
+
+  /* ============================ BADGE ============================ */
+  /* A static tag label — the display counterpart to the mirk-tags input. Flat
+     on purpose: bevel means pressable (0012), a badge is content. */
+  .mirk-badge {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 1px 8px 2px; font-size: 12px; line-height: 1.5;
+    color: var(--mirk-fg); background: var(--mirk-bevel-bg);
+    border: 1px solid var(--mirk-input-border);
+    white-space: nowrap; vertical-align: middle;
+  }
+  .mirk-badge--accent { background: var(--mirk-accent); }
+  .mirk-badge--round { border-radius: 9999px; padding: 1px 10px 2px; }
+  .mirk-badge--alert { color: var(--mirk-destructive); border-color: var(--mirk-destructive); }
+
+  /* ============================ TABLE ============================ */
+  /* A flat data surface: the content face in a 1px frame, header cells in the
+     eyebrow register, hairline row dividers. Semantic <table> styled by
+     descent — no per-cell classes. The header/stripe tints ride color-mix
+     toward the ink so they stay visible in every palette (Pixel Quiet's
+     canvas and face are nearly the same value). Wrap in an overflow-x:auto
+     div when the table can outgrow its column. */
+  .mirk-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--mirk-bevel-bg);
+    border: 1px solid var(--mirk-input-border);
+    font-size: 14px; line-height: 1.5;
+  }
+  .mirk-table th {
+    text-align: left; font-weight: 400;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--mirk-placeholder-color);
+    background: color-mix(in srgb, var(--mirk-bevel-bg), var(--mirk-fg) 4%);
+    padding: 7px 14px;
+    border-bottom: 1px solid var(--mirk-input-border);
+  }
+  .mirk-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--mirk-input-border);
+    vertical-align: top;
+  }
+  .mirk-table tbody tr:last-child td { border-bottom: 0; }
+  .mirk-table--striped tbody tr:nth-child(even) td {
+    background: color-mix(in srgb, var(--mirk-bevel-bg), var(--mirk-fg) 3%);
+  }
+  .mirk-table--small { font-size: 13px; }
+  .mirk-table--small th { padding: 5px 12px; font-size: 10px; }
+  .mirk-table--small td { padding: 5px 12px; }
+
+  /* ============================ PAGE ============================ */
+  /* The quickstart shell: mirk-page on <body> (or any wrapper) gives a centered
+     column + typographic defaults, so two CDN tags and one class boot a full
+     page. Every rule rides :where() (zero specificity): any utility, component
+     class, or consumer rule beats it. Flow rhythm targets direct children only,
+     so margins never leak inside component internals. */
+  .mirk-page { max-width: 640px; margin-inline: auto; padding: 48px 24px 96px; }
+  .mirk-page--wide { max-width: 960px; }
+
+  /* Departure Mono ships one weight — hierarchy comes from size, never bold. */
+  .mirk-page :where(h1, h2, h3, h4) { margin: 0; font-weight: 400; line-height: 1.15; }
+  .mirk-page :where(h1) { font-size: 40px; }
+  .mirk-page :where(h2) { font-size: 26px; }
+  .mirk-page :where(h3) { font-size: 20px; }
+  .mirk-page :where(h4) { font-size: 16px; }
+  .mirk-page :where(p) { margin: 0; font-size: 16px; line-height: 1.6; }
+
+  .mirk-page :where(a) { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  .mirk-page :where(code, kbd) {
+    font-size: 0.875em; padding: 1px 4px;
+    background: var(--mirk-bevel-bg); border: 1px solid var(--mirk-input-border);
+  }
+  .mirk-page :where(pre) {
+    margin: 0; padding: 12px 14px; font-size: 13px; line-height: 1.5; overflow-x: auto;
+    background: var(--mirk-bevel-bg); border: 1px solid var(--mirk-input-border);
+  }
+  .mirk-page :where(pre code) { padding: 0; border: 0; background: none; font-size: inherit; }
+  .mirk-page :where(hr) { border: 0; border-top: 1px solid var(--mirk-input-border); }
+
+  /* Flow rhythm — direct children only; headings open sections, eyebrows and
+     hints hug their neighbors. Equal specificity, so source order settles ties. */
+  .mirk-page > :where(* + *) { margin-block-start: 14px; }
+  .mirk-page > :where(h1, h2, h3, h4):where(* + *) { margin-block-start: 40px; }
+  .mirk-page > :where(.mirk-eyebrow + *), .mirk-page > :where(* + .mirk-hint) { margin-block-start: 6px; }
+
+  /* ============================ EYEBROW ============================ */
+  /* The kit's signature section label, as a shippable class. Block so it works
+     the same on <p>, <label>, or <div>, and flow margins always apply. */
+  .mirk-eyebrow {
+    display: block; margin: 0;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--mirk-placeholder-color);
   }
 }
 

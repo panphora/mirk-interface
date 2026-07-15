@@ -11,159 +11,18 @@
 <!-- The kit itself: tokens, font, and all fourteen components. -->
 <link rel="stylesheet" href="mirk.css">
 <style>html, body { margin: 0; padding: 0; }</style>
-
-<!-- =====================================================================
-     DEMO-ONLY chrome for brainstorming (NOT part of the kit). Scoped to this
-     page: a top-right debug panel and the levers it drives.
-     See plans/mirk-interface/interface-concerns-brainstorm.md
-     ===================================================================== -->
-<style id="mirk-debug-style">
-  html { --dbg-pq-lighten: 0%; }
-
-  /* --- lever: page background test (simulate an embed on a foreign page) --- */
-  html.dbg-bg section.dark,
-  html.dbg-bg section.light { background: var(--dbg-bg) !important; }
-
-  /* --- lever: default (Pixel Quiet) page canvas lighten (debug only) ---
-     Pixel Quiet is the default theme (no attribute), so this targets the
-     no-attribute state. The switcher only ever sets a palette slug on <html>
-     (mode is forced per column), so :not([data-theme]) covers every default
-     state this demo reaches. Re-declares the default canvas via color-mix
-     toward white; 0% is identity, so it is inert until the slider moves. Page
-     background only; component surfaces (--mirk-bg, chip panel) are left alone. */
-  html:not([data-theme]) {
-    --mirk-canvas: light-dark(
-      color-mix(in srgb, #FDF8F0, white var(--dbg-pq-lighten, 0%)),
-      color-mix(in srgb, #0B0C13, white var(--dbg-pq-lighten, 0%))
-    );
-  }
-
-  /* --- lever: popover boundary on the live mirk-chip --- */
-  html.dbg-pop-shadow .mirk-chip__panel {
-    box-shadow: 0 24px 50px -22px rgba(0,0,0,.5), 0 6px 16px -8px rgba(0,0,0,.32);
-  }
-  /* Lift the collapsed chip too, scaled down so it reads as a small raised pill. */
-  html.dbg-pop-shadow .mirk-chip__trigger {
-    box-shadow: 0 10px 22px -10px rgba(0,0,0,.45), 0 3px 8px -4px rgba(0,0,0,.3);
-  }
-  html.dbg-pop-outline .mirk-chip__panel {
-    border-width: 1.5px; border-color: var(--mirk-fg); border-radius: 6px;
-  }
-  html.dbg-pop-outline .mirk-chip__trigger {
-    --mirk-bevel-tl: var(--mirk-fg); --mirk-bevel-br: var(--mirk-fg);
-  }
-
-  /* --- lever: adapt surfaces to the host background (experimental) ---
-     Derive the chip surface + edge from the page bg so the popover never
-     collapses into it, whatever color the host uses. */
-  html.dbg-adapt.dbg-bg .mirk-chip__panel {
-    background: color-mix(in srgb, var(--dbg-bg), var(--mirk-fg) 7%);
-    border-color: color-mix(in srgb, var(--dbg-bg), var(--mirk-fg) 38%);
-  }
-  html.dbg-adapt.dbg-bg .mirk-chip__trigger {
-    --mirk-bevel-bg: color-mix(in srgb, var(--dbg-bg), var(--mirk-fg) 10%);
-    --mirk-bevel-hover-bg: color-mix(in srgb, var(--dbg-bg), var(--mirk-fg) 16%);
-  }
-
-  /* ===== the debug panel itself ===== */
-  #mirk-debug {
-    position: fixed; top: 12px; right: 12px; z-index: 9999; width: 252px;
-    font-family: ui-monospace, "Menlo", monospace; font-size: 12px; line-height: 1.4;
-    color-scheme: light dark;
-    background: var(--mirk-bg); color: var(--mirk-fg);
-    border: 1px solid var(--mirk-input-border); border-radius: 8px;
-    box-shadow: 0 18px 44px -22px rgba(0,0,0,.55);
-  }
-  #mirk-debug .dbg-hd {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 10px; cursor: pointer; user-select: none;
-    border-bottom: 1px solid var(--mirk-input-border);
-  }
-  #mirk-debug.dbg-collapsed .dbg-hd { border-bottom: 0; }
-  #mirk-debug .dbg-hd b { font-weight: 400; font-size: 10px; text-transform: uppercase; letter-spacing: .16em; opacity: .8; }
-  #mirk-debug .dbg-hd .dbg-caret { opacity: .6; }
-  #mirk-debug .dbg-body { padding: 11px 11px 13px; display: grid; gap: 14px; max-height: 80vh; overflow: auto; }
-  #mirk-debug.dbg-collapsed .dbg-body { display: none; }
-  #mirk-debug .dbg-group { display: grid; gap: 6px; }
-  #mirk-debug .dbg-label { font-size: 9px; text-transform: uppercase; letter-spacing: .15em; opacity: .6; }
-  #mirk-debug .dbg-note { font-size: 9.5px; opacity: .5; }
-  #mirk-debug select {
-    width: 100%; font: inherit; padding: 3px 6px; border-radius: 4px;
-    background: var(--mirk-canvas); color: inherit; border: 1px solid var(--mirk-input-border);
-  }
-  #mirk-debug .dbg-swatches { display: flex; flex-wrap: wrap; gap: 5px; }
-  #mirk-debug .dbg-sw {
-    width: 22px; height: 22px; border-radius: 4px; padding: 0; cursor: pointer;
-    border: 1px solid rgba(128,128,128,.55); background: var(--sw);
-  }
-  #mirk-debug .dbg-sw[data-bg=""] { background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(128,128,128,.5) 4px 5px); }
-  #mirk-debug .dbg-sw[aria-pressed="true"] { outline: 2px solid var(--mirk-fg); outline-offset: 1px; }
-  #mirk-debug label.dbg-check { display: flex; align-items: center; gap: 7px; cursor: pointer; }
-  #mirk-debug input[type="range"] { width: 100%; accent-color: var(--mirk-fg); }
-  #mirk-debug .dbg-rowbetween { display: flex; align-items: baseline; justify-content: space-between; }
-  #mirk-debug .dbg-val { opacity: .7; }
-  #mirk-debug .dbg-reset {
-    font: inherit; cursor: pointer; padding: 4px 9px; border-radius: 4px;
-    background: var(--mirk-bevel-bg); color: var(--mirk-bevel-fg); border: 1px solid var(--mirk-input-border);
-  }
-  #mirk-debug .dbg-reset:hover { background: var(--mirk-bevel-hover-bg); }
-</style>
 </head>
 <body>
 
-<!-- Debug panel (demo chrome, NOT part of the kit). A scratchpad for the
-     interface-concerns brainstorm: theme, a foreign page background, the default
-     (Pixel Quiet) canvas-lighten preview, and popover boundary experiments. Every lever
-     is scoped to this page; nothing here touches mirk.css.
-     Plan: plans/mirk-interface/interface-concerns-brainstorm.md -->
-<div id="mirk-debug">
-  <div class="dbg-hd" data-dbg="toggle"><b>Debug</b><span class="dbg-caret">▾</span></div>
-  <div class="dbg-body">
-
-    <div class="dbg-group">
-      <div class="dbg-label">Theme</div>
-      <select id="theme-switcher" aria-label="Theme">
-        <option value="">Pixel Quiet (default)</option>
-        <option value="full-volume">Full Volume</option>
-      </select>
-    </div>
-
-    <div class="dbg-group">
-      <div class="dbg-label">Page background</div>
-      <div class="dbg-swatches" id="dbg-swatches">
-        <button type="button" class="dbg-sw" data-bg="" aria-pressed="true" title="Theme default (off)"></button>
-        <button type="button" class="dbg-sw" data-bg="#ffffff" style="--sw:#ffffff" title="White"></button>
-        <button type="button" class="dbg-sw" data-bg="#f1ece1" style="--sw:#f1ece1" title="Paper"></button>
-        <button type="button" class="dbg-sw" data-bg="#c9cdd4" style="--sw:#c9cdd4" title="Light gray"></button>
-        <button type="button" class="dbg-sw" data-bg="#8b9099" style="--sw:#8b9099" title="Mid gray"></button>
-        <button type="button" class="dbg-sw" data-bg="#2a2f3b" style="--sw:#2a2f3b" title="Slate"></button>
-        <button type="button" class="dbg-sw" data-bg="#0b0c13" style="--sw:#0b0c13" title="Near black"></button>
-        <button type="button" class="dbg-sw" data-bg="#1e3a8a" style="--sw:#1e3a8a" title="Blue"></button>
-        <button type="button" class="dbg-sw" data-bg="#db2777" style="--sw:#db2777" title="Hot pink"></button>
-      </div>
-      <div class="dbg-note">Paints behind both columns to mimic an embed on a foreign page.</div>
-    </div>
-
-    <div class="dbg-group">
-      <div class="dbg-rowbetween">
-        <div class="dbg-label">Default bg lighten</div>
-        <span class="dbg-val" id="dbg-pq-val">0%</span>
-      </div>
-      <input type="range" id="dbg-pq-lighten" min="0" max="70" step="5" value="0">
-      <div class="dbg-note">Debug only · default page canvas only · ~50% is the proposal.</div>
-    </div>
-
-    <div class="dbg-group">
-      <div class="dbg-label">Popover boundary (mirk-chip)</div>
-      <label class="dbg-check"><input type="checkbox" id="dbg-pop-shadow"> Shadow</label>
-      <label class="dbg-check"><input type="checkbox" id="dbg-pop-outline"> Solid outline (reference)</label>
-      <label class="dbg-check"><input type="checkbox" id="dbg-adapt"> Adapt surface to page bg</label>
-      <div class="dbg-note">"Adapt" needs a page background set above.</div>
-    </div>
-
-    <button type="button" class="dbg-reset" id="dbg-reset">Reset all</button>
-  </div>
-</div>
+<!-- Theme toggle (demo chrome, NOT part of the kit): flips the opt-in Full
+     Volume palette on <html> so the whole page re-themes at once. The control
+     is the kit's own toggle; it sits outside both columns, so it follows the
+     OS light/dark like the html root. -->
+<label class="mirk-toggle mirk-toggle--small fixed top-4 right-5 z-50 px-[10px] py-[7px] bg-[var(--mirk-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+  <input type="checkbox" id="theme-toggle" class="mirk-sr-only">
+  <span class="mirk-toggle__track"><span class="mirk-toggle__thumb"></span></span>
+  <span class="mirk-toggle__label text-[11px] uppercase tracking-[0.15em]">Full Volume</span>
+</label>
 
 <div class="grid grid-cols-2 min-h-screen">
 
@@ -175,7 +34,7 @@
     <!-- ─────────────── INTRO ─────────────── -->
     <div class="space-y-5 max-w-xl">
       <h1 class="text-[44px] leading-none">mirk</h1>
-      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
+      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Seventeen form components plus a content tier as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
       <p class="text-[16px] leading-relaxed">mirk is <strong>violently obvious</strong>. Bevel borders that look pressable, sharp pixel typography, no invisible focus states. A deliberate callback to the UIs of the 80s and 90s, when buttons looked like buttons.</p>
       <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="light"</code> to any wrapper to force a mode.</p>
     </div>
@@ -214,9 +73,37 @@
       <div class="text-[12px] opacity-70">Renders fully on its own. Using Tailwind? <code class="text-[12px] px-[3px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">@import "mirk-interface/mirk.css";</code> and utility classes override any mirk class — mirk is built for it, but never needs it.</div>
     </div>
 
+    <!-- ─────────────── QUICK START A PAGE ─────────────── -->
+    <div class="space-y-3 max-w-xl">
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">Quick start a page</h2>
+      <div class="text-[12px] opacity-70">Or start from a whole page: one class on <code>&lt;body&gt;</code> gives you a centered column with mirk typography. Copy, save as an .html file, open it. A fuller version ships as <code>starter.html</code> in the repo.</div>
+      <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+        <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+        <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;title&gt;my mirk page&lt;/title&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css"&gt;
+&lt;/head&gt;
+&lt;body class="mirk-page"&gt;
+
+  &lt;p class="mirk-eyebrow"&gt;getting started&lt;/p&gt;
+  &lt;h1&gt;A mirk page&lt;/h1&gt;
+  &lt;p&gt;Plain HTML plus mirk classes. Paste any component from this page below.&lt;/p&gt;
+
+  &lt;button class="mirk-button"&gt;&lt;span class="mirk-button__label"&gt;it works&lt;/span&gt;&lt;/button&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </div>
+
     <!-- ─────────────── COMPONENTS HEADER ─────────────── -->
     <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
-      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Components — 15</h2>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Form components — 17</h2>
     </div>
 
     <!-- ─────────────── TEXT INPUT • RECT ─────────────── -->
@@ -1150,6 +1037,208 @@
       </div>
     </div>
 
+    <!-- ─────────────── FIELD ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Field</h2>
+      <div data-copy class="flex flex-col gap-1 max-w-sm">
+        <div class="mirk-field">
+          <label class="mirk-field__label">Email</label>
+          <input type="email" placeholder="you@domain.com" class="mirk-input">
+          <p class="mirk-hint">We only use this to reply.</p>
+        </div>
+        <div class="mirk-field">
+          <label class="mirk-field__label">Message</label>
+          <textarea rows="3" placeholder="Write something…" class="mirk-textarea"></textarea>
+        </div>
+        <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+      </div>
+    </div>
+
+    <!-- ─────────────── INVALID ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Invalid • Native validation</h2>
+      <div class="flex flex-col gap-3 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-field">
+            <label class="mirk-field__label">Email (required)</label>
+            <input type="email" required placeholder="you@domain.com" class="mirk-input">
+            <p class="mirk-hint mirk-hint--alert">Enter a valid email address.</p>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div class="text-[12px] opacity-70">Pure platform: type something invalid and leave the field. <code>:user-invalid</code> paints the border destructive and reveals the alert hint — after you interact, never on page load. No JS.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────── PROGRESS ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Progress</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress" max="100" value="64">64%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress mirk-progress--blocks" max="100" value="40">40%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy BLOCKS</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress mirk-progress--round mirk-progress--small" max="100" value="80">80%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ROUND SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── CONTENT HEADER ─────────────── -->
+    <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Content — note · hint · list · badge · table · page</h2>
+    </div>
+
+    <!-- ─────────────── NOTE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Note • Info + Alert</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note" role="note">
+            <div class="mirk-note__title">Heads up</div>
+            <div class="mirk-note__body">Your changes stay on this device until you sign in.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy INFO</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note mirk-note--alert" role="alert">
+            <div class="mirk-note__title">Save failed</div>
+            <div class="mirk-note__body">The server rejected the last save. Retry, or download a copy first.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ALERT</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note mirk-note--rounded" role="note">
+            <div class="mirk-note__body">Exports include every version, not just the latest.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy BODY-ONLY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── HINT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Hint • Help + Alert</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <label class="text-[14px] leading-normal">Site name</label>
+          <input type="text" placeholder="my-site" class="mirk-input mirk-input--small">
+          <p class="mirk-hint">Lowercase letters and dashes only.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy HELP</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <label class="text-[14px] leading-normal">Site name</label>
+          <input type="text" value="kanban" class="mirk-input mirk-input--small">
+          <p class="mirk-hint mirk-hint--alert">That name is already taken.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ALERT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── LIST ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">List • Bullets + Ordered</h2>
+      <div class="flex flex-col gap-5 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <ul class="mirk-list">
+            <li>Owns its own file</li>
+            <li>Saves itself, no backend</li>
+            <li>Runs anywhere
+              <ul>
+                <li>a browser tab</li>
+                <li>a USB stick</li>
+              </ul>
+            </li>
+          </ul>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy UL</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <ol class="mirk-list">
+            <li>Drop in the two tags</li>
+            <li>Paste a component</li>
+            <li>Ship the file</li>
+          </ol>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy OL</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <ul class="mirk-list mirk-list--small">
+            <li>Small register</li>
+            <li>for dense panels</li>
+          </ul>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── BADGE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Badge</h2>
+      <div data-copy class="flex flex-col gap-1 max-w-sm">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="mirk-badge">beta</span>
+          <span class="mirk-badge mirk-badge--accent">docs</span>
+          <span class="mirk-badge mirk-badge--round">v2.3</span>
+          <span class="mirk-badge mirk-badge--alert">deprecated</span>
+        </div>
+        <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+      </div>
+    </div>
+
+    <!-- ─────────────── TABLE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Table</h2>
+      <div class="flex flex-col gap-5 max-w-md">
+        <div data-copy class="flex flex-col gap-1">
+          <table class="mirk-table">
+            <thead>
+              <tr><th>Name</th><th>Status</th><th>Updated</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>kanban.html</td><td><span class="mirk-badge">live</span></td><td>2026-07-12</td></tr>
+              <tr><td>writer.html</td><td><span class="mirk-badge mirk-badge--accent">draft</span></td><td>2026-07-10</td></tr>
+              <tr><td>devlog.html</td><td><span class="mirk-badge mirk-badge--alert">error</span></td><td>2026-07-02</td></tr>
+            </tbody>
+          </table>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <table class="mirk-table mirk-table--striped mirk-table--small">
+            <thead>
+              <tr><th>Version</th><th>Size</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2.3.0</td><td>48 KB</td><td>2026-07-15</td></tr>
+              <tr><td>2.2.0</td><td>42 KB</td><td>2026-07-02</td></tr>
+              <tr><td>2.1.0</td><td>41 KB</td><td>2026-06-26</td></tr>
+              <tr><td>2.0.0</td><td>39 KB</td><td>2026-06-16</td></tr>
+            </tbody>
+          </table>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy STRIPED SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── PAGE SCAFFOLD ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Page scaffold • One class</h2>
+      <div class="flex flex-col gap-3 max-w-sm">
+        <div data-copy class="mirk-page max-w-none p-0">
+          <p class="mirk-eyebrow">getting started</p>
+          <h1>A mirk page</h1>
+          <p>Headings, links like <a href="#">this one</a>, inline <code>code</code>, and flow spacing, all from one class on the wrapper.</p>
+          <hr>
+          <p class="mirk-hint">The full template ships as starter.html.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div class="text-[12px] opacity-70">Put <code>class="mirk-page"</code> on <code>&lt;body&gt;</code> to boot a full page (see “Quick start a page” above). This demo overrides the column with utilities: <code>max-w-none p-0</code>.</div>
+      </div>
+    </div>
+
     <!-- ─────────────── GLYPH SPECIMENS — what Departure Mono ships ─────────────── -->
     <div class="space-y-7">
       <div>
@@ -1225,7 +1314,7 @@
     <!-- ─────────────── INTRO ─────────────── -->
     <div class="space-y-5 max-w-xl">
       <h1 class="text-[44px] leading-none">mirk</h1>
-      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Fourteen components as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
+      <p class="text-[18px] leading-relaxed">A form-focused HTML/CSS kit. Seventeen form components plus a content tier as semantic classes and one tiny shared script. No build step, no React, no web components.</p>
       <p class="text-[16px] leading-relaxed">mirk is <strong>violently obvious</strong>. Bevel borders that look pressable, sharp pixel typography, no invisible focus states. A deliberate callback to the UIs of the 80s and 90s, when buttons looked like buttons.</p>
       <p class="text-[16px] leading-relaxed">Every component is shown in light and dark on this page, side by side. By default mirk follows your visitor's OS theme. Add <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="dark"</code> or <code class="text-[14px] px-[4px] py-[1px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">class="light"</code> to any wrapper to force a mode.</p>
     </div>
@@ -1264,9 +1353,37 @@
       <div class="text-[12px] opacity-70">Renders fully on its own. Using Tailwind? <code class="text-[12px] px-[3px] bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">@import "mirk-interface/mirk.css";</code> and utility classes override any mirk class — mirk is built for it, but never needs it.</div>
     </div>
 
+    <!-- ─────────────── QUICK START A PAGE ─────────────── -->
+    <div class="space-y-3 max-w-xl">
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60">Quick start a page</h2>
+      <div class="text-[12px] opacity-70">Or start from a whole page: one class on <code>&lt;body&gt;</code> gives you a centered column with mirk typography. Copy, save as an .html file, open it. A fuller version ships as <code>starter.html</code> in the repo.</div>
+      <div data-copy="text" class="relative bg-[var(--mirk-bevel-bg)] border-[1px] border-solid border-[var(--mirk-input-border)]">
+        <button data-copy-btn class="absolute top-2 right-2 z-10 text-[10px] uppercase tracking-[0.2em] px-[8px] py-[3px] cursor-pointer bg-[var(--mirk-bg)] text-[var(--mirk-bevel-fg)] border-[1px] border-solid border-[var(--mirk-input-border)] hover:bg-[var(--mirk-bevel-hover-bg)]">copy</button>
+        <pre class="m-0 p-4 pr-20 text-[12px] leading-normal overflow-x-auto"><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;title&gt;my mirk page&lt;/title&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css"&gt;
+&lt;/head&gt;
+&lt;body class="mirk-page"&gt;
+
+  &lt;p class="mirk-eyebrow"&gt;getting started&lt;/p&gt;
+  &lt;h1&gt;A mirk page&lt;/h1&gt;
+  &lt;p&gt;Plain HTML plus mirk classes. Paste any component from this page below.&lt;/p&gt;
+
+  &lt;button class="mirk-button"&gt;&lt;span class="mirk-button__label"&gt;it works&lt;/span&gt;&lt;/button&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+    </div>
+
     <!-- ─────────────── COMPONENTS HEADER ─────────────── -->
     <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
-      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Components — 15</h2>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Form components — 17</h2>
     </div>
 
     <!-- ─────────────── TEXT INPUT • RECT ─────────────── -->
@@ -2200,6 +2317,208 @@
       </div>
     </div>
 
+    <!-- ─────────────── FIELD ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Field</h2>
+      <div data-copy class="flex flex-col gap-1 max-w-sm">
+        <div class="mirk-field">
+          <label class="mirk-field__label">Email</label>
+          <input type="email" placeholder="you@domain.com" class="mirk-input">
+          <p class="mirk-hint">We only use this to reply.</p>
+        </div>
+        <div class="mirk-field">
+          <label class="mirk-field__label">Message</label>
+          <textarea rows="3" placeholder="Write something…" class="mirk-textarea"></textarea>
+        </div>
+        <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+      </div>
+    </div>
+
+    <!-- ─────────────── INVALID ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Invalid • Native validation</h2>
+      <div class="flex flex-col gap-3 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-field">
+            <label class="mirk-field__label">Email (required)</label>
+            <input type="email" required placeholder="you@domain.com" class="mirk-input">
+            <p class="mirk-hint mirk-hint--alert">Enter a valid email address.</p>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div class="text-[12px] opacity-70">Pure platform: type something invalid and leave the field. <code>:user-invalid</code> paints the border destructive and reveals the alert hint — after you interact, never on page load. No JS.</div>
+      </div>
+    </div>
+
+    <!-- ─────────────── PROGRESS ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Progress</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress" max="100" value="64">64%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress mirk-progress--blocks" max="100" value="40">40%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy BLOCKS</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <progress class="mirk-progress mirk-progress--round mirk-progress--small" max="100" value="80">80%</progress>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ROUND SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── CONTENT HEADER ─────────────── -->
+    <div class="max-w-xl pt-2 border-t border-solid border-[var(--mirk-input-border)]">
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mt-6">Content — note · hint · list · badge · table · page</h2>
+    </div>
+
+    <!-- ─────────────── NOTE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Note • Info + Alert</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note" role="note">
+            <div class="mirk-note__title">Heads up</div>
+            <div class="mirk-note__body">Your changes stay on this device until you sign in.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy INFO</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note mirk-note--alert" role="alert">
+            <div class="mirk-note__title">Save failed</div>
+            <div class="mirk-note__body">The server rejected the last save. Retry, or download a copy first.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ALERT</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <div class="mirk-note mirk-note--rounded" role="note">
+            <div class="mirk-note__body">Exports include every version, not just the latest.</div>
+          </div>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy BODY-ONLY</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── HINT ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Hint • Help + Alert</h2>
+      <div class="flex flex-col gap-4 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <label class="text-[14px] leading-normal">Site name</label>
+          <input type="text" placeholder="my-site" class="mirk-input mirk-input--small">
+          <p class="mirk-hint">Lowercase letters and dashes only.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy HELP</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <label class="text-[14px] leading-normal">Site name</label>
+          <input type="text" value="kanban" class="mirk-input mirk-input--small">
+          <p class="mirk-hint mirk-hint--alert">That name is already taken.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy ALERT</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── LIST ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">List • Bullets + Ordered</h2>
+      <div class="flex flex-col gap-5 max-w-sm">
+        <div data-copy class="flex flex-col gap-1">
+          <ul class="mirk-list">
+            <li>Owns its own file</li>
+            <li>Saves itself, no backend</li>
+            <li>Runs anywhere
+              <ul>
+                <li>a browser tab</li>
+                <li>a USB stick</li>
+              </ul>
+            </li>
+          </ul>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy UL</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <ol class="mirk-list">
+            <li>Drop in the two tags</li>
+            <li>Paste a component</li>
+            <li>Ship the file</li>
+          </ol>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy OL</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <ul class="mirk-list mirk-list--small">
+            <li>Small register</li>
+            <li>for dense panels</li>
+          </ul>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── BADGE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Badge</h2>
+      <div data-copy class="flex flex-col gap-1 max-w-sm">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="mirk-badge">beta</span>
+          <span class="mirk-badge mirk-badge--accent">docs</span>
+          <span class="mirk-badge mirk-badge--round">v2.3</span>
+          <span class="mirk-badge mirk-badge--alert">deprecated</span>
+        </div>
+        <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+      </div>
+    </div>
+
+    <!-- ─────────────── TABLE ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Table</h2>
+      <div class="flex flex-col gap-5 max-w-md">
+        <div data-copy class="flex flex-col gap-1">
+          <table class="mirk-table">
+            <thead>
+              <tr><th>Name</th><th>Status</th><th>Updated</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>kanban.html</td><td><span class="mirk-badge">live</span></td><td>2026-07-12</td></tr>
+              <tr><td>writer.html</td><td><span class="mirk-badge mirk-badge--accent">draft</span></td><td>2026-07-10</td></tr>
+              <tr><td>devlog.html</td><td><span class="mirk-badge mirk-badge--alert">error</span></td><td>2026-07-02</td></tr>
+            </tbody>
+          </table>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div data-copy class="flex flex-col gap-1">
+          <table class="mirk-table mirk-table--striped mirk-table--small">
+            <thead>
+              <tr><th>Version</th><th>Size</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2.3.0</td><td>48 KB</td><td>2026-07-15</td></tr>
+              <tr><td>2.2.0</td><td>42 KB</td><td>2026-07-02</td></tr>
+              <tr><td>2.1.0</td><td>41 KB</td><td>2026-06-26</td></tr>
+              <tr><td>2.0.0</td><td>39 KB</td><td>2026-06-16</td></tr>
+            </tbody>
+          </table>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start mt-1 opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy STRIPED SM</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── PAGE SCAFFOLD ─────────────── -->
+    <div>
+      <h2 class="text-[11px] uppercase tracking-[0.2em] opacity-60 mb-5">Page scaffold • One class</h2>
+      <div class="flex flex-col gap-3 max-w-sm">
+        <div data-copy class="mirk-page max-w-none p-0">
+          <p class="mirk-eyebrow">getting started</p>
+          <h1>A mirk page</h1>
+          <p>Headings, links like <a href="#">this one</a>, inline <code>code</code>, and flow spacing, all from one class on the wrapper.</p>
+          <hr>
+          <p class="mirk-hint">The full template ships as starter.html.</p>
+          <button data-copy-btn class="text-[10px] uppercase tracking-[0.2em] self-start opacity-60 hover:opacity-100 data-[copied]:opacity-100 cursor-pointer">copy</button>
+        </div>
+        <div class="text-[12px] opacity-70">Put <code>class="mirk-page"</code> on <code>&lt;body&gt;</code> to boot a full page (see “Quick start a page” above). This demo overrides the column with utilities: <code>max-w-none p-0</code>.</div>
+      </div>
+    </div>
+
     <!-- ─────────────── GLYPH SPECIMENS — what Departure Mono ships ─────────────── -->
     <div class="space-y-7">
       <div>
@@ -2271,12 +2590,11 @@
 
 <script src="mirk.js"></script>
 <script>
-  // Demo-only chrome (NOT part of the kit): theme switcher. Flip data-theme on
-  // <html> so the whole page (both columns + this control) re-themes at once.
-  const themeSwitcher = document.getElementById('theme-switcher');
-  themeSwitcher?.addEventListener('change', () => {
-    const value = themeSwitcher.value;
-    if (value) document.documentElement.setAttribute('data-theme', value);
+  // Demo-only chrome (NOT part of the kit): the Full Volume toggle. Checked
+  // sets the opt-in palette on <html>; unchecked returns to the default.
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle?.addEventListener('change', () => {
+    if (themeToggle.checked) document.documentElement.setAttribute('data-theme', 'full-volume');
     else document.documentElement.removeAttribute('data-theme');
   });
 
@@ -2331,56 +2649,6 @@
         setTimeout(() => { label.textContent = original; }, 1200);
       });
     });
-  });
-</script>
-
-<script>
-  // Demo-only chrome (NOT part of the kit): the brainstorm debug panel + the
-  // inline reference chip's open/collapse/changes toggle. All scoped to this page.
-  const root = document.documentElement;
-
-  // Panel collapse.
-  document.querySelector('#mirk-debug [data-dbg="toggle"]')?.addEventListener('click', () => {
-    const panel = document.getElementById('mirk-debug');
-    const collapsed = panel.classList.toggle('dbg-collapsed');
-    panel.querySelector('.dbg-caret').textContent = collapsed ? '▸' : '▾';
-  });
-
-  // Page background swatches.
-  const swatches = [...document.querySelectorAll('#dbg-swatches .dbg-sw')];
-  swatches.forEach((sw) => {
-    sw.addEventListener('click', () => {
-      const bg = sw.getAttribute('data-bg');
-      if (bg) { root.style.setProperty('--dbg-bg', bg); root.classList.add('dbg-bg'); }
-      else { root.style.removeProperty('--dbg-bg'); root.classList.remove('dbg-bg'); }
-      swatches.forEach((s) => s.setAttribute('aria-pressed', String(s === sw)));
-    });
-  });
-
-  // Default canvas lighten.
-  const pq = document.getElementById('dbg-pq-lighten');
-  const pqVal = document.getElementById('dbg-pq-val');
-  pq?.addEventListener('input', () => {
-    root.style.setProperty('--dbg-pq-lighten', pq.value + '%');
-    pqVal.textContent = pq.value + '%';
-  });
-
-  // Popover boundary toggles.
-  const wire = (id, cls) => document.getElementById(id)?.addEventListener('change', (e) => {
-    root.classList.toggle(cls, e.target.checked);
-  });
-  wire('dbg-pop-shadow', 'dbg-pop-shadow');
-  wire('dbg-pop-outline', 'dbg-pop-outline');
-  wire('dbg-adapt', 'dbg-adapt');
-
-  // Reset.
-  document.getElementById('dbg-reset')?.addEventListener('click', () => {
-    root.classList.remove('dbg-bg', 'dbg-pop-shadow', 'dbg-pop-outline', 'dbg-adapt');
-    root.style.removeProperty('--dbg-bg');
-    root.style.setProperty('--dbg-pq-lighten', '0%');
-    pq.value = 0; pqVal.textContent = '0%';
-    ['dbg-pop-shadow', 'dbg-pop-outline', 'dbg-adapt'].forEach((id) => { document.getElementById(id).checked = false; });
-    swatches.forEach((s) => s.setAttribute('aria-pressed', String(s.getAttribute('data-bg') === '')));
   });
 </script>
 

@@ -1,6 +1,6 @@
 # mirk
 
-A form-focused HTML/CSS UI kit. Fifteen components as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
+A form-focused HTML/CSS UI kit. Seventeen form components plus a content tier (note, hint, list, badge, table, page scaffold) as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
 
 Every component is built on native HTML elements with a pixel-bevel look set in Departure Mono. State lives where the platform already keeps it: in native attributes, in CSS state selectors, and in real DOM nodes. That means a component's visible state round-trips through `outerHTML`, so a saved-and-reopened file renders correctly before any script runs. mirk targets malleable HTML (Hyperclay), but nothing in it is Hyperclay-specific: it is plain CSS and one small delegated runtime that work on any page.
 
@@ -24,6 +24,34 @@ Add these two tags once, then paste any component snippet where you need it.
 `mirk.css` ships the font, the 28 theme tokens, and all fifteen components, and it renders fully on its own. This is the path for a single-file HTML artifact, a Hyperclay app, a Rails view, a static page, anywhere you just want components without a toolchain.
 
 Those URLs are served straight from npm by jsDelivr, no setup. The `@2` pin tracks the latest 2.x release, so you get patches and minor updates but never a breaking major. Pin exactly with `mirk-interface@2.0.0` to freeze a version, or drop the pin (`.../npm/mirk-interface/mirk.css`) to ride the newest major. The same files are on unpkg too: `https://unpkg.com/mirk-interface@2/mirk.css`. The font loads automatically, `mirk.css` references it by a relative path that resolves to `https://cdn.jsdelivr.net/npm/mirk-interface@2/fonts/...` on the CDN.
+
+### Boot a full page
+
+`mirk.css` also ships a one-class page scaffold. Put `mirk-page` on `<body>` and you get a centered reading column with mirk typography: headings sized for the pixel face (Departure Mono has one weight, so hierarchy comes from size), underlined links, bordered inline `code`, a recessed `<pre>`, a hairline `<hr>`, and flow spacing between blocks. Save this as an `.html` file and open it — that is the whole setup:
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my mirk page</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css">
+</head>
+<body class="mirk-page">
+
+  <p class="mirk-eyebrow">getting started</p>
+  <h1>A mirk page</h1>
+  <p>Plain HTML plus mirk classes. Paste any component below.</p>
+
+  <button class="mirk-button"><span class="mirk-button__label">it works</span></button>
+
+<script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"></script>
+</body>
+</html>
+```
+
+A fuller template ships as [`starter.html`](starter.html) in the repo. Every scaffold rule rides `:where()` (zero specificity), so any utility class or plain rule of your own overrides it. See [Page scaffold](#page-scaffold) for the details.
 
 ### Optional: Tailwind, to override mirk with utilities
 
@@ -77,7 +105,7 @@ mirk follows the visitor's OS theme by default and lets you force a mode per sub
 
 ## Components
 
-In order: button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip.
+In order: button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip, field, progress — plus invalid states on every constrainable control. Then the content tier — the pieces around a form that make a whole page: note, hint, list, badge, table, page scaffold. Everything from field onward is pure CSS (none of it needs mirk.js).
 
 A note on conventions used below:
 
@@ -773,6 +801,196 @@ For the two expanded states, start the same markup with the state baked into the
 
 **Needs mirk.js.** A single delegated `click` handler reads `data-mirk-chip` on the clicked control: `open` adds `mirk-chip--open` to the block, `collapse` removes it, and `changes` toggles `is-changes` on the panel and flips the toggle label between `(view changes)` and `(hide changes)`. Without mirk.js the component renders in whatever state its markup carries but the toggles do nothing. All three states round-trip through `outerHTML` because they live in classes (`mirk-chip--open`, `is-changes`), not in JS state. Every color is token-driven, so the chip renders correctly in both built-in palettes (Pixel Quiet, the default, and Full Volume), light and dark, with no edits. The warning glyph's color comes from `.mirk-chip__warn { fill: var(--mirk-chip-alert) }`, not an inline `fill`, because `var()` is not reliably honored in an SVG `fill=` presentation attribute. In a Hyperclay app, add `save-remove` to the `.mirk-chip` block so a transient recovery prompt never persists into the saved file. Long field values truncate with an ellipsis (give each a `title` for the full text).
 
+### Field
+
+Label + control + hint as one unit, so a form composes without utilities (and without needing the [page scaffold](#page-scaffold)'s rhythm). Any control drops in. Consecutive fields space themselves.
+
+```html
+<div class="mirk-field">
+  <label class="mirk-field__label" for="f-email">Email</label>
+  <input id="f-email" type="email" class="mirk-input" placeholder="you@domain.com">
+  <p class="mirk-hint">We only use this to reply.</p>
+</div>
+<div class="mirk-field">
+  <label class="mirk-field__label" for="f-msg">Message</label>
+  <textarea id="f-msg" rows="3" class="mirk-textarea"></textarea>
+</div>
+```
+
+**Class API:** block `mirk-field` / part `__label` / modifier `--small`.
+
+One built-in behavior: an alert hint (`mirk-hint--alert`) placed inside a field stays hidden until a control in the field goes `:user-invalid` — a zero-JS native-validation message (see [Invalid states](#invalid-states)). To show an error unconditionally (say, a server-side failure), place the hint outside the field or override its `display`.
+
+### Invalid states
+
+Native constraint validation, styled. Add the platform's own attributes (`required`, `type="email"`, `min`, `pattern`, …) and the kit paints the control's border destructive once the field goes `:user-invalid` — which fires only after the user interacts, never on page load (that is the difference from `:invalid`). The focus ring stays the focus signal; the border is the error signal. Covered: text input, textarea, date, select, number (via its wrapper), checkbox, toggle, radio.
+
+```html
+<div class="mirk-field">
+  <label class="mirk-field__label" for="f-req">Email (required)</label>
+  <input id="f-req" type="email" required class="mirk-input" placeholder="you@domain.com">
+  <p class="mirk-hint mirk-hint--alert">Enter a valid email address.</p>
+</div>
+```
+
+No classes to add and no JS: the state lives in the platform's validity machinery, so it round-trips like everything else. Browsers without `:user-invalid` simply skip the paint; the form still validates.
+
+### Progress
+
+A native `<progress>` in the slider's clothes: the canvas channel, the slider-fill value bar. `--blocks` segments the fill into pixel blocks (the classic retro loading bar). Sizes and shapes compose.
+
+```html
+<progress class="mirk-progress" max="100" value="64">64%</progress>
+```
+
+```html
+<!-- Pixel blocks -->
+<progress class="mirk-progress mirk-progress--blocks" max="100" value="40">40%</progress>
+```
+
+```html
+<!-- Round, small -->
+<progress class="mirk-progress mirk-progress--round mirk-progress--small" max="100" value="80">80%</progress>
+```
+
+**Class API:** block `mirk-progress` (on `<progress>`) / modifiers `--blocks`, `--round`, `--small`. Give it a `value` — the indeterminate state is not styled.
+
+### Note
+
+An informational callout. Deliberately flat: in mirk, bevel means pressable, and a note is content, so it gets the kit's 1px content border over the recessed face, never a raised edge. The 4px left edge carries the status — neutral ink by default, destructive on `--alert`. The title is optional and uses the kit's eyebrow register, tinted to match the edge.
+
+```html
+<!-- Info (default) -->
+<div class="mirk-note" role="note">
+  <div class="mirk-note__title">Heads up</div>
+  <div class="mirk-note__body">Your changes stay on this device until you sign in.</div>
+</div>
+```
+
+```html
+<!-- Alert -->
+<div class="mirk-note mirk-note--alert" role="alert">
+  <div class="mirk-note__title">Save failed</div>
+  <div class="mirk-note__body">The server rejected the last save. Retry, or download a copy first.</div>
+</div>
+```
+
+```html
+<!-- Body only -->
+<div class="mirk-note mirk-note--rounded" role="note">
+  <div class="mirk-note__body">Exports include every version, not just the latest.</div>
+</div>
+```
+
+**Class API:** block `mirk-note` / parts `__title` (optional), `__body` / modifiers `--alert`, `--rounded`.
+
+Use `role="note"` for informational callouts and `role="alert"` for urgent ones (screen readers announce an alert immediately when it appears). An icon is composable — drop an inline SVG before `__title` — but is not part of the contract. There is no success/warning palette on purpose: the kit has one status color, `--mirk-destructive`, and the note's accent slots would take a new token, not a new rule, if that ever changes.
+
+### Hint
+
+Small print under a field: neutral help text, or validation text with `--alert`. The inline counterpart to the note.
+
+```html
+<label for="site-name">Site name</label>
+<input id="site-name" type="text" class="mirk-input" placeholder="my-site">
+<p class="mirk-hint">Lowercase letters and dashes only.</p>
+```
+
+```html
+<p class="mirk-hint mirk-hint--alert">That name is already taken.</p>
+```
+
+**Class API:** block `mirk-hint` / modifier `--alert`.
+
+### List
+
+Content bullets in the pixel register. A `<ul>` gets a square pixel dot with the kit's 1px offset shadow (the sortable grip's dot, one step larger); a nested `<ul>` hollows it. An `<ol>` gets zero-padded counters ("01.", "02.") in the muted label ink. Bare `<li>` elements are styled by descent — no per-item class.
+
+```html
+<ul class="mirk-list">
+  <li>Owns its own file</li>
+  <li>Saves itself, no backend</li>
+  <li>Runs anywhere
+    <ul>
+      <li>a browser tab</li>
+      <li>a USB stick</li>
+    </ul>
+  </li>
+</ul>
+```
+
+```html
+<ol class="mirk-list">
+  <li>Drop in the two tags</li>
+  <li>Paste a component</li>
+  <li>Ship the file</li>
+</ol>
+```
+
+```html
+<!-- Small -->
+<ul class="mirk-list mirk-list--small">
+  <li>Small register</li>
+  <li>for dense panels</li>
+</ul>
+```
+
+**Class API:** block `mirk-list` (on `<ul>` or `<ol>`) / modifier `--small`.
+
+### Badge
+
+A static tag label for content — versions, categories, statuses. The display counterpart to the [Tags](#tags) input, whose chips are interactive and removable; a badge is not pressable, so it is flat (1px border, no bevel). Modifiers compose.
+
+```html
+<span class="mirk-badge">beta</span>
+<span class="mirk-badge mirk-badge--accent">docs</span>
+<span class="mirk-badge mirk-badge--round">v2.3</span>
+<span class="mirk-badge mirk-badge--alert">deprecated</span>
+```
+
+**Class API:** block `mirk-badge` / modifiers `--accent` (quiet filled), `--round` (pill), `--alert` (destructive).
+
+### Table
+
+A flat data surface: the content face in a 1px frame, header cells in the eyebrow register, hairline row dividers. Semantic `<table>` styled by descent — no per-cell classes. The header and stripe tints are `color-mix`ed toward the ink, so they stay visible in every palette. Wrap the table in an `overflow-x: auto` div when it can outgrow its column.
+
+```html
+<table class="mirk-table">
+  <thead>
+    <tr><th>Name</th><th>Status</th><th>Updated</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>kanban.html</td><td><span class="mirk-badge">live</span></td><td>2026-07-12</td></tr>
+    <tr><td>writer.html</td><td><span class="mirk-badge mirk-badge--accent">draft</span></td><td>2026-07-10</td></tr>
+  </tbody>
+</table>
+```
+
+```html
+<!-- Striped, small -->
+<table class="mirk-table mirk-table--striped mirk-table--small">…</table>
+```
+
+**Class API:** block `mirk-table` (on `<table>`) / modifiers `--striped`, `--small`.
+
+No row hover on purpose: in mirk, hover feedback means pressable, and a data table is content. If your rows are clickable, add your own hover via a utility or a one-line rule.
+
+### Page scaffold
+
+The quickstart shell (see [Boot a full page](#boot-a-full-page)). `mirk-page` on `<body>` — or any wrapper — gives a centered column plus typographic defaults: heading sizes for the single-weight pixel face, underline-offset links, bordered inline `code` and `kbd`, a recessed `<pre>`, a hairline `<hr>`, and flow spacing between direct children (headings open sections with more space above; an eyebrow hugs what follows it; a hint hugs what precedes it). `mirk-eyebrow` is the kit's signature section label — 11px uppercase, wide tracking, muted ink — as a shippable class, usable on `<p>`, `<label>`, or `<div>`.
+
+```html
+<body class="mirk-page">
+  <p class="mirk-eyebrow">getting started</p>
+  <h1>A mirk page</h1>
+  <p>Headings, links, inline <code>code</code>, and flow spacing, from one class.</p>
+</body>
+```
+
+**Class API:** block `mirk-page` / modifier `--wide` (960px column instead of 640px); block `mirk-eyebrow`.
+
+Every typographic rule rides `:where()`, so it has zero specificity: any utility, component class, or plain consumer rule beats it. Flow spacing targets direct children only (`.mirk-page > * + *`), so margins never leak inside component internals. The scaffold is opt-in by design — linking `mirk.css` alone never restyles your page's bare elements.
+
 ## The class API
 
 mirk uses BEM with a `mirk-` block prefix.
@@ -798,7 +1016,8 @@ mirk-sr-only                                  (visually hidden, still focusable)
 
 ## What ships in v2
 
-- **Components (15):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip. Each in its supported variants (rect / round / rounded, sizes where applicable).
+- **Form components (17):** button, text input, textarea, number, dropdown, checkbox, radio, toggle, slider, date, file picker, image input, tags, sortable, chip, field, progress. Each in its supported variants (rect / round / rounded, sizes where applicable). Plus `:user-invalid` styling on every constrainable control.
+- **Content tier (2.3+):** note, hint, list, badge, table, and the `mirk-page` scaffold with `mirk-eyebrow`. Pure CSS, no runtime.
 - **`mirk.css`:** the product. Hand-written, no build. Declares `@layer base, components`, 28 `light-dark()` tokens, the font, and every component class family.
 - **`mirk.js`:** one delegated runtime for the components native CSS can't finish (number stepper, slider value bridge, file picker filename, image preview, tags add/remove, chip open/collapse/changes). One `document` listener per interaction, no `init()`, idempotent and safe to include twice. Listeners live on `document`.
 - **Font:** Departure Mono (SIL OFL), shipped in the package and referenced by a relative URL in `mirk.css`, so it resolves correctly when loaded from jsDelivr.
@@ -830,8 +1049,9 @@ mirk-interface/
 ├── mirk.js                 # delegated runtime, idempotent (ships)
 ├── fonts/DepartureMono-1.500/   # the kit's font, SIL OFL (woff2 + LICENSE ship)
 ├── index.html              # the showcase, a self-contained page (repo only)
+├── starter.html            # copy-paste full-page template (repo only)
 ├── icons/svg/              # SVG icons used by the icons showcase (repo only)
-├── package.json            # npm publish config (name: mirk-interface, 2.0.0)
+├── package.json            # npm publish config (name: mirk-interface)
 └── ...                     # design docs, experiments, references (repo only)
 ```
 

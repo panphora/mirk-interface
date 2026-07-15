@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>my mirk page</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.css">
+</head>
+<body class="mirk-page">
+
+  <p class="mirk-eyebrow">getting started</p>
+  <h1>A mirk page</h1>
+  <p>This whole page is plain HTML plus mirk classes: two CDN tags, one class on <code>&lt;body&gt;</code>, then components pasted where you need them. <span class="mirk-badge">beta</span></p>
+
+  <div class="mirk-note" role="note">
+    <div class="mirk-note__title">Heads up</div>
+    <div class="mirk-note__body">mirk follows your OS light/dark setting. Add class="dark" or class="light" to any wrapper to force a mode.</div>
+  </div>
+
+  <h2>Why single-file apps</h2>
+  <ul class="mirk-list">
+    <li>The file is the app: markup, styles, and state in one document</li>
+    <li>Saving is serialization, so what you see is what persists</li>
+    <li>No build step between an idea and a working page</li>
+  </ul>
+
+  <h2>Say hello</h2>
+  <label class="mirk-eyebrow" for="hello-email">Email</label>
+  <input id="hello-email" type="email" class="mirk-input" placeholder="you@domain.com">
+  <p class="mirk-hint">We only use this to reply.</p>
+  <textarea rows="4" class="mirk-textarea" placeholder="Write something…"></textarea>
+  <button class="mirk-button"><span class="mirk-button__label">send it</span></button>
+
+  <hr>
+  <p class="mirk-hint">Built with <a href="https://github.com/panphora/mirk-interface">mirk</a>.</p>
+
+<script src="https://cdn.jsdelivr.net/npm/mirk-interface@2/mirk.js"></script>
+</body>
+</html>
