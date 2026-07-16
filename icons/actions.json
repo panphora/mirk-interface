@@ -39,6 +39,10 @@
   {
    "key": "account",
    "title": "Account & settings"
+  },
+  {
+   "key": "media",
+   "title": "Media & playback"
   }
  ],
  "actions": [
@@ -2289,6 +2293,177 @@
     "external-link"
    ],
    "note": "Chain-link reads as connect/link account, but the set has no plug/socket icon, which would be the ideal glyph to draw."
+  },
+  {
+   "id": "play",
+   "label": "Play",
+   "category": "media",
+   "synonyms": [
+    "start playback",
+    "resume playback",
+    "run",
+    "preview"
+   ],
+   "icon": "play",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "pause",
+   "label": "Pause",
+   "category": "media",
+   "synonyms": [
+    "pause playback",
+    "hold",
+    "suspend",
+    "freeze"
+   ],
+   "icon": "pause",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "stop",
+   "label": "Stop",
+   "category": "media",
+   "synonyms": [
+    "stop playback",
+    "halt",
+    "end playback"
+   ],
+   "icon": "stop",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "record",
+   "label": "Record",
+   "category": "media",
+   "synonyms": [
+    "start recording",
+    "rec",
+    "capture",
+    "record screen",
+    "record audio"
+   ],
+   "icon": "record",
+   "alternates": [],
+   "note": ""
+  },
+  {
+   "id": "mute-audio",
+   "label": "Mute audio",
+   "category": "media",
+   "synonyms": [
+    "volume off",
+    "sound off",
+    "silence audio",
+    "unmute"
+   ],
+   "icon": "volume-x",
+   "alternates": [
+    "volume"
+   ],
+   "note": "Notification mute stays on `mute` (bell-off); this is the audio/volume state."
+  },
+  {
+   "id": "crop",
+   "label": "Crop",
+   "category": "organize",
+   "synonyms": [
+    "crop image",
+    "trim image",
+    "cut to selection"
+   ],
+   "icon": "crop",
+   "alternates": [
+    "scale"
+   ],
+   "note": ""
+  },
+  {
+   "id": "layers",
+   "label": "Layers",
+   "category": "organize",
+   "synonyms": [
+    "layer panel",
+    "stack",
+    "z-order",
+    "arrange layers",
+    "bring to front",
+    "send to back"
+   ],
+   "icon": "layers",
+   "alternates": [
+    "flatten"
+   ],
+   "note": ""
+  },
+  {
+   "id": "replace",
+   "label": "Find & replace",
+   "category": "find",
+   "synonyms": [
+    "search and replace",
+    "substitute",
+    "replace all",
+    "swap text"
+   ],
+   "icon": "replace",
+   "alternates": [
+    "search",
+    "sort-horizontal"
+   ],
+   "note": ""
+  },
+  {
+   "id": "indent",
+   "label": "Indent",
+   "category": "text",
+   "synonyms": [
+    "increase indent",
+    "tab",
+    "nest",
+    "shift right"
+   ],
+   "icon": "indent",
+   "alternates": [
+    "chevron-right"
+   ],
+   "note": ""
+  },
+  {
+   "id": "outdent",
+   "label": "Outdent",
+   "category": "text",
+   "synonyms": [
+    "decrease indent",
+    "unindent",
+    "shift tab",
+    "shift left"
+   ],
+   "icon": "outdent",
+   "alternates": [
+    "chevron-left"
+   ],
+   "note": ""
+  },
+  {
+   "id": "keyboard-shortcuts",
+   "label": "Keyboard shortcuts",
+   "category": "account",
+   "synonyms": [
+    "shortcuts",
+    "hotkeys",
+    "key bindings",
+    "keymap",
+    "keyboard help"
+   ],
+   "icon": "keyboard",
+   "alternates": [
+    "keyboard-music"
+   ],
+   "note": ""
   }
  ]
 }
