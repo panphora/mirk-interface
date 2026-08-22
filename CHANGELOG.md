@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.1] - 2026-08-22
+
+### Added
+- Declare kind, status, and url in the hyper key
+
+### Changed
+- Update mirk-interface
+
+
+
 ## [Unreleased]
 
 ### Changed
