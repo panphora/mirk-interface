@@ -50,6 +50,6 @@
   },
   "hyper": {
     "kind": "lib",
-    "status": "active"
+    "status": "superseded"
   }
 }

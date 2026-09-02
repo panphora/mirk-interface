@@ -1,5 +1,7 @@
 # mirk
 
+> Superseded by **bevel**, which keeps the bevel and drops the pixel face. mirk stays published at 2.3.1 for the pages that use it.
+
 A form-focused HTML/CSS UI kit. Seventeen form components plus a content tier (note, hint, list, badge, table, page scaffold) as **semantic BEM classes** in one hand-written CSS file, plus one tiny delegated script. No build step, no React, no web components, Tailwind optional. Published as `mirk-interface` on npm.
 
 Every component is built on native HTML elements with a pixel-bevel look set in Departure Mono. State lives where the platform already keeps it: in native attributes, in CSS state selectors, and in real DOM nodes. That means a component's visible state round-trips through `outerHTML`, so a saved-and-reopened file renders correctly before any script runs. mirk targets malleable HTML (Hyperclay™), but nothing in it is Hyperclay-specific: it is plain CSS and one small delegated runtime that work on any page.
