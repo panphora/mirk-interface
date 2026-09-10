@@ -783,7 +783,7 @@ The conversion changed *form*, not *pixels*. Confirmed by a computed-style + geo
 > **Superseded in part by `0030`:** Pixel Quiet is now the **default** theme (`:root`, no attribute); the `data-theme="pixel-quiet"` slug no longer exists, and the opt-in `data-theme` mechanics below now describe the **Full Volume** variant (`data-theme="full-volume"`). The hypercms follow-up now means "inherit the default" rather than "set `data-theme='pixel-quiet'`."
 
 ### Context
-"Pixel Quiet" began as a hypercms sidebar direction (`cms-sidebar/pixel-quiet/`, ported to `hypercms/src/theme/pixel-quiet.overrides.css`): the same warm cream + Departure Mono soul as mirk's default, with the bevel contrast turned way down — a calm, glanceable register. There it was scoped to the CMS shell and bundled with panel geometry. We promote the *palette half* into the kit as a first-class, opt-in brand variant.
+"Pixel Quiet" began as a hypercms sidebar direction (`ARCHIVE_PROJECTS/cms-sidebar/pixel-quiet/`, ported to `hypercms/src/theme/pixel-quiet.overrides.css`): the same warm cream + Departure Mono soul as mirk's default, with the bevel contrast turned way down — a calm, glanceable register. There it was scoped to the CMS shell and bundled with panel geometry. We promote the *palette half* into the kit as a first-class, opt-in brand variant.
 
 ### Decision
 - **Ship Pixel Quiet built in**, as a single `[data-theme="pixel-quiet"]` token block in `mirk.css` (placed after `:root`, equal specificity, source order wins). This is the brand-theme escape hatch the guide already documents (§4), used for real rather than as a stub.
