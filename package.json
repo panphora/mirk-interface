@@ -34,6 +34,7 @@
     "./mirk.css": "./mirk.css"
   },
   "files": [
+    "packed-contract.json",
     "mirk.js",
     "mirk.css",
     "fonts/DepartureMono-1.500/DepartureMono-Regular.woff2",
